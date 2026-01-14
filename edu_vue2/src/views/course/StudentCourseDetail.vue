@@ -1,5 +1,11 @@
 <template>
   <div class="student-course-detail">
+    <!-- 预览模式提示条 -->
+    <div v-if="isPreviewMode" class="preview-banner">
+      <i class="el-icon-view"></i>
+      <span>当前为学生视角预览模式 - 点击小节可查看内容块详情</span>
+    </div>
+    
     <div class="page-header">
       <div class="header-left">
         <el-button icon="el-icon-arrow-left" @click="goBack">返回</el-button>
@@ -262,6 +268,7 @@ export default {
   data() {
     return {
       courseId: this.$route.params.id,
+      isPreviewMode: this.$route.query.preview === 'true', // 是否为预览模式
       activeModule: 'sections',
       navItems: [
         { id: 'sections', label: '章节', icon: '📚' },
@@ -328,7 +335,14 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push('/course/my-courses')
+      // 预览模式返回章节编辑器
+      if (this.isPreviewMode) {
+        // 清除预览数据
+        sessionStorage.removeItem('coursePreviewData')
+        this.$router.push(`/teacher/course/${this.courseId}/chapters`)
+      } else {
+        this.$router.push('/course/my-courses')
+      }
     },
     
     selectModule(moduleId) {
@@ -336,6 +350,36 @@ export default {
     },
 
     loadCourseData() {
+      // 如果是预览模式，从 sessionStorage 加载编辑器数据
+      if (this.isPreviewMode) {
+        const previewData = sessionStorage.getItem('coursePreviewData')
+        if (previewData) {
+          const data = JSON.parse(previewData)
+          this.courseInfo = {
+            title: data.courseInfo.name || '未命名课程',
+            instructorName: '预览模式'
+          }
+          
+          // 转换章节数据格式
+          this.sections = data.chapters.map((chapter, chIdx) => ({
+            id: chapter.id,
+            title: `第${chIdx + 1}章 ${chapter.title || '未命名章节'}`,
+            description: '',
+            lessons: chapter.sections.map((section, secIdx) => ({
+              id: section.id,
+              name: `${chIdx + 1}.${secIdx + 1} ${section.title || '未命名小节'}`,
+              type: 'video', // 默认为视频类型
+              duration: `${section.contentBlocks.length}个内容块`,
+              contentBlocks: section.contentBlocks // 保存完整内容块数据
+            }))
+          }))
+          
+          // 默认展开所有章节
+          this.expandedSections = this.sections.map(s => s.id)
+          return
+        }
+      }
+      
       // TODO: 从 API 加载真实数据
       // 模拟数据
       this.courseInfo = {
@@ -508,6 +552,34 @@ export default {
 
     // 选择课程，跳转到播放页面
     selectLesson(lesson, section) {
+      // 预览模式下显示内容详情
+      if (this.isPreviewMode && lesson.contentBlocks) {
+        const blocksInfo = lesson.contentBlocks.map(block => {
+          switch(block.type) {
+            case 'video':
+              return `📹 视频: ${block.videoName || '未命名视频'}`
+            case 'document':
+              return `📄 文档: ${block.displayName || block.docName || '未命名文档'}`
+            case 'text':
+              return `📝 文本内容`
+            case 'quiz':
+              return `✅ 测验: ${block.quizCreated ? '已创建' : '待创建'}`
+            default:
+              return `📦 ${block.type}`
+          }
+        }).join('\n')
+        
+        this.$alert(
+          blocksInfo || '该小节暂无内容',
+          `${lesson.name} - 内容预览`,
+          {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: false
+          }
+        )
+        return
+      }
+      
       this.$router.push({
         path: `/course/${this.courseId}/lesson/${lesson.id}`,
         query: {
@@ -535,6 +607,22 @@ export default {
   width: 100%;
   min-height: 100vh;
   background: #f5f7fa;
+}
+
+.preview-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
+}
+
+.preview-banner i {
+  font-size: 18px;
 }
 
 .page-header {

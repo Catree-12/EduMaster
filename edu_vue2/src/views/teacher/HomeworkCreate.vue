@@ -474,9 +474,8 @@ export default {
         
         // 跳转到发布页面，并携带返回信息
         this.$router.push({
-          path: '/teacher/homework/publish',
+          path: `/teacher/homework/${this.homework.id}/publish`,
           query: { 
-            id: this.homework.id,
             from: 'chapter-editor',
             courseId: courseId,
             blockId: blockId
@@ -485,8 +484,7 @@ export default {
       } else {
         // 正常流程：跳转到发布页面
         this.$router.push({
-          path: '/teacher/homework/publish',
-          query: { id: this.homework.id }
+          path: `/teacher/homework/${this.homework.id}/publish`
         })
       }
     }

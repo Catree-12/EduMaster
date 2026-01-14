@@ -441,6 +441,80 @@
         <el-button type="primary" @click="confirmCreateQuiz">确认创建</el-button>
       </span>
     </el-dialog>
+
+    <!-- 移动节点对话框 -->
+    <el-dialog
+      :title="moveType === 'chapter' ? '移动章节' : '移动小节'"
+      :visible.sync="moveDialogVisible"
+      width="500px"
+    >
+      <div class="move-dialog-content">
+        <el-alert 
+          type="info" 
+          :closable="false" 
+          style="margin-bottom: 15px;"
+        >
+          <template v-if="moveType === 'chapter'">
+            选择目标章节，将 <strong>{{ moveSourceItem?.title || '未命名章节' }}</strong> 移动到目标章节的前面或后面
+          </template>
+          <template v-else>
+            选择目标章节，将 <strong>{{ moveSourceItem?.title || '未命名小节' }}</strong> 移动到目标章节下
+          </template>
+        </el-alert>
+
+        <el-form label-width="100px">
+          <el-form-item label="目标章节">
+            <el-select 
+              v-model="moveTargetChapter" 
+              placeholder="请选择目标章节" 
+              style="width: 100%;"
+              filterable
+            >
+              <el-option
+                v-for="(chapter, index) in chapters"
+                :key="chapter.id"
+                :label="`第${index + 1}章: ${chapter.title || '未命名章节'}`"
+                :value="chapter"
+                :disabled="moveType === 'chapter' && chapter.id === moveSourceItem?.id"
+              >
+                <span>第{{ index + 1 }}章: {{ chapter.title || '未命名章节' }}</span>
+                <span style="float: right; color: #8492a6; font-size: 12px;">
+                  ({{ chapter.sections.length }}个小节)
+                </span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="插入位置" v-if="moveType === 'chapter'">
+            <el-radio-group v-model="moveTargetPosition">
+              <el-radio label="before">在目标章节之前</el-radio>
+              <el-radio label="after">在目标章节之后</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="插入位置" v-else>
+            <el-select 
+              v-model="moveTargetPosition" 
+              placeholder="选择插入位置" 
+              style="width: 100%;"
+              :disabled="!moveTargetChapter"
+            >
+              <el-option label="移动到最前" value="0"></el-option>
+              <el-option
+                v-for="(section, idx) in (moveTargetChapter?.sections || [])"
+                :key="idx"
+                :label="`移动到'${section.title || '未命名小节'}'之后`"
+                :value="String(idx + 1)"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer">
+        <el-button @click="moveDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmMove" :disabled="!moveTargetChapter">确认移动</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -471,7 +545,14 @@ export default {
       nextSectionId: 1,
       nextBlockId: 1,
       quizDialogVisible: false,
-      currentQuizBlock: null
+      currentQuizBlock: null,
+      moveDialogVisible: false,
+      moveType: '', // 'chapter' 或 'section'
+      moveSourceItem: null,
+      moveSourceChapter: null, // 仅用于小节移动
+      moveSourceIndex: null,
+      moveTargetChapter: null,
+      moveTargetPosition: 'after' // 'before' 或 'after'
     }
   },
   computed: {
@@ -494,10 +575,21 @@ export default {
     const savedState = sessionStorage.getItem('chapterEditorState')
     if (savedState && this.$route.query.from === 'homework-create') {
       const state = JSON.parse(savedState)
-      this.chapters = state.chapters
+      this.chapters = state.chapters || []
       this.selectedNode = state.selectedNode
       this.currentChapter = state.currentChapter
-      this.courseInfo = state.courseInfo
+      this.courseInfo = state.courseInfo || { name: '未命名课程' }
+      
+      // 确保所有章节和小节都有 title
+      this.chapters.forEach(chapter => {
+        if (!chapter.title) chapter.title = ''
+        if (!chapter.sections) chapter.sections = []
+        chapter.sections.forEach(section => {
+          if (!section.title) section.title = ''
+          if (!section.knowledgePoints) section.knowledgePoints = []
+          if (!section.contentBlocks) section.contentBlocks = []
+        })
+      })
       
       // 如果有返回的作业ID，关联到对应的测验块
       const homeworkId = this.$route.query.homeworkId
@@ -534,9 +626,12 @@ export default {
       }).then(() => {
         this.saveAll().then(() => {
           next()
+        }).catch(err => {
+          console.error('保存失败:', err)
+          next(false) // 保存失败，取消离开
         })
       }).catch(() => {
-        next()
+        next() // 用户选择放弃修改
       })
     } else {
       next()
@@ -551,19 +646,17 @@ export default {
           type: 'warning'
         }).then(() => {
           this.saveAll().then(() => {
-            this.$router.back()
+            this.$router.push(`/teacher/course/${this.courseId}`)
+          }).catch(err => {
+            console.error('保存失败:', err)
+            // 保存失败不返回
           })
         }).catch(() => {
-          this.$router.back()
+          this.$router.push(`/teacher/course/${this.courseId}`)
         })
       } else {
-        this.$router.back()
+        this.$router.push(`/teacher/course/${this.courseId}`)
       }
-    },
-
-    previewCourse() {
-      this.$message.info('学生视角预览功能开发中...')
-      // TODO: 跳转到学生视角的课程详情页
     },
 
     loadCourseData() {
@@ -728,26 +821,12 @@ export default {
     },
 
     showMoveChapterDialog(chapter, currentIndex) {
-      this.$prompt(`请输入目标位置（1-${this.chapters.length}）`, '移动章节', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPlaceholder: `当前位置：${currentIndex + 1}`
-      }).then(({ value }) => {
-        const targetIndex = parseInt(value) - 1
-        if (isNaN(targetIndex) || targetIndex < 0 || targetIndex >= this.chapters.length) {
-          this.$message.error('无效的目标位置')
-          return
-        }
-        if (targetIndex === currentIndex) {
-          this.$message.info('目标位置与当前位置相同')
-          return
-        }
-        
-        this.chapters.splice(currentIndex, 1)
-        this.chapters.splice(targetIndex, 0, chapter)
-        this.markChanged()
-        this.$message.success('移动成功')
-      }).catch(() => {})
+      this.moveType = 'chapter'
+      this.moveSourceItem = chapter
+      this.moveSourceIndex = currentIndex
+      this.moveTargetChapter = null
+      this.moveTargetPosition = 'after'
+      this.moveDialogVisible = true
     },
 
     onChapterDragEnd() {
@@ -815,51 +894,84 @@ export default {
     },
 
     showMoveSectionDialog(section, currentChapter, currentSectionIndex) {
-      // 构建章节和位置选择
-      const chapterOptions = this.chapters.map((ch, idx) => 
-        `${idx + 1}. ${ch.title || '未命名章节'} (${ch.sections.length}个小节)`
-      ).join('\n')
-      
-      this.$prompt(
-        `请输入目标位置（格式：章节序号-小节序号，如 1-2）\n\n可选章节：\n${chapterOptions}`,
-        '移动小节',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPlaceholder: '例如：2-1'
-        }
-      ).then(({ value }) => {
-        const match = value.match(/^(\d+)-(\d+)$/)
-        if (!match) {
-          this.$message.error('格式错误，请输入"章节序号-小节序号"')
+      this.moveType = 'section'
+      this.moveSourceItem = section
+      this.moveSourceChapter = currentChapter
+      this.moveSourceIndex = currentSectionIndex
+      this.moveTargetChapter = null
+      this.moveTargetPosition = '0' // 默认插入到第一个位置
+      this.moveDialogVisible = true
+    },
+
+    confirmMove() {
+      if (!this.moveTargetChapter) {
+        this.$message.warning('请选择目标章节')
+        return
+      }
+
+      if (this.moveType === 'chapter') {
+        // 移动章节
+        const sourceIndex = this.moveSourceIndex
+        const targetIndex = this.chapters.indexOf(this.moveTargetChapter)
+
+        if (sourceIndex === targetIndex) {
+          this.$message.info('目标位置与当前位置相同')
+          this.moveDialogVisible = false
           return
         }
-        
-        const targetChapterIndex = parseInt(match[1]) - 1
-        const targetSectionIndex = parseInt(match[2]) - 1
-        
-        if (targetChapterIndex < 0 || targetChapterIndex >= this.chapters.length) {
-          this.$message.error('无效的章节序号')
-          return
-        }
-        
-        const targetChapter = this.chapters[targetChapterIndex]
-        const maxSectionIndex = targetChapter.sections.length
-        
-        if (targetSectionIndex < 0 || targetSectionIndex > maxSectionIndex) {
-          this.$message.error(`该章节最多只能插入到位置 ${maxSectionIndex + 1}`)
-          return
-        }
-        
+
         // 移除原位置
-        currentChapter.sections.splice(currentSectionIndex, 1)
+        const [chapter] = this.chapters.splice(sourceIndex, 1)
         
-        // 插入新位置
-        targetChapter.sections.splice(targetSectionIndex, 0, section)
+        // 计算新的插入位置
+        let insertIndex = this.chapters.indexOf(this.moveTargetChapter)
+        if (this.moveTargetPosition === 'after') {
+          insertIndex++
+        }
+        
+        // 插入到新位置
+        this.chapters.splice(insertIndex, 0, chapter)
         
         this.markChanged()
-        this.$message.success('移动成功')
-      }).catch(() => {})
+        this.$message.success('章节移动成功')
+        this.moveDialogVisible = false
+      } else if (this.moveType === 'section') {
+        // 移动小节
+        const targetIndex = parseInt(this.moveTargetPosition)
+        
+        // 移除原位置的小节
+        const [section] = this.moveSourceChapter.sections.splice(this.moveSourceIndex, 1)
+        
+        // 如果是在同一章节内移动，需要调整目标索引
+        let finalTargetIndex = targetIndex
+        if (this.moveSourceChapter.id === this.moveTargetChapter.id && this.moveSourceIndex < targetIndex) {
+          finalTargetIndex--
+        }
+        
+        // 插入到目标章节
+        this.moveTargetChapter.sections.splice(finalTargetIndex, 0, section)
+        
+        this.markChanged()
+        this.$message.success('小节移动成功')
+        this.moveDialogVisible = false
+      }
+    },
+
+    previewCourse() {
+      // 保存当前编辑状态
+      const previewData = {
+        courseInfo: this.courseInfo || { name: '未命名课程' },
+        chapters: this.chapters || []
+      }
+      sessionStorage.setItem('coursePreviewData', JSON.stringify(previewData))
+      
+      // 跳转到教师课程预览页（使用教师专用路由）
+      this.$router.push({
+        path: `/teacher/course/${this.courseId}/preview`,
+        query: { preview: 'true' }
+      }).catch(err => {
+        console.error('路由跳转失败:', err)
+      })
     },
 
     showAddKnowledgeInput() {
@@ -1052,22 +1164,7 @@ export default {
     },
 
     async saveAll() {
-      // 验证
-      for (let i = 0; i < this.chapters.length; i++) {
-        const chapter = this.chapters[i]
-        if (!chapter.title.trim()) {
-          this.$message.warning(`第${i + 1}章的标题不能为空`)
-          return Promise.reject()
-        }
-        for (let j = 0; j < chapter.sections.length; j++) {
-          const section = chapter.sections[j]
-          if (!section.title.trim()) {
-            this.$message.warning(`第${i + 1}章第${j + 1}节的标题不能为空`)
-            return Promise.reject()
-          }
-        }
-      }
-
+      // 不再强制验证标题，允许未命名的章节和小节
       this.saving = true
       try {
         await new Promise(resolve => setTimeout(resolve, 1000))
@@ -1137,15 +1234,17 @@ export default {
   flex: 1;
   display: flex;
   overflow: hidden;
+  position: relative;
 }
 
-/* ========== 左侧目录树 - 30% ========== */
+/* ========== 左侧目录树 - 固定，不滚动 ========== */
 .catalog-tree {
-  width: 30%;
+  width: 25%;
   background: white;
   border-right: 1px solid #e4e7ed;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .tree-header {
     padding: 15px;
@@ -1335,12 +1434,13 @@ export default {
   }
 }
 
-/* ========== 右侧节点容器 - 70% ========== */
+/* ========== 右侧节点容器 - 75%，只有内容区域滚动 ========== */
 .node-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   background: #f5f7fa;
+  overflow: hidden;
 
   /* 顶部固定工具栏 */
   .content-toolbar-fixed {
@@ -1351,9 +1451,7 @@ export default {
     align-items: center;
     gap: 15px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    flex-shrink: 0;
 
     .toolbar-label {
       font-weight: bold;
@@ -1372,12 +1470,13 @@ export default {
   }
 
   .editor-empty {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
     color: #909399;
+    overflow-y: auto;
 
     p {
       margin-top: 20px;
@@ -1391,8 +1490,6 @@ export default {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  max-width: 900px;
-  margin: 0 auto;
 
   .node-header {
     margin-bottom: 20px;
@@ -1425,8 +1522,6 @@ export default {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
 
   .node-header {
     margin-bottom: 15px;
@@ -1568,6 +1663,11 @@ export default {
     }
   }
 
-  /* 移除原底部工具栏样式 */
+  /* 移动对话框样式 */
+  .move-dialog-content {
+    .el-form-item {
+      margin-bottom: 18px;
+    }
+  }
 }
 </style>

@@ -53,6 +53,7 @@ import HomeworkGradingDetail from '@/views/teacher/HomeworkGradingDetail.vue'
 import ExamGrading from '@/views/teacher/ExamGrading.vue'
 import ExamGradingDetail from '@/views/teacher/ExamGradingDetail.vue'
 import ChapterEditor from '@/views/teacher/ChapterEditor.vue'
+import CoursePreview from '@/views/teacher/CoursePreview.vue'
 
 // 新课程页面（来自course目录）
 import CourseCreate from '@/views/course/CourseCreate.vue'
@@ -266,6 +267,12 @@ const routes = [
         path: 'teacher/course/:id/chapters/edit',
         name: 'ChapterEditor',
         component: ChapterEditor,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/course/:id/preview',
+        name: 'TeacherCoursePreview',
+        component: CoursePreview,
         meta: { requiresAuth: true }
       },
       {
