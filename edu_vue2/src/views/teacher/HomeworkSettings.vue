@@ -37,6 +37,16 @@
               </div>
             </el-form-item>
 
+            <el-form-item label="起始时间" prop="startTime">
+              <el-date-picker
+                v-model="settingsForm.startTime"
+                type="datetime"
+                placeholder="选择起始时间"
+                style="width: 100%"
+                :picker-options="startTimeOptions"
+              />
+            </el-form-item>
+
             <el-form-item label="截止时间" prop="deadline">
               <el-date-picker
                 v-model="settingsForm.deadline"
@@ -146,6 +156,7 @@ export default {
       },
       originalTargets: ['计算机科学2021级1班', '计算机科学2021级2班'],
       settingsForm: {
+        startTime: '',
         deadline: '',
         passingScore: 60,
         allowRedo: false,
@@ -160,6 +171,9 @@ export default {
         { id: 2, name: '计算机科学2021级2班', studentCount: 42 }
       ],
       rules: {
+        startTime: [
+          { required: true, message: '请选择起始时间', trigger: 'change' }
+        ],
         deadline: [
           { required: true, message: '请选择截止时间', trigger: 'change' }
         ],
@@ -167,8 +181,16 @@ export default {
           { required: true, message: '请设置及格标准', trigger: 'blur' }
         ]
       },
-      deadlineOptions: {
+      startTimeOptions: {
         disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7
+        }
+      },
+      deadlineOptions: {
+        disabledDate: (time) => {
+          if (this.settingsForm.startTime) {
+            return time.getTime() < new Date(this.settingsForm.startTime).getTime()
+          }
           return time.getTime() < Date.now() - 8.64e7
         }
       }
@@ -241,6 +263,14 @@ export default {
     confirmUpdate() {
       this.$refs.settingsForm.validate((valid) => {
         if (valid) {
+          // 验证截止时间必须晚于起始时间
+          if (this.settingsForm.startTime && this.settingsForm.deadline) {
+            if (new Date(this.settingsForm.deadline) <= new Date(this.settingsForm.startTime)) {
+              this.$message.error('截止时间必须晚于起始时间')
+              return false
+            }
+          }
+          
           this.$confirm('确认保存修改吗？', '确认修改', {
             confirmButtonText: '确认保存',
             cancelButtonText: '取消',

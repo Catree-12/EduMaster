@@ -202,7 +202,8 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push(`/course/${this.courseId}/student`)
+      // 返回到教师课程详情页
+      this.$router.push(`/teacher/course/${this.courseId}`)
     },
 
     editChapter() {

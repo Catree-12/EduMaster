@@ -34,7 +34,7 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="name" label="文件夹/作业" min-width="300">
           <template slot-scope="scope">
-            <span class="homework-name" @click="viewHomework(scope.row)">
+            <span class="homework-name" @click="viewHomework(scope.row)" style="cursor: pointer;">
               <i :class="scope.row.isFolder ? 'el-icon-folder' : 'el-icon-document'" style="margin-right: 8px;"></i>
               {{ scope.row.name }}
             </span>
@@ -48,6 +48,14 @@
         <el-table-column prop="totalPoints" label="总分" width="100" align="center">
           <template slot-scope="scope">
             {{ scope.row.isFolder ? '-' : scope.row.totalPoints }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" width="100" align="center">
+          <template slot-scope="scope">
+            <el-tag v-if="!scope.row.isFolder" :type="scope.row.published ? 'success' : 'info'" size="small">
+              {{ scope.row.published ? '已发布' : '未发布' }}
+            </el-tag>
+            <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column prop="creator" label="创建者" width="120" align="center">
@@ -123,6 +131,7 @@ export default {
           totalPoints: 100,
           creator: '韦佳威',
           createdAt: '11-15 18:47',
+          published: false, // 是否已发布
           questions: [
             {
               id: 1,
@@ -141,6 +150,7 @@ export default {
           totalPoints: 100,
           creator: '韦佳威',
           createdAt: '2024-01-10',
+          published: true, // 已发布过
           questions: [
             {
               id: 1,
@@ -179,22 +189,32 @@ export default {
       this.$router.push('/teacher/homework/create')
     },
     viewHomework(hw) {
-      this.$router.push(`/teacher/homework/${hw.id}/detail`)
+      if (hw.isFolder) {
+        this.$message.info('这是一个文件夹')
+        return
+      }
+      
+      // 所有作业都跳转到详情页，显示完整题目
+      this.$router.push({
+        path: `/teacher/homework/${hw.id}/detail`,
+        query: { published: hw.published }
+      })
     },
     editHomework(hw) {
       if (hw.isFolder) {
         this.$message.info('文件夹无法编辑')
         return
       }
-      // 跳转到创建/编辑页面，传递作业数据
+      
+      // 跳转到创建页面进行编辑
       this.$router.push({
         path: '/teacher/homework/create',
         query: { 
           id: hw.id,
-          mode: 'edit'
+          mode: 'edit',
+          published: hw.published
         }
       })
-      // 将作业数据存储到 sessionStorage，供创建页面使用
       sessionStorage.setItem('editHomeworkData', JSON.stringify(hw))
     },
     publishHomework(hw) {

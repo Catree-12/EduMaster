@@ -1,33 +1,34 @@
 <template>
   <div class="teacher-course-detail">
-    <div class="page-header">
-      <h1>{{ courseInfo.name }}</h1>
-      <p>{{ courseInfo.description }}</p>
-    </div>
+    <!-- 顶部Logo区域 -->
+    <header class="page-logo">
+      <h1>EduMaster</h1>
+    </header>
 
-    <div class="course-container">
-      <!-- 左侧导航栏 -->
-      <aside class="sidebar">
-        <nav class="nav-menu">
-          <div
-            v-for="item in navItems"
-            :key="item.id"
-            :class="['nav-item', { active: activeModule === item.id }]"
-            @click="selectModule(item.id)"
-            tabindex="0"
-            role="button"
-          >
-            <span class="nav-icon">{{ item.icon }}</span>
-            <span class="nav-label">{{ item.label }}</span>
-          </div>
-        </nav>
-        <!-- 调试信息 -->
-        <div style="margin-top: 1rem; padding: 0.75rem; background: #f0f0f0; border-radius: 4px; font-size: 0.8rem;">
-          <div>当前模块: {{ activeModule }}</div>
+    <!-- 左侧固定导航栏 -->
+    <aside class="sidebar-fixed">
+      <nav class="nav-menu">
+        <div
+          v-for="item in navItems"
+          :key="item.id"
+          :class="['nav-item', { active: activeModule === item.id }]"
+          @click="selectModule(item.id)"
+          tabindex="0"
+          role="button"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
         </div>
-      </aside>
+      </nav>
+    </aside>
 
-      <!-- 右侧内容区 -->
+    <!-- 右侧内容区 -->
+    <div class="main-wrapper">
+      <div class="page-header">
+        <h1>{{ courseInfo.name }}</h1>
+        <p>{{ courseInfo.description }}</p>
+      </div>
+
       <main class="content-area">
         <!-- 章节模块 -->
         <section v-if="activeModule === 'sections'" class="module-section">
@@ -155,44 +156,62 @@
 
           <!-- 列表区 -->
           <div v-if="filteredHomeworks.length > 0" class="list-section">
-            <div v-for="hw in filteredHomeworks" :key="hw.id" class="item-card homework-card" @click="viewHomeworkDetail(hw)" style="cursor: pointer;">
-              <div class="item-header">
-                <h3 class="item-title">{{ hw.name }}</h3>
-                <span :class="['status-badge', hw.status]">{{ hw.status }}</span>
-              </div>
-
-              <div class="item-info">
-                <span class="info-item">
-                  <strong>班级：</strong>{{ hw.className }}
-                </span>
-                <span class="info-item">
-                  <strong>作答时间：</strong>{{ hw.startTime }} ~ {{ hw.endTime }}
-                </span>
-              </div>
-
-              <div class="item-stats">
-                <div class="stat-box">
-                  <span class="stat-label">待批</span>
-                  <span class="stat-value pending">{{ hw.pendingCount }}</span>
+            <div v-for="hw in filteredHomeworks" :key="hw.id" class="homework-item-card">
+              <!-- 顶部区域 -->
+              <div class="card-top-section">
+                <!-- 左侧：标题和状态 -->
+                <div class="card-header">
+                  <h3 class="task-title clickable-title" @click="viewHomeworkDetail(hw)">{{ hw.name }}</h3>
+                  <span :class="['status-capsule', hw.status]">{{ hw.status }}</span>
                 </div>
-                <div class="stat-box">
-                  <span class="stat-label">已交</span>
-                  <span class="stat-value submitted">{{ hw.submittedCount }}</span>
-                </div>
-                <div class="stat-box">
-                  <span class="stat-label">未交</span>
-                  <span class="stat-value unsubmitted">{{ hw.unsubmittedCount }}</span>
+                
+                <!-- 右侧：统计数字（横向排列） -->
+                <div class="stats-inline">
+                  <div class="stat-item stat-pending">
+                    <div class="stat-number">{{ hw.pendingCount }}</div>
+                    <div class="stat-label">待批</div>
+                  </div>
+                  <div class="stat-item stat-submitted">
+                    <div class="stat-number">{{ hw.submittedCount }}</div>
+                    <div class="stat-label">已交</div>
+                  </div>
+                  <div class="stat-item stat-unsubmitted">
+                    <div class="stat-number">{{ hw.unsubmittedCount }}</div>
+                    <div class="stat-label">未交</div>
+                  </div>
                 </div>
               </div>
 
-              <div class="item-actions">
-                <button @click="editHomework(hw)" class="action-link">修改设置</button>
-                <button @click="gradeHomework(hw)" class="action-link primary-action">
+              <!-- 中部区域：信息行 -->
+              <div class="card-middle-section">
+                <div class="info-item">
+                  <span class="info-label">班期：</span>
+                  <span class="info-value">{{ hw.termName || '未设置' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">班级：</span>
+                  <span class="info-value">{{ hw.className }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">作答时间：</span>
+                  <span class="info-value">{{ hw.startTime }} ~ {{ hw.endTime }}</span>
+                </div>
+              </div>
+
+              <!-- 底部区域：操作按钮 -->
+              <div class="card-bottom-section">
+                <el-button 
+                  type="primary" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="gradeHomework(hw)"
+                >
                   批阅 ({{ hw.pendingCount }})
-                </button>
-                <button @click="deleteHomework(hw.id)" class="action-link danger-action">
-                  删除
-                </button>
+                </el-button>
+                <div class="auxiliary-links">
+                  <a class="link-edit" @click.stop="editHomework(hw)">修改设置</a>
+                  <a class="link-delete" @click.stop="deleteHomework(hw.id)">删除</a>
+                </div>
               </div>
             </div>
           </div>
@@ -260,44 +279,61 @@
 
           <!-- 列表区 -->
           <div v-if="filteredExams.length > 0" class="list-section">
-            <div v-for="exam in filteredExams" :key="exam.id" class="item-card exam-card" @click="viewExamDetail(exam)" style="cursor: pointer;">
-              <div class="item-header">
-                <h3 class="item-title">{{ exam.name }}</h3>
-                <span :class="['status-badge', exam.status]">{{ exam.status }}</span>
-              </div>
-
-              <div class="item-info">
-                <span class="info-item">
-                  <strong>班级：</strong>{{ exam.className }}
-                </span>
-                <span class="info-item">
-                  <strong>考试时间：</strong>{{ exam.startTime }} ~ {{ exam.endTime }}
-                </span>
-              </div>
-
-              <div class="item-stats">
-                <div class="stat-box">
-                  <span class="stat-label">待批</span>
-                  <span class="stat-value pending">{{ exam.pendingCount }}</span>
+            <div v-for="exam in filteredExams" :key="exam.id" class="exam-item-card">
+              <!-- 顶部区域：标题 + 状态 + 统计 -->
+              <div class="card-top-section">
+                <div class="card-header">
+                  <h3 class="task-title clickable-title" @click="viewExamDetail(exam)">{{ exam.name }}</h3>
+                  <span :class="['status-capsule', exam.status]">{{ exam.status }}</span>
                 </div>
-                <div class="stat-box">
-                  <span class="stat-label">已完成</span>
-                  <span class="stat-value submitted">{{ exam.completedCount }}</span>
-                </div>
-                <div class="stat-box">
-                  <span class="stat-label">未完成</span>
-                  <span class="stat-value unsubmitted">{{ exam.incompleteCount }}</span>
+                
+                <!-- 右侧：统计数字（横向排列） -->
+                <div class="stats-inline">
+                  <div class="stat-item stat-pending">
+                    <div class="stat-number">{{ exam.pendingCount }}</div>
+                    <div class="stat-label">待批</div>
+                  </div>
+                  <div class="stat-item stat-submitted">
+                    <div class="stat-number">{{ exam.completedCount }}</div>
+                    <div class="stat-label">已交</div>
+                  </div>
+                  <div class="stat-item stat-unsubmitted">
+                    <div class="stat-number">{{ exam.incompleteCount }}</div>
+                    <div class="stat-label">未交</div>
+                  </div>
                 </div>
               </div>
 
-              <div class="item-actions">
-                <button @click="editExam(exam)" class="action-link">修改设置</button>
-                <button @click="gradeExam(exam)" class="action-link primary-action">
-                  阅卷 ({{ exam.pendingCount }})
-                </button>
-                <button @click="deleteExam(exam.id)" class="action-link danger-action">
-                  删除
-                </button>
+              <!-- 中部区域：信息行 -->
+              <div class="card-middle-section">
+                <div class="info-item">
+                  <span class="info-label">班期：</span>
+                  <span class="info-value">{{ exam.termName || '未设置' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">班级：</span>
+                  <span class="info-value">{{ exam.className || '未设置' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">考试时间：</span>
+                  <span class="info-value">{{ exam.startTime }} ~ {{ exam.endTime }}</span>
+                </div>
+              </div>
+
+              <!-- 底部区域：操作按钮 -->
+              <div class="card-bottom-section">
+                <el-button 
+                  type="primary" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="gradeExam(exam)"
+                >
+                  批阅 ({{ exam.pendingCount }})
+                </el-button>
+                <div class="auxiliary-links">
+                  <a class="link-edit" @click.stop="editExam(exam)">修改设置</a>
+                  <a class="link-delete" @click.stop="deleteExam(exam.id)">删除</a>
+                </div>
               </div>
             </div>
           </div>
@@ -1615,7 +1651,12 @@ export default {
       this.$router.push('/teacher/homework/create')
     },
     viewHomeworkDetail(hw) {
-      this.$router.push(`/teacher/homework/${hw.id}/detail`)
+      // 根据是否发布过判断跳转逻辑
+      const published = hw.published || false
+      this.$router.push({
+        path: `/teacher/homework/${hw.id}/detail`,
+        query: { published: published }
+      })
     },
     submitHomeworkForm() {
       if (!this.newHomework.name || !this.newHomework.className || !this.newHomework.startTime || !this.newHomework.endTime) {
@@ -1680,7 +1721,12 @@ export default {
       this.$router.push(`/teacher/exam/${exam.id}/grading`)
     },
     viewExamDetail(exam) {
-      this.$router.push(`/teacher/exam/${exam.id}/detail`)
+      // 根据发放次数判断是否发布过
+      const published = exam.publishCount > 0 || exam.published || false
+      this.$router.push({
+        path: `/teacher/exam/${exam.id}/detail`,
+        query: { published: published }
+      })
     },
     deleteExam(id) {
       if (confirm('确定删除该考试吗？')) {
@@ -2035,97 +2081,130 @@ export default {
 
 <style scoped>
 .teacher-course-detail {
-  width: 100%;
-  background-color: #f8f9fa;
+  display: flex;
   min-height: 100vh;
-  padding: 2rem;
+  background-color: #f8f9fa;
 }
 
-.page-header {
-  margin-bottom: 2rem;
+/* 左侧固定导航栏 */
+/* Logo区域 */
+.page-logo {
+  position: fixed;
+  left: 0;
+  top: 70px;
+  width: 220px;
+  height: 56px;
   background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
 }
 
-.page-header h1 {
-  margin: 0 0 0.5rem 0;
-  color: #2c3e50;
+.page-logo h1 {
+  margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.page-header p {
-  margin: 0;
-  color: #7f8c8d;
-  font-size: 0.95rem;
-}
-
-.course-container {
-  display: flex;
-  gap: 2rem;
-}
-
-/* 左侧导航栏 */
-.sidebar {
-  width: 200px;
+.sidebar-fixed {
+  width: 220px;
   background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  height: fit-content;
-  position: sticky;
-  top: 2rem;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.5rem 0;
+  position: fixed;
+  left: 0;
+  top: 126px;
+  height: calc(100vh - 126px);
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .nav-menu {
   display: flex;
   flex-direction: column;
   gap: 0;
+  padding: 0 0.75rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
-  color: #7f8c8d;
+  color: #6b7280;
   font-weight: 500;
   user-select: none;
   -webkit-user-select: none;
+  margin-bottom: 0.25rem;
 }
 
 .nav-item:hover {
-  background-color: #f0f2f5;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .nav-item.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .nav-icon {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .nav-label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+}
+
+/* 右侧主内容区 */
+.main-wrapper {
+  flex: 1;
+  margin-left: 220px;
+  margin-top: 70px;
+  padding: 0;
+}
+
+.page-header {
+  margin-bottom: 0;
+  background: white;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.page-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
 }
 
 /* 右侧内容区 */
 .content-area {
-  flex: 1;
   background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: calc(100vh - 140px);
 }
 
 .module-section {
+  padding: 2rem;
   animation: fadeIn 0.3s ease-in;
 }
 
@@ -2251,9 +2330,223 @@ export default {
 .list-section {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* 优化后的作业/考试卡片样式 */
+.homework-item-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s;
   gap: 1rem;
 }
 
+.exam-item-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  gap: 1rem;
+}
+
+.homework-item-card:hover,
+.exam-item-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
+}
+
+/* ========== 顶部区域 ========== */
+.card-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex: 1;
+}
+
+.task-title {
+  margin: 0;
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.clickable-title {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.clickable-title:hover {
+  color: #667eea;
+}
+
+/* 状态胶囊 */
+.status-capsule {
+  padding: 0.4rem 1rem;
+  border-radius: 24px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.status-capsule.未开始 {
+  background-color: #e5e7eb;
+  color: #6b7280;
+}
+
+.status-capsule.进行中 {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.status-capsule.已结束 {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+/* 统计数字横向排列 */
+.stats-inline {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-item.stat-pending .stat-number {
+  color: #ef4444;
+}
+
+.stat-item.stat-submitted .stat-number {
+  color: #10b981;
+}
+
+.stat-item.stat-unsubmitted .stat-number {
+  color: #9ca3af;
+}
+
+.stat-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ========== 中部区域：信息行 ========== */
+.card-middle-section {
+  display: flex;
+  gap: 2rem;
+  padding: 0.5rem 0;
+}
+
+.info-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.info-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #374151;
+  font-weight: 400;
+}
+
+/* ========== 底部区域：操作按钮 ========== */
+.card-bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.primary-action-btn {
+  height: 42px;
+  padding: 0 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+
+.primary-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.primary-action-btn:active {
+  transform: translateY(0);
+}
+
+/* 底部：辅助操作链 */
+.auxiliary-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.auxiliary-links a {
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.link-edit {
+  color: #667eea;
+}
+
+.link-edit:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.link-delete {
+  color: #ef4444;
+}
+
+.link-delete:hover {
+  color: #dc2626;
+  text-decoration: underline;
+}
+
+/* 考试卡片已统一使用作业卡片的三层布局样式 */
+
+/* 旧样式保留(兼容其他模块) */
 .item-card {
   background: #f8f9fa;
   border: 1px solid #ecf0f1;

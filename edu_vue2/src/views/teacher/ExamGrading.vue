@@ -8,10 +8,20 @@
       <h1>{{ exam.name }}</h1>
       
       <div class="header-toolbar">
-        <el-select v-model="selectedClass" placeholder="默认班级" style="width: 200px;">
-          <el-option label="默认班级" value=""></el-option>
+        <el-select v-model="selectedTerm" placeholder="选择班期" style="width: 180px; margin-right: 12px;">
+          <el-option label="全部班期" value=""></el-option>
           <el-option 
-            v-for="cls in classes" 
+            v-for="term in terms" 
+            :key="term.id" 
+            :label="term.name" 
+            :value="term.id"
+          ></el-option>
+        </el-select>
+
+        <el-select v-model="selectedClass" placeholder="选择班级" style="width: 180px;">
+          <el-option label="全部班级" value=""></el-option>
+          <el-option 
+            v-for="cls in filteredClasses" 
             :key="cls.id" 
             :label="cls.name" 
             :value="cls.id"
@@ -79,37 +89,25 @@
         
         <el-table-column prop="studentId" label="学号/工号" width="150">
           <template slot-scope="scope">
-            <i class="el-icon-sort" style="margin-right: 5px; color: #999;"></i>
             {{ scope.row.studentId }}
           </template>
         </el-table-column>
 
         <!-- 已交状态显示的列 -->
         <template v-if="submissionStatus === 'submitted'">
-          <el-table-column label="提交时间" width="180">
+          <el-table-column label="提交时间" width="160">
             <template slot-scope="scope">
-              <i class="el-icon-sort" style="margin-right: 5px; color: #999;"></i>
-              {{ scope.row.submittedAt || '-' }}
+              {{ formatSubmitTime(scope.row.submittedAt) }}
             </template>
           </el-table-column>
 
-          <el-table-column label="考试用时" width="120">
+          <el-table-column label="考试用时" width="100">
             <template slot-scope="scope">
-              <i class="el-icon-sort" style="margin-right: 5px; color: #999;"></i>
               {{ scope.row.examDuration || '-' }}
             </template>
           </el-table-column>
 
-          <el-table-column label width="80">
-            <template>
-              <div class="icon-group">
-                <i class="el-icon-chat-dot-square" style="color: #999; font-size: 18px;"></i>
-                <i class="el-icon-paperclip" style="color: #999; font-size: 18px; margin-left: 8px;"></i>
-              </div>
-            </template>
-          </el-table-column>
-
-          <el-table-column label="正确率" width="100">
+          <el-table-column label="正确率" width="90">
             <template slot-scope="scope">
               {{ scope.row.correctRate || '-' }}
             </template>
@@ -135,11 +133,14 @@
 
           <el-table-column label="批阅时间" width="180"></el-table-column>
 
-          <el-table-column label="批阅人" width="120"></el-table-column>
+          <el-table-column label="批阅人" width="120">
+            <template slot-scope="scope">
+              {{ scope.row.reviewer || '-' }}
+            </template>
+          </el-table-column>
 
           <el-table-column prop="score" label="成绩" width="100">
             <template slot-scope="scope">
-              <i class="el-icon-sort" style="margin-right: 5px; color: #999;"></i>
               {{ scope.row.score !== null ? scope.row.score : '-' }}
             </template>
           </el-table-column>
@@ -147,23 +148,13 @@
           <el-table-column label="操作" width="150">
             <template slot-scope="scope">
               <el-button type="text" @click="viewSubmission(scope.row)">查看</el-button>
-              <el-button type="text" style="color: #1890ff;">
-                <i class="el-icon-more"></i>
-              </el-button>
+              <el-button type="text" style="color: #f56c6c;" @click="returnSubmission(scope.row)">打回</el-button>
             </template>
           </el-table-column>
         </template>
 
         <!-- 未交状态显示的列 -->
         <template v-else>
-          <el-table-column label width="120">
-            <template>
-              <div class="icon-group">
-                <i class="el-icon-chat-dot-square" style="color: #999; font-size: 18px;"></i>
-              </div>
-            </template>
-          </el-table-column>
-
           <el-table-column label="状态" width="120">
             <template slot="header">
               <el-dropdown trigger="click" @command="handleStatusFilter">
@@ -183,9 +174,8 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="score" label="成绩" width="150">
+          <el-table-column prop="score" label="成绩" width="100">
             <template slot-scope="scope">
-              <i class="el-icon-sort" style="margin-right: 5px; color: #999;"></i>
               {{ scope.row.score !== null ? scope.row.score : '0.0' }}
             </template>
           </el-table-column>
@@ -210,26 +200,34 @@ export default {
       activeTab: 'byStudent',
       submissionStatus: 'submitted', // 'submitted' or 'unsubmitted'
       statusFilter: 'all', // 状态筛选
+      selectedTerm: '',
       selectedClass: '',
       searchKeyword: '',
+      terms: [
+        { id: 1, name: '2025秋季学期' },
+        { id: 2, name: '2025春季学期' },
+        { id: 3, name: '2024秋季学期' }
+      ],
       exam: {
         id: 1,
-        name: '新建试卷2025062002075'
+        name: '期末考试'
       },
       classes: [
-        { id: 1, name: '高一（1）班' },
-        { id: 2, name: '高一（2）班' }
+        { id: 1, name: '高一（1）班', termId: 1 },
+        { id: 2, name: '高一（2）班', termId: 1 },
+        { id: 3, name: '高二（1）班', termId: 2 },
+        { id: 4, name: '高二（2）班', termId: 2 }
       ],
       students: [
         {
           id: 1,
           name: '韦佳威',
           studentId: '202212903228',
-          submittedAt: '11-29 16:59',
+          submittedAt: '2025-11-29 16:59',
           examDuration: '45分钟',
           correctRate: '80%',
           status: 'pending',
-          reviewer: '',
+          reviewer: '李老师',
           score: 0,
           isSubmitted: true
         },
@@ -249,11 +247,11 @@ export default {
           id: 3,
           name: '李四',
           studentId: '202212903230',
-          submittedAt: '11-30 10:30',
+          submittedAt: '2025-11-30 10:30',
           examDuration: '50分钟',
           correctRate: '90%',
           status: 'completed',
-          reviewer: '韦佳威',
+          reviewer: '王老师',
           score: 90,
           isSubmitted: true
         }
@@ -268,6 +266,12 @@ export default {
     }
   },
   computed: {
+    filteredClasses() {
+      if (!this.selectedTerm) {
+        return this.classes
+      }
+      return this.classes.filter(cls => cls.termId === this.selectedTerm)
+    },
     filteredStudents() {
       let filtered = this.students.filter(s => {
         if (this.submissionStatus === 'submitted') {
@@ -343,6 +347,30 @@ export default {
         inputErrorMessage: '请输入有效的分钟数'
       }).then(({ value }) => {
         this.$message.success(`已为 ${student.name} 延长 ${value} 分钟`)
+      }).catch(() => {})
+    },
+    formatSubmitTime(time) {
+      if (!time) return '-'
+      // 如果已经是完整格式，直接返回
+      if (time.includes('-') && time.length > 10) {
+        return time
+      }
+      // 否则返回原值
+      return time
+    },
+    returnSubmission(student) {
+      this.$confirm(`确定将 ${student.name} 的考试打回重做？`, '打回考试', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        student.isSubmitted = false
+        student.status = 'pending'
+        student.submittedAt = null
+        student.score = null
+        student.examDuration = null
+        student.correctRate = null
+        this.$message.success('已打回考试，学生需要重新提交')
       }).catch(() => {})
     }
   },

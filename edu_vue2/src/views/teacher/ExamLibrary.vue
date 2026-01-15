@@ -36,7 +36,7 @@
         
         <el-table-column label="文件夹/试卷名称" min-width="250">
           <template slot-scope="scope">
-            <div class="exam-name clickable">
+            <div class="exam-name clickable" style="cursor: pointer;">
               <i :class="scope.row.isFolder ? 'el-icon-folder' : 'el-icon-document'" style="margin-right: 8px;"></i>
               <span>{{ scope.row.name }}</span>
             </div>
@@ -258,18 +258,25 @@ export default {
     
     handleRowClick(row) {
       if (row.isFolder) {
-        // 点击文件夹，进入文件夹
-        this.$message.info(`进入文件夹: ${row.name}`)
-        // TODO: 实现文件夹导航逻辑
-      } else {
-        // 点击试卷，查看试卷详情（显示题目）
-        this.$router.push(`/teacher/exam/${row.id}/detail`)
+        this.$message.info('这是一个文件夹')
+        return
       }
+      
+      // 所有试卷都跳转到详情页，显示完整题目
+      // 通过发布次数判断是否发布过
+      const published = row.publishCount > 0
+      this.$router.push({
+        path: `/teacher/exam/${row.id}/detail`,
+        query: { published: published }
+      })
     },
     
     publishExam(exam) {
       // 跳转到发布设置页面
-      this.$router.push(`/teacher/exam/${exam.id}/publish`)
+      this.$router.push({
+        name: 'ExamPublish',
+        params: { id: exam.id }
+      })
     },
     
     archiveExam(exam) {
@@ -302,21 +309,23 @@ export default {
       }
     },
     
-    editExam(exam) {
-      if (exam.isFolder) {
+    editExam(row) {
+      if (row.isFolder) {
         this.$message.info('文件夹无法编辑')
         return
       }
-      // 跳转到创建/编辑页面，传递试卷数据
+      
+      // 跳转到创建页面进行编辑
+      const published = row.publishCount > 0
       this.$router.push({
-        path: '/teacher/exam-create',
+        path: '/teacher/exam/create',
         query: { 
-          id: exam.id,
-          mode: 'edit'
+          id: row.id,
+          mode: 'edit',
+          published: published
         }
       })
-      // 将试卷数据存储到 sessionStorage，供创建页面使用
-      sessionStorage.setItem('editExamData', JSON.stringify(exam))
+      sessionStorage.setItem('editExamData', JSON.stringify(row))
     },
     
     copyExam(exam) {

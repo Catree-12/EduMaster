@@ -51,6 +51,16 @@
               </el-select>
             </el-form-item>
 
+            <el-form-item label="起始时间" prop="startTime">
+              <el-date-picker
+                v-model="publishForm.startTime"
+                type="datetime"
+                placeholder="选择起始时间"
+                style="width: 100%"
+                :picker-options="startTimeOptions"
+              />
+            </el-form-item>
+
             <el-form-item label="截止时间" prop="deadline">
               <el-date-picker
                 v-model="publishForm.deadline"
@@ -159,6 +169,7 @@ export default {
       },
       publishForm: {
         targets: [],
+        startTime: '',
         deadline: '',
         passingScore: 60,
         allowRedo: false,
@@ -182,6 +193,9 @@ export default {
         targets: [
           { required: true, message: '请选择发放对象', trigger: 'change' }
         ],
+        startTime: [
+          { required: true, message: '请选择起始时间', trigger: 'change' }
+        ],
         deadline: [
           { required: true, message: '请选择截止时间', trigger: 'change' }
         ],
@@ -189,8 +203,16 @@ export default {
           { required: true, message: '请设置及格标准', trigger: 'blur' }
         ]
       },
-      deadlineOptions: {
+      startTimeOptions: {
         disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7
+        }
+      },
+      deadlineOptions: {
+        disabledDate: (time) => {
+          if (this.publishForm.startTime) {
+            return time.getTime() < new Date(this.publishForm.startTime).getTime()
+          }
           return time.getTime() < Date.now() - 8.64e7
         }
       }
@@ -234,6 +256,14 @@ export default {
     confirmPublish() {
       this.$refs.publishForm.validate((valid) => {
         if (valid) {
+          // 验证截止时间必须晚于起始时间
+          if (this.publishForm.startTime && this.publishForm.deadline) {
+            if (new Date(this.publishForm.deadline) <= new Date(this.publishForm.startTime)) {
+              this.$message.error('截止时间必须晚于起始时间')
+              return false
+            }
+          }
+          
           this.$confirm('确认发布该作业吗？发布后学生将可以看到并提交作业。', '确认发布', {
             confirmButtonText: '确认发布',
             cancelButtonText: '取消',
