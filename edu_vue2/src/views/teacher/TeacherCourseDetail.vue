@@ -24,11 +24,6 @@
 
     <!-- 右侧内容区 -->
     <div class="main-wrapper">
-      <div class="page-header">
-        <h1>{{ courseInfo.name }}</h1>
-        <p>{{ courseInfo.description }}</p>
-      </div>
-
       <main class="content-area">
         <!-- 章节模块 -->
         <section v-if="activeModule === 'sections'" class="module-section">
@@ -344,76 +339,94 @@
         </section>
 
         <!-- 讨论区模块 -->
-        <section v-if="activeModule === 'discussion'" class="module-section">
-          <div class="module-header">
-            <h2>课程社区</h2>
-            <div class="action-buttons">
-              <button @click="showReplyModal = true" class="action-btn primary-btn">
-                ➕ 发表话题
-              </button>
-            </div>
-          </div>
-
-          <!-- 筛选区 -->
-          <div class="filter-section">
+        <section v-if="activeModule === 'discussion'" class="module-section community-module">
+          <!-- 1. 顶部操作区 -->
+          <div class="community-top-bar">
             <input 
               v-model="communitySearch"
               type="text"
-              placeholder="搜索讨论话题..."
-              class="search-input"
+              placeholder="搜索话题标题或内容..."
+              class="community-search-input"
             >
-            <div class="filter-tabs">
-                <button
-                  v-for="type in ['全部', '未回答', '已回答', '精华']"
-                  :key="type"
-                  :class="['filter-btn', { active: communityFilter === type }]"
-                  @click="communityFilter = type"
-                >
-                  {{ type }}
-                </button>
-              </div>
+            <button @click="createNewThread" class="community-publish-btn">
+              ➕ 发布话题
+            </button>
           </div>
 
-          <!-- 讨论列表 -->
-          <div v-if="filteredCommunityThreads.length > 0" class="list-section">
-            <div v-for="thread in filteredCommunityThreads" :key="thread.id" class="item-card community-card">
-              <div class="thread-header">
-                <div class="thread-user">
-                  <img :src="thread.avatar" :alt="thread.author" class="user-avatar">
-                  <div class="user-info">
-                    <p class="user-name">{{ thread.author }}</p>
-                    <span class="thread-time">{{ thread.createTime }}</span>
-                  </div>
-                </div>
+          <!-- 2. 筛选与排序条 -->
+          <div class="community-filter-bar">
+            <div class="sort-tabs">
+              <button
+                v-for="sort in ['最新', '热门']"
+                :key="sort"
+                :class="['sort-tab', { active: communitySortBy === sort }]"
+                @click="communitySortBy = sort"
+              >
+                {{ sort }}
+              </button>
+            </div>
+            <div class="personal-filter">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  v-model="showMyThreadsOnly"
+                  class="filter-checkbox"
+                >
+                <span>我发布的话题</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. 话题列表容器 -->
+          <div v-if="filteredCommunityThreads.length > 0" class="community-thread-list">
+            <div v-for="thread in filteredCommunityThreads" :key="thread.id" class="thread-card">
+              <!-- 标题层 -->
+              <div class="thread-title-row">
+                <h3 class="thread-title" @click="viewThreadDetail(thread.id)">{{ thread.title }}</h3>
                 <div class="thread-badges">
-                  <span v-if="thread.solved" class="badge solved">✓ 已解答</span>
-                  <span v-if="thread.essence" class="badge essence">⭐ 精华</span>
+                  <span v-if="thread.authorRole === 'teacher'" class="badge-role teacher">老师</span>
+                  <span v-if="thread.essence" class="badge-tag essence">精选</span>
                 </div>
               </div>
 
-              <h3 class="thread-title">{{ thread.title }}</h3>
-              <p class="thread-content">{{ thread.content }}</p>
+              <!-- 摘要层 -->
+              <div class="thread-preview">
+                <p class="thread-excerpt">{{ getThreadExcerpt(thread.content) }}</p>
+              </div>
 
-              <div class="thread-footer">
-                <span class="reply-count">💬 {{ thread.replyCount }} 条回复</span>
-                <span class="view-count">👁 {{ thread.viewCount }} 次浏览</span>
-                <div class="thread-actions">
-                  <button @click="markThreadEssence(thread.id)" class="action-link" :class="{ marked: thread.essence }">
-                    {{ thread.essence ? '✓ 已标记精华' : '⭐ 标记精华' }}
+              <!-- 元数据层 -->
+              <div class="thread-meta-row">
+                <div class="thread-info">
+                  <span class="author-name">{{ thread.author }}</span>
+                  <span class="separator">·</span>
+                  <span class="publish-time">{{ thread.createTime }}</span>
+                </div>
+                <div class="thread-stats">
+                  <span class="stat-item">
+                    <i class="icon-view">👁</i>
+                    {{ thread.viewCount }}
+                  </span>
+                  <span class="stat-item clickable" @click.stop="viewThreadDetail(thread.id)">
+                    <i class="icon-reply">💬</i>
+                    {{ thread.replyCount }}
+                  </span>
+                  <button :class="['like-btn-list', { liked: thread.isLiked }]" @click.stop="toggleThreadLikeInList(thread)">
+                    {{ thread.isLiked ? '❤️' : '🤍' }}
+                    {{ thread.likeCount }}
                   </button>
-                  <button @click="viewThreadDetail(thread.id)" class="action-link primary-action">
-                    查看讨论
-                  </button>
-                  <button @click="deleteThread(thread.id)" class="action-link danger-action">
-                    删除
-                  </button>
+                  <!-- 管理操作 -->
+                  <div v-if="canManageThread(thread)" class="thread-manage">
+                    <a class="manage-link edit" @click.stop="editThread(thread.id)">编辑</a>
+                    <a class="manage-link delete" @click.stop="deleteThread(thread.id)">删除</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div v-else class="no-data">
-            <p>暂无讨论话题</p>
+            <p>暂无话题</p>
+            <p class="hint">点击"发布话题"按钮创建第一个讨论</p>
           </div>
         </section>
 
@@ -1216,6 +1229,10 @@ export default {
       // 讨论区数据
       communitySearch: '',
       communityFilter: '全部',
+      communitySortBy: '最新', // 最新、热门
+      showMyThreadsOnly: false, // 仅显示我发布的
+      currentUserId: 1, // 模拟当前登录用户ID
+      currentUserRole: 'teacher', // 当前用户角色：teacher或student
       showReplyModal: false,
       newThread: {
         title: '',
@@ -1224,37 +1241,49 @@ export default {
       communityThreads: [
         {
           id: 1,
+          authorId: 1,
           author: '张三',
+          authorRole: 'teacher',
           avatar: 'https://via.placeholder.com/40?text=Teacher1',
           title: '关于原型链的理解',
-          content: '请问原型链和原型对象有什么区别？能否用代码示例说明？',
+          content: '请问原型链和原型对象有什么区别？能否用代码示例说明？这是一个关于JavaScript基础的问题,希望老师能详细解答一下,最好能配合代码示例。',
           createTime: '2024-01-20 14:30',
           replyCount: 5,
           viewCount: 120,
+          likeCount: 25,
+          isLiked: false,
           solved: true,
           essence: true
         },
         {
           id: 2,
+          authorId: 2,
           author: '李四',
-          avatar: 'https://via.placeholder.com/40?text=Teacher2',
+          authorRole: 'student',
+          avatar: 'https://via.placeholder.com/40?text=Student1',
           title: '异步编程最佳实践',
-          content: '什么时候应该用 Promise，什么时候用 async/await？',
+          content: '什么时候应该用 Promise,什么时候用 async/await？在实际开发中经常遇到这两种写法,想了解它们的使用场景和优劣对比。',
           createTime: '2024-01-19 10:15',
           replyCount: 8,
           viewCount: 200,
+          likeCount: 42,
+          isLiked: false,
           solved: true,
           essence: false
         },
         {
           id: 3,
+          authorId: 3,
           author: '王五',
-          avatar: 'https://via.placeholder.com/40?text=Teacher3',
+          authorRole: 'student',
+          avatar: 'https://via.placeholder.com/40?text=Student2',
           title: '闭包的常见应用场景',
-          content: '闭包在实际项目中有哪些应用？',
+          content: '闭包在实际项目中有哪些应用？能否结合实际案例讲解一下？',
           createTime: '2024-01-18 15:45',
           replyCount: 3,
           viewCount: 85,
+          likeCount: 12,
+          isLiked: false,
           solved: false,
           essence: false
         }
@@ -1511,19 +1540,32 @@ export default {
       })
     },
     filteredCommunityThreads() {
-      return this.communityThreads.filter(thread => {
-        const searchMatch = thread.title.includes(this.communitySearch) || 
+      let threads = this.communityThreads.filter(thread => {
+        // 搜索匹配
+        const searchMatch = !this.communitySearch || 
+                           thread.title.includes(this.communitySearch) || 
                            thread.content.includes(this.communitySearch)
-        let filterMatch = true
-        if (this.communityFilter === '未回答') {
-          filterMatch = thread.replyCount === 0
-        } else if (this.communityFilter === '已解决') {
-          filterMatch = thread.solved
-        } else if (this.communityFilter === '精华') {
-          filterMatch = thread.essence
-        }
-        return searchMatch && filterMatch
+        
+        // 个人筛选
+        const personalMatch = !this.showMyThreadsOnly || 
+                             thread.authorId === this.currentUserId
+        
+        return searchMatch && personalMatch
       })
+
+      // 排序
+      if (this.communitySortBy === '最新') {
+        threads = threads.sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+      } else if (this.communitySortBy === '热门') {
+        threads = threads.sort((a, b) => {
+          // 热度 = 点赞数 * 10
+          const hotA = a.likeCount * 10
+          const hotB = b.likeCount * 10
+          return hotB - hotA
+        })
+      }
+
+      return threads
     },
     filteredClasses() {
       if (!this.selectedTermForClass) return []
@@ -1818,13 +1860,61 @@ export default {
       }
     },
     viewThreadDetail(threadId) {
-      this.$message.info(`查看讨论话题详情: ${threadId}`)
+      // 跳转到话题详情页
+      this.$router.push({
+        name: 'CommunityThreadDetail',
+        params: { 
+          courseId: this.courseInfo.id,
+          id: threadId 
+        }
+      })
+    },
+    createNewThread() {
+      // 跳转到创建话题页面
+      this.$router.push({
+        name: 'CommunityThreadCreate',
+        params: {
+          courseId: this.courseInfo.id
+        }
+      })
+    },
+    editThread(threadId) {
+      // 跳转到编辑页面
+      this.$router.push({
+        name: 'CommunityThreadEdit',
+        params: {
+          courseId: this.courseInfo.id,
+          id: threadId
+        }
+      })
     },
     deleteThread(threadId) {
       if (confirm('确定删除该讨论话题吗？')) {
         this.communityThreads = this.communityThreads.filter(t => t.id !== threadId)
         this.$message.success('讨论话题已删除')
       }
+    },
+    toggleThreadLikeInList(thread) {
+      thread.isLiked = !thread.isLiked
+      if (thread.isLiked) {
+        thread.likeCount++
+        // TODO: 调用点赞API
+        // this.$api.likeThread(thread.id)
+      } else {
+        thread.likeCount--
+        // TODO: 调用取消点赞API
+        // this.$api.unlikeThread(thread.id)
+      }
+    },
+    canManageThread(thread) {
+      // 作者本人或老师可以管理话题
+      return thread.authorId === this.currentUserId || this.currentUserRole === 'teacher'
+    },
+    getThreadExcerpt(content) {
+      // 提取前两行作为摘要
+      const lines = content.split('。').filter(line => line.trim())
+      const excerpt = lines.slice(0, 2).join('。')
+      return excerpt.length > 100 ? excerpt.substring(0, 100) + '...' : excerpt + (lines.length > 0 ? '。' : '')
     },
     submitThread() {
       if (!this.newThread.title || !this.newThread.content) {
@@ -1833,7 +1923,9 @@ export default {
       }
       this.communityThreads.unshift({
         id: Math.max(...this.communityThreads.map(t => t.id)) + 1,
+        authorId: this.currentUserId,
         author: '讲师',
+        authorRole: this.currentUserRole,
         avatar: 'https://via.placeholder.com/40?text=Teacher',
         title: this.newThread.title,
         content: this.newThread.content,
@@ -2175,32 +2267,10 @@ export default {
   padding: 0;
 }
 
-.page-header {
-  margin-bottom: 0;
-  background: white;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.page-header h1 {
-  margin: 0 0 0.5rem 0;
-  color: #111827;
-  font-size: 1.75rem;
-  font-weight: 700;
-}
-
-.page-header p {
-  margin: 0;
-  color: #6b7280;
-  font-size: 1rem;
-}
-
 /* 右侧内容区 */
 .content-area {
   background: white;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 70px);
 }
 
 .module-section {
@@ -2865,7 +2935,329 @@ export default {
   color: #7f8c8d;
 }
 
-/* 讨论区样式 */
+/* ========== 课程社区模块样式 ========== */
+.community-module {
+  padding: 0 !important;
+}
+
+/* 1. 顶部操作区 */
+.community-top-bar {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  align-items: center;
+}
+
+.community-search-input {
+  flex: 1;
+  height: 42px;
+  padding: 0 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.community-search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.community-publish-btn {
+  height: 42px;
+  padding: 0 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.community-publish-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+/* 2. 筛选与排序条 */
+.community-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sort-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sort-tab {
+  padding: 0.5rem 1.25rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sort-tab:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.sort-tab.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.personal-filter {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-label span {
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* 3. 话题列表容器 */
+.community-thread-list {
+  padding: 1.5rem 2rem;
+  background: #f9fafb;
+}
+
+.thread-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.thread-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+/* 标题层 */
+.thread-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.thread-title {
+  flex: 1;
+  margin: 0;
+  color: #111827;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.thread-title:hover {
+  color: #667eea;
+}
+
+.thread-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.badge-role {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-role.teacher {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-tag.essence {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+/* 摘要层 */
+.thread-preview {
+  margin-bottom: 1rem;
+}
+
+.thread-excerpt {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 元数据层 */
+.thread-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+}
+
+.thread-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+}
+
+.author-name {
+  color: #374151;
+  font-weight: 500;
+}
+
+.separator {
+  color: #d1d5db;
+}
+
+.publish-time {
+  color: #9ca3af;
+}
+
+.thread-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  color: #9ca3af;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-item.clickable {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.stat-item.clickable:hover {
+  color: #667eea;
+}
+
+.icon-view,
+.icon-reply {
+  font-style: normal;
+}
+
+/* 列表页点赞按钮 */
+.like-btn-list {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.like-btn-list:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  background: #fff5f5;
+}
+
+.like-btn-list.liked {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  background: #fff5f5;
+}
+
+/* 管理操作 */
+.thread-manage {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid #e5e7eb;
+}
+
+.manage-link {
+  color: #667eea;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.manage-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.manage-link.delete {
+  color: #ef4444;
+}
+
+.manage-link.delete:hover {
+  color: #dc2626;
+}
+
+/* 旧样式保留(兼容) */
 .community-card {
   border-left: 4px solid #667eea;
 }
@@ -2908,11 +3300,6 @@ export default {
   font-size: 0.8rem;
 }
 
-.thread-badges {
-  display: flex;
-  gap: 0.5rem;
-}
-
 .badge {
   padding: 0.25rem 0.6rem;
   border-radius: 3px;
@@ -2929,13 +3316,6 @@ export default {
 .badge.essence {
   background: #fef5e7;
   color: #f39c12;
-}
-
-.thread-title {
-  margin: 0 0 0.5rem 0;
-  color: #2c3e50;
-  font-size: 1rem;
-  font-weight: 600;
 }
 
 .thread-content {
@@ -2965,6 +3345,7 @@ export default {
   display: flex;
   gap: 0.75rem;
 }
+
 
 /* 成绩管理样式 */
 .stats-cards {

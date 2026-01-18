@@ -38,11 +38,6 @@
     <div class="main-container">
       <router-view />
     </div>
-
-    <!-- 底部 -->
-    <footer class="footer">
-      <p>&copy; 2024 EduMaster. All rights reserved.</p>
-    </footer>
   </div>
 </template>
 
@@ -191,13 +186,5 @@ export default {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.footer {
-  background-color: #2c3e50;
-  color: white;
-  text-align: center;
-  padding: 2rem;
-  margin-top: 2rem;
 }
 </style>

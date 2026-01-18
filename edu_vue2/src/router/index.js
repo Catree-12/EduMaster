@@ -54,6 +54,9 @@ import ExamGrading from '@/views/teacher/ExamGrading.vue'
 import ExamGradingDetail from '@/views/teacher/ExamGradingDetail.vue'
 import ChapterEditor from '@/views/teacher/ChapterEditor.vue'
 import CoursePreview from '@/views/teacher/CoursePreview.vue'
+import CommunityThreadDetail from '@/views/teacher/CommunityThreadDetail.vue'
+import CommunityThreadEdit from '@/views/teacher/CommunityThreadEdit.vue'
+import CommunityThreadCreate from '@/views/teacher/CommunityThreadCreate.vue'
 
 // 新课程页面（来自course目录）
 import CourseCreate from '@/views/course/CourseCreate.vue'
@@ -261,6 +264,24 @@ const routes = [
         path: 'teacher/course/:id',
         name: 'TeacherCourseDetail',
         component: TeacherCourseDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/course/:courseId/thread/:id',
+        name: 'CommunityThreadDetail',
+        component: CommunityThreadDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/course/:courseId/thread/:id/edit',
+        name: 'CommunityThreadEdit',
+        component: CommunityThreadEdit,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/course/:courseId/thread/create',
+        name: 'CommunityThreadCreate',
+        component: CommunityThreadCreate,
         meta: { requiresAuth: true }
       },
       {
