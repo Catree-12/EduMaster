@@ -99,7 +99,7 @@ export default {
       this.$router.push({
         name: 'TeacherCourseDetail',
         params: { id: this.courseId },
-        query: { tab: 'community' }
+        query: { tab: 'discussion' }
       })
     }
   }

@@ -1615,12 +1615,35 @@ export default {
       return Math.round((passCount / this.gradeRecords.length) * 100)
     }
   },
+  created() {
+    // 根据路由参数初始化activeModule
+    const tab = this.$route.query.tab
+    if (tab) {
+      // 验证tab是否有效
+      const validTabs = this.navItems.map(item => item.id)
+      if (validTabs.includes(tab)) {
+        this.activeModule = tab
+      }
+    }
+  },
   methods: {
     // 选择模块
     selectModule(moduleId) {
       console.log('点击了模块:', moduleId)
       this.activeModule = moduleId
       console.log('当前模块:', this.activeModule)
+      
+      // 更新URL参数
+      this.$router.replace({
+        name: 'TeacherCourseDetail',
+        params: { id: this.$route.params.id },
+        query: { tab: moduleId }
+      }).catch(err => {
+        // 忽略重复导航错误
+        if (err.name !== 'NavigationDuplicated') {
+          console.error(err)
+        }
+      })
     },
     // 章节方法
     toggleSection(sectionId) {

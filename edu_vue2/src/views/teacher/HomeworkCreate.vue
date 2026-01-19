@@ -3,6 +3,9 @@
     <!-- 顶部基础信息区 -->
     <div class="top-info-area">
       <div class="homework-title-row">
+        <button class="back-btn" @click="goBack" title="返回">
+          <span class="back-icon">←</span>
+        </button>
         <el-input 
           v-model="homework.name" 
           class="homework-name-input"
@@ -521,6 +524,20 @@ export default {
     }
   },
   methods: {
+    // 返回上一页
+    goBack() {
+      if (this.homework.questions.length > 0 || this.homework.name.trim()) {
+        this.$confirm('有未保存的内容，确定要离开吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.back()
+        }).catch(() => {})
+      } else {
+        this.$router.back()
+      }
+    },
     // 直接添加题目（不立即编辑）
     addQuestionDirect(type) {
       const newQuestion = this.createEmptyQuestion(type)
@@ -768,6 +785,31 @@ export default {
   align-items: center;
   gap: 20px;
   margin-bottom: 16px;
+
+  .back-btn {
+    background: white;
+    border: 1px solid #e5e7eb;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    &:hover {
+      border-color: #409eff;
+      background: #ecf5ff;
+    }
+
+    .back-icon {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #606266;
+    }
+  }
 
   .homework-name-input {
     flex: 1;
