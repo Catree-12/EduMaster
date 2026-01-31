@@ -9,7 +9,7 @@
     <!-- 操作栏 -->
     <div class="operation-bar">
       <div class="left-actions">
-        <el-button type="primary" icon="el-icon-plus" @click="createExam">+ 新建考试</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="createExam">新建考试</el-button>
         <el-button class="folder-btn" icon="el-icon-folder-add" @click="showCreateFolderDialog = true">新建文件夹</el-button>
       </div>
       <div class="right-actions">
@@ -146,6 +146,7 @@
         <el-button type="primary" @click="confirmMove">确 定</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -161,6 +162,36 @@ export default {
       newFolderName: '',
       moveToFolder: '',
       currentOperatingItem: null,
+      
+      // 标签管理
+      showTagDialog: false,
+      newTagName: '',
+      newTagColor: '#409EFF',
+      tagList: [
+        { id: 1, name: '期中考试', color: '#409EFF', count: 5 },
+        { id: 2, name: '期末考试', color: '#67C23A', count: 3 },
+        { id: 3, name: '单元测试', color: '#E6A23C', count: 8 },
+        { id: 4, name: '模拟考试', color: '#F56C6C', count: 2 }
+      ],
+      
+      // 知识点管理
+      showKnowledgeDialog: false,
+      newKnowledgeName: '',
+      newKnowledgeCategory: 'basic',
+      activeKnowledgeCategories: ['basic'],
+      knowledgeCategories: [
+        { label: '基础知识', value: 'basic' },
+        { label: '核心概念', value: 'core' },
+        { label: '高级应用', value: 'advanced' },
+        { label: '实战技巧', value: 'practical' }
+      ],
+      knowledgeList: [
+        { id: 1, name: '数据结构', category: 'basic', count: 12 },
+        { id: 2, name: '算法分析', category: 'basic', count: 8 },
+        { id: 3, name: '面向对象', category: 'core', count: 15 },
+        { id: 4, name: '设计模式', category: 'advanced', count: 6 },
+        { id: 5, name: '性能优化', category: 'practical', count: 4 }
+      ],
       
       // 模拟数据 - 试卷库只显示未发布的试卷
       examList: [
@@ -246,6 +277,99 @@ export default {
     
     createExam() {
       this.$router.push('/teacher/exam-create')
+    },
+    
+    // 显示标签管理对话框
+    showTagManagement() {
+      this.showTagDialog = true
+    },
+    
+    // 显示知识点管理对话框
+    showKnowledgeManagement() {
+      this.showKnowledgeDialog = true
+    },
+    
+    // 添加标签
+    addTag() {
+      if (!this.newTagName.trim()) {
+        this.$message.warning('请输入标签名称')
+        return
+      }
+      const newTag = {
+        id: Date.now(),
+        name: this.newTagName.trim(),
+        color: this.newTagColor,
+        count: 0
+      }
+      this.tagList.push(newTag)
+      this.$message.success(`标签"${newTag.name}"创建成功`)
+      this.newTagName = ''
+      this.newTagColor = '#409EFF'
+    },
+    
+    // 删除标签
+    deleteTag(tagId) {
+      this.$confirm('删除后该标签将从所有题目中移除，确定删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const index = this.tagList.findIndex(t => t.id === tagId)
+        if (index !== -1) {
+          this.tagList.splice(index, 1)
+          this.$message.success('删除成功')
+        }
+      }).catch(() => {})
+    },
+    
+    // 添加知识点
+    addKnowledge() {
+      if (!this.newKnowledgeName.trim()) {
+        this.$message.warning('请输入知识点名称')
+        return
+      }
+      if (!this.newKnowledgeCategory) {
+        this.$message.warning('请选择知识点分类')
+        return
+      }
+      const newKnowledge = {
+        id: Date.now(),
+        name: this.newKnowledgeName.trim(),
+        category: this.newKnowledgeCategory,
+        count: 0
+      }
+      this.knowledgeList.push(newKnowledge)
+      this.$message.success(`知识点"${newKnowledge.name}"创建成功`)
+      this.newKnowledgeName = ''
+      // 自动展开对应分类
+      if (!this.activeKnowledgeCategories.includes(this.newKnowledgeCategory)) {
+        this.activeKnowledgeCategories.push(this.newKnowledgeCategory)
+      }
+    },
+    
+    // 删除知识点
+    deleteKnowledge(kpId) {
+      this.$confirm('删除后该知识点将从所有题目中移除，确定删除吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const index = this.knowledgeList.findIndex(k => k.id === kpId)
+        if (index !== -1) {
+          this.knowledgeList.splice(index, 1)
+          this.$message.success('删除成功')
+        }
+      }).catch(() => {})
+    },
+    
+    // 按分类获取知识点
+    getKnowledgeByCategory(category) {
+      return this.knowledgeList.filter(k => k.category === category)
+    },
+    
+    // 获取分类下知识点数量
+    getKnowledgeCountByCategory(category) {
+      return this.knowledgeList.filter(k => k.category === category).length
     },
     
     handleSearch() {
@@ -454,6 +578,32 @@ export default {
           background-color: #ECF5FF;
         }
       }
+
+      .tag-btn {
+        color: #E6A23C;
+        border-color: #E6A23C;
+        background-color: #FDF6EC;
+        border-radius: 6px;
+
+        &:hover {
+          color: #F0B84F;
+          border-color: #F0B84F;
+          background-color: #FDF6EC;
+        }
+      }
+
+      .knowledge-btn {
+        color: #67C23A;
+        border-color: #67C23A;
+        background-color: #F0F9EB;
+        border-radius: 6px;
+
+        &:hover {
+          color: #7DD24D;
+          border-color: #7DD24D;
+          background-color: #F0F9EB;
+        }
+      }
     }
 
     .right-actions {
@@ -577,6 +727,121 @@ export default {
   .el-dialog__footer {
     border-top: 1px solid #EBEEF5;
     padding: 12px 20px;
+  }
+}
+
+/* 标签管理样式 */
+.tag-management {
+  .add-tag-section {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tag-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px 0;
+
+    .tag-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid #eee;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      .tag-count {
+        color: #909399;
+        font-size: 13px;
+      }
+    }
+
+    .empty-hint {
+      text-align: center;
+      padding: 60px 20px;
+      color: #c0c4cc;
+
+      i {
+        font-size: 48px;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+/* 知识点管理样式 */
+.knowledge-management {
+  .add-knowledge-section {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .knowledge-list {
+    max-height: 450px;
+    overflow-y: auto;
+
+    .category-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .category-badge {
+      margin-left: 10px;
+    }
+
+    .knowledge-items {
+      padding: 10px 0;
+    }
+
+    .knowledge-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      .knowledge-name {
+        flex: 1;
+        font-size: 14px;
+        color: #303133;
+      }
+
+      .knowledge-count {
+        color: #909399;
+        font-size: 13px;
+        margin-right: 15px;
+      }
+    }
+
+    .empty-category {
+      text-align: center;
+      padding: 30px;
+      color: #c0c4cc;
+      font-size: 13px;
+    }
   }
 }
 </style>

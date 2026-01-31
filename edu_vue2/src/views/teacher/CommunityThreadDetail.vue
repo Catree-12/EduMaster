@@ -1,69 +1,70 @@
 <template>
   <div class="thread-detail-page">
-    <!-- 1. 顶部返回层 -->
-    <div class="top-bar">
-      <button @click="goBack" class="back-btn">
-        ← 返回
-      </button>
-    </div>
+    <div class="thread-detail-container">
+      <!-- 1. 顶部返回层 -->
+      <div class="top-bar">
+        <button @click="goBack" class="back-btn">
+          ← 返回
+        </button>
+      </div>
 
-    <!-- 2. 楼主发帖区（主贴卡片） -->
-    <div class="main-post-card">
-      <!-- 用户信息行 -->
-      <div class="user-info-row">
-        <div class="user-info">
-          <img :src="thread.avatar" :alt="thread.author" class="user-avatar">
-          <div class="user-details">
-            <div class="user-name-row">
-              <span class="user-name">{{ thread.author }}</span>
-              <span v-if="thread.authorRole === 'teacher'" class="role-badge">老师</span>
+        <!-- 2. 楼主发帖区（主贴卡片） -->
+      <div class="main-post-card">
+        <!-- 用户信息行 -->
+        <div class="user-info-row">
+            <div class="user-info">
+            <img :src="thread.avatar" :alt="thread.author" class="user-avatar">
+            <div class="user-details">
+              <div class="user-name-row">
+                <span class="user-name">{{ thread.author }}</span>
+                <span v-if="thread.authorRole === 'teacher'" class="role-badge">老师</span>
+              </div>
+              <span class="publish-time">{{ thread.createTime }}</span>
             </div>
-            <span class="publish-time">{{ thread.createTime }}</span>
+          </div>
+        </div>
+
+        <!-- 话题正文区 -->
+        <div class="post-content-area">
+          <h1 class="post-title">{{ thread.title }}</h1>
+          <div class="post-content">
+            {{ thread.content }}
+          </div>
+        </div>
+
+        <!-- 互动统计与管理 -->
+        <div class="post-meta-row">
+          <div class="view-stats">
+            <span class="stat-item">
+              <i class="icon">👁</i>
+              {{ thread.viewCount }} 次浏览
+            </span>
+            <button 
+              :class="['like-btn', { liked: thread.isLiked }]"
+              @click="toggleThreadLike"
+            >
+              <i class="icon">{{ thread.isLiked ? '❤️' : '🤍' }}</i>
+              {{ thread.likeCount }}
+            </button>
+          </div>
+          <div v-if="canEditPost || canDeletePost" class="post-actions">
+            <a v-if="canEditPost" class="action-link edit" @click="editPost">编辑</a>
+            <a v-if="canDeletePost" class="action-link delete" @click="deletePost">删除</a>
           </div>
         </div>
       </div>
 
-      <!-- 话题正文区 -->
-      <div class="post-content-area">
-        <h1 class="post-title">{{ thread.title }}</h1>
-        <div class="post-content">
-          {{ thread.content }}
+      <!-- 3. 回复统计与列表区 -->
+      <div class="replies-section">
+        <!-- 回复总数行 -->
+        <div class="replies-header">
+          <span class="replies-count">共 {{ replies.length }} 条回复</span>
         </div>
-      </div>
 
-      <!-- 互动统计与管理 -->
-      <div class="post-meta-row">
-        <div class="view-stats">
-          <span class="stat-item">
-            <i class="icon">👁</i>
-            {{ thread.viewCount }} 次浏览
-          </span>
-          <button 
-            :class="['like-btn', { liked: thread.isLiked }]"
-            @click="toggleThreadLike"
-          >
-            <i class="icon">{{ thread.isLiked ? '❤️' : '🤍' }}</i>
-            {{ thread.likeCount }}
-          </button>
-        </div>
-        <div v-if="canManagePost" class="post-actions">
-          <a class="action-link edit" @click="editPost">编辑</a>
-          <a class="action-link delete" @click="deletePost">删除</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. 回复统计与列表区 -->
-    <div class="replies-section">
-      <!-- 回复总数行 -->
-      <div class="replies-header">
-        <span class="replies-count">共 {{ replies.length }} 条回复</span>
-      </div>
-
-      <!-- 回复卡片列表 -->
-      <div v-if="replies.length > 0" class="replies-list">
+        <!-- 回复卡片列表 -->
+        <div v-if="replies.length > 0" class="replies-list">
         <div 
-          v-for="reply in replies" 
+          v-for="reply in organizedReplies" 
           :key="reply.id" 
           class="reply-card"
         >
@@ -74,18 +75,6 @@
                 <span class="reply-user-name">{{ reply.author }}</span>
                 <span class="reply-time">{{ reply.createTime }}</span>
               </div>
-            </div>
-            <div class="reply-meta">
-              <a class="reply-to-link" @click="replyToUser(reply)">
-                回复
-              </a>
-              <a 
-                v-if="canDeleteReply(reply)" 
-                class="delete-link" 
-                @click="deleteReply(reply.id)"
-              >
-                删除
-              </a>
             </div>
           </div>
           <div class="reply-content">
@@ -102,6 +91,60 @@
               <i class="icon">{{ reply.isLiked ? '❤️' : '🤍' }}</i>
               {{ reply.likeCount || 0 }}
             </button>
+            <a class="reply-to-link" @click="replyToUser(reply)">
+              回复
+            </a>
+            <a 
+              v-if="canDeleteReply(reply)" 
+              class="delete-link" 
+              @click="deleteReply(reply.id)"
+            >
+              删除
+            </a>
+          </div>
+          
+          <!-- 子回复列表 -->
+          <div v-if="reply.children && reply.children.length > 0" class="sub-replies">
+            <div 
+              v-for="subReply in reply.children" 
+              :key="subReply.id" 
+              class="sub-reply-card"
+            >
+              <div class="reply-header">
+                <div class="reply-user-info">
+                  <img :src="subReply.avatar" :alt="subReply.author" class="reply-avatar">
+                  <div class="reply-user-details">
+                    <span class="reply-user-name">{{ subReply.author }}</span>
+                    <span class="reply-time">{{ subReply.createTime }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="reply-content">
+                <span v-if="subReply.replyTo" class="reply-to-tag">
+                  回复 @{{ subReply.replyTo }}:
+                </span>
+                {{ subReply.content }}
+              </div>
+              <div class="reply-actions-row">
+                <button 
+                  :class="['like-btn-small', { liked: subReply.isLiked }]"
+                  @click="toggleReplyLike(subReply)"
+                >
+                  <i class="icon">{{ subReply.isLiked ? '❤️' : '🤍' }}</i>
+                  {{ subReply.likeCount || 0 }}
+                </button>
+                <a class="reply-to-link" @click="replyToUser(subReply)">
+                  回复
+                </a>
+                <a 
+                  v-if="canDeleteReply(subReply)" 
+                  class="delete-link" 
+                  @click="deleteReply(subReply.id)"
+                >
+                  删除
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -128,6 +171,7 @@
           发送回复
         </button>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -164,6 +208,8 @@ export default {
           content: '原型链是JavaScript实现继承的主要方式。简单来说，每个对象都有一个__proto__属性指向其原型对象，而原型对象也可能有自己的原型，这样一层层连接起来就形成了原型链。',
           createTime: '2024-01-20 15:10',
           replyTo: null,
+          replyToId: null,
+          parentId: null,
           likeCount: 8,
           isLiked: false
         },
@@ -175,6 +221,8 @@ export default {
           content: '谢谢李老师的解答！能否再举个具体的代码例子吗？',
           createTime: '2024-01-20 15:30',
           replyTo: '李老师',
+          replyToId: 1,
+          parentId: 1,
           likeCount: 3,
           isLiked: false
         },
@@ -186,6 +234,8 @@ export default {
           content: '感谢李老师的解答，我现在理解了！',
           createTime: '2024-01-20 16:00',
           replyTo: '李老师',
+          replyToId: 1,
+          parentId: 1,
           likeCount: 5,
           isLiked: false
         }
@@ -193,19 +243,52 @@ export default {
     }
   },
   computed: {
+    organizedReplies() {
+      // 将回复组织成层级结构
+      const topLevel = this.replies.filter(r => !r.parentId)
+      
+      return topLevel.map(reply => {
+        // 找到所有属于这个顶层评论的子回复
+        // 包括直接回复和对子回复的回复
+        const directChildren = this.replies.filter(r => r.parentId === reply.id)
+        const childrenIds = directChildren.map(c => c.id)
+        const nestedChildren = this.replies.filter(r => childrenIds.includes(r.parentId))
+        
+        return {
+          ...reply,
+          children: [...directChildren, ...nestedChildren]
+        }
+      })
+    },
     canManagePost() {
-      // 作者本人或老师可以管理主贴
+      // 已弃用，保留兼容性
       return this.thread.authorId === this.currentUserId || this.currentUserRole === 'teacher'
+    },
+    canEditPost() {
+      // 只能编辑自己的帖子
+      return this.thread.authorId === this.currentUserId
+    },
+    canDeletePost() {
+      // 老师可以删除任何人的帖子，作者可以删除自己的
+      return this.currentUserRole === 'teacher' || this.thread.authorId === this.currentUserId
     }
   },
   mounted() {
     this.threadId = this.$route.params.id || this.$route.query.id
+    console.log('=== CommunityThreadDetail mounted ===')
+    console.log('threadId:', this.threadId)
+    console.log('courseId:', this.$route.params.courseId)
+    console.log('thread:', this.thread)
+    console.log('replies:', this.replies)
     // TODO: 根据threadId加载数据
     this.loadThreadDetail()
   },
   methods: {
     goBack() {
-      this.$router.back()
+      this.$router.push({
+        path: `/teacher/course/${this.$route.params.courseId}`,
+        query: { tab: 'discussion' }
+      })
     },
     loadThreadDetail() {
       // TODO: 从API加载话题详情和回复列表
@@ -218,7 +301,8 @@ export default {
     replyToUser(reply) {
       // 设置正在回复的用户
       this.replyingTo = {
-        id: reply.authorId,
+        replyId: reply.id,
+        authorId: reply.authorId,
         author: reply.author
       }
       // 聚焦到输入框
@@ -297,7 +381,11 @@ export default {
         avatar: 'https://via.placeholder.com/40?text=Me',
         content: this.newReplyContent,
         createTime: new Date().toLocaleString('zh-CN'),
-        replyTo: this.replyingTo ? this.replyingTo.author : null
+        replyTo: this.replyingTo ? this.replyingTo.author : null,
+        replyToId: this.replyingTo ? this.replyingTo.authorId : null,
+        parentId: this.replyingTo ? this.replyingTo.replyId : null,
+        likeCount: 0,
+        isLiked: false
       }
 
       this.replies.push(newReply)
@@ -316,8 +404,13 @@ export default {
   min-height: 100vh;
   background: #f9fafb;
   padding-bottom: 2rem;
-  margin-left: 220px;
-  margin-top: 70px;
+  padding-top: 2rem;
+}
+
+.thread-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 /* 1. 顶部返回层 */
@@ -328,7 +421,7 @@ export default {
   background: white;
   border-bottom: 1px solid #e5e7eb;
   position: sticky;
-  top: 70px;
+  top: 64px;
   z-index: 50;
 }
 
@@ -357,7 +450,7 @@ export default {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 1.5rem;
-  margin: 0.5rem 1rem 1rem 1rem;
+  margin: 0.5rem 0 1rem 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -491,7 +584,7 @@ export default {
 
 /* 3. 回复统计与列表区 */
 .replies-section {
-  margin: 0 1rem 90px 1rem;
+  margin: 0 0 120px 0;
 }
 
 .replies-header {
@@ -624,7 +717,7 @@ export default {
 .reply-input-section {
   position: fixed;
   bottom: 0;
-  left: 220px;
+  left: 0;
   right: 0;
   background: white;
   border-top: 2px solid #e5e7eb;
@@ -772,12 +865,25 @@ export default {
   background: #fff5f5;
 }
 
+/* 子回复区域 */
+.sub-replies {
+  margin-top: 1rem;
+  margin-left: 2.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid #e5e7eb;
+}
+
+.sub-reply-card {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.sub-reply-card:last-child {
+  border-bottom: none;
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
-  .thread-detail-page {
-    margin-left: 0;
-  }
-
   .reply-input-section {
     left: 0;
     padding: 1rem;
@@ -785,8 +891,8 @@ export default {
 
   .main-post-card,
   .replies-section {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .main-post-card,

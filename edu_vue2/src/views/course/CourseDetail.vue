@@ -11,23 +11,6 @@
           <h2>课程简介</h2>
           <p>{{ course.description }}</p>
         </div>
-        <div class="intro-section">
-          <h2>学习目标</h2>
-          <ul>
-            <li v-for="(goal, idx) in course.goals" :key="idx">{{ goal }}</li>
-          </ul>
-        </div>
-        <div class="intro-section">
-          <h2>课程大纲</h2>
-          <div v-for="(section, idx) in course.sections" :key="idx" class="section">
-            <h3>{{ section.title }}</h3>
-            <ul>
-              <li v-for="lesson in section.lessons" :key="lesson.id">
-                {{ lesson.name }}
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
 
       <aside class="intro-sidebar">
@@ -51,6 +34,28 @@
           <button v-else class="enrolled-btn" disabled>已加入</button>
         </div>
       </aside>
+    </section>
+
+    <!-- 课程大纲独立板块 -->
+    <section class="course-outline-section">
+      <div class="outline-container">
+        <h2 class="outline-title">📚 课程大纲</h2>
+        <div v-if="course.sections && course.sections.length > 0" class="sections-list">
+          <div v-for="(section, idx) in course.sections" :key="idx" class="section-item">
+            <h3 class="section-title">{{ section.title }}</h3>
+            <ul class="lessons-list">
+              <li v-for="lesson in section.lessons" :key="lesson.id" class="lesson-item">
+                <i class="el-icon-video-play"></i>
+                {{ lesson.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div v-else class="no-outline">
+          <i class="el-icon-document"></i>
+          <p>暂无课程大纲</p>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -164,18 +169,8 @@ export default {
       }
     },
     async joinCourse() {
-      this.enrollLoading = true
-      try {
-        this.isEnrolled = true
-        this.$message.success('已加入课程！')
-        setTimeout(() => {
-          this.$router.push('/user-center/my-courses')
-        }, 500)
-      } catch (error) {
-        this.$message.error('加入失败：' + error.message)
-      } finally {
-        this.enrollLoading = false
-      }
+      // 跳转到选课报名页面，携带课程ID
+      this.$router.push(`/enrollment?courseId=${this.courseId}`)
     }
   }
 }
@@ -251,6 +246,98 @@ export default {
 .intro-section li {
   color: #7f8c8d;
   margin-bottom: 0.5rem;
+}
+
+/* 课程大纲独立板块样式 */
+.course-outline-section {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.outline-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.outline-title {
+  color: #667eea;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #667eea;
+}
+
+.sections-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.section-item {
+  padding: 1.5rem;
+  border: 2px solid #e4e7ed;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.section-item:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+}
+
+.section-title {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.lessons-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-item {
+  color: #7f8c8d;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.lesson-item:last-child {
+  border-bottom: none;
+}
+
+.lesson-item:hover {
+  color: #667eea;
+}
+
+.lesson-item i {
+  font-size: 1rem;
+  color: #667eea;
+}
+
+.no-outline {
+  text-align: center;
+  padding: 3rem 0;
+  color: #bbb;
+}
+
+.no-outline i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.no-outline p {
+  margin: 0;
+  font-size: 1rem;
 }
 
 .section {

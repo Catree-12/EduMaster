@@ -1,13 +1,25 @@
 <template>
   <div class="homework-center">
     <div class="page-header">
-      <h1>作业中心</h1>
-      <p>完成课程作业，巩固学习知识</p>
+      <button class="back-btn" @click="goBack">
+        <i class="el-icon-arrow-left"></i>
+        返回
+      </button>
+      <div class="header-content">
+        <h1>📋 作业中心</h1>
+        <p>完成课程作业，巩固学习知识</p>
+      </div>
+      <div class="header-decoration">
+        <div class="decoration-circle circle-1"></div>
+        <div class="decoration-circle circle-2"></div>
+        <div class="decoration-circle circle-3"></div>
+      </div>
     </div>
 
     <div class="filter-section">
       <div class="search-box">
-        <input v-model="searchQuery" type="text" placeholder="搜索作业...">
+        <i class="el-icon-search"></i>
+        <input v-model="searchQuery" type="text" placeholder="搜索作业名称或课程...">
       </div>
       <div class="filter-tabs">
         <button 
@@ -26,7 +38,10 @@
       <div v-for="homework in filteredHomeworks" :key="homework.id" class="homework-card">
         <div class="homework-header">
           <h3>{{ homework.name }}</h3>
-          <span :class="['status-badge', homework.status]">{{ homework.status }}</span>
+          <span :class="['status-badge', homework.status]">
+            <i :class="getStatusIcon(homework.status)"></i>
+            {{ homework.status }}
+          </span>
         </div>
         
         <p class="homework-course">📚 {{ homework.courseName }}</p>
@@ -120,14 +135,28 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      this.$router.push('/course/my-courses')
+    },
+    getStatusIcon(status) {
+      const iconMap = {
+        '未提交': 'el-icon-warning',
+        '已提交': 'el-icon-time',
+        '已批改': 'el-icon-circle-check'
+      }
+      return iconMap[status] || 'el-icon-info'
+    },
     submitHomework(homeworkId) {
-      this.$router.push(`/homework/${homeworkId}/submit`)
+      // 跳转到作业详情页（使用 courseId=1 作为作业中心的标识）
+      this.$router.push(`/student/course/1/homework/${homeworkId}`)
     },
     viewHomework(homeworkId) {
-      this.$router.push(`/homework/${homeworkId}`)
+      // 跳转到作业详情页
+      this.$router.push(`/student/course/1/homework/${homeworkId}`)
     },
     viewFeedback(homeworkId) {
-      this.$router.push(`/homework/${homeworkId}/feedback`)
+      // 跳转到作业详情页（查看反馈）
+      this.$router.push(`/student/course/1/homework/${homeworkId}`)
     }
   }
 }
@@ -136,43 +165,140 @@ export default {
 <style scoped>
 .homework-center {
   width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  flex-shrink: 0;
+}
+
+.back-btn {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) translateX(-2px);
+}
+
+.back-btn i {
+  font-size: 1rem;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
 }
 
 .page-header h1 {
-  color: #2c3e50;
-  margin: 0 0 0.5rem 0;
-  font-size: 1.75rem;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
 .page-header p {
-  color: #95a5a6;
   margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.header-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 100%;
+  z-index: 1;
+}
+
+.decoration-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.circle-1 {
+  width: 50px;
+  height: 50px;
+  top: -15px;
+  right: 15px;
+}
+
+.circle-2 {
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  right: 60px;
+}
+
+.circle-3 {
+  width: 25px;
+  height: 25px;
+  bottom: 10px;
+  right: 25px;
 }
 
 .filter-section {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
   align-items: center;
+  background: white;
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .search-box {
   flex: 1;
   min-width: 250px;
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-size: 0.95rem;
 }
 
 .search-box input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  padding: 0.625rem 0.875rem 0.625rem 2.5rem;
+  border: 2px solid #e8ecf1;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: all 0.3s;
 }
 
 .search-box input:focus {
@@ -188,14 +314,15 @@ export default {
 }
 
 .filter-btn {
-  padding: 0.5rem 1.5rem;
-  background-color: #ecf0f1;
-  border: 1px solid #bdc3c7;
-  color: #7f8c8d;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border: 2px solid transparent;
+  color: #6c757d;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.85rem;
 }
 
 .filter-btn.active {
@@ -216,16 +343,35 @@ export default {
 
 .homework-card {
   background: white;
-  border: 1px solid #ecf0f1;
-  border-radius: 8px;
+  border: 1px solid #e8ecf1;
+  border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.homework-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .homework-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
   transform: translateY(-4px);
+  border-color: #667eea;
+}
+
+.homework-card:hover::before {
+  opacity: 1;
 }
 
 .homework-header {
@@ -244,27 +390,37 @@ export default {
 }
 
 .status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.status-badge i {
+  font-size: 0.85rem;
 }
 
 .status-badge.未提交 {
-  background-color: #ffe5e5;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
   color: #e74c3c;
+  border: 1px solid #ffcccc;
 }
 
 .status-badge.已提交 {
-  background-color: #fef5e7;
+  background: linear-gradient(135deg, #fffbf0 0%, #fef5e7 100%);
   color: #f39c12;
+  border: 1px solid #fdeaa8;
 }
 
 .status-badge.已批改 {
-  background-color: #d5f4e6;
+  background: linear-gradient(135deg, #f0fdf4 0%, #d5f4e6 100%);
   color: #27ae60;
+  border: 1px solid #a8e6cf;
 }
 
 .homework-course {
@@ -306,40 +462,47 @@ export default {
   width: 100%;
   padding: 0.65rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s;
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .submit-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .submit-btn:hover {
-  opacity: 0.9;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
   transform: translateY(-2px);
 }
 
 .view-btn {
-  background-color: #3498db;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .view-btn:hover {
-  background-color: #2980b9;
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
   transform: translateY(-2px);
 }
 
 .feedback-btn {
-  background-color: #27ae60;
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
 }
 
 .feedback-btn:hover {
-  background-color: #229954;
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
   transform: translateY(-2px);
 }
 

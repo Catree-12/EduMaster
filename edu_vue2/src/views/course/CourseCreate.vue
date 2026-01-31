@@ -1,161 +1,143 @@
 <template>
   <div class="course-create-container">
     <div class="page-header">
-      <el-button icon="el-icon-arrow-left" type="text" @click="goBack">返回</el-button>
-      <h1>创建新课程</h1>
+      <el-button icon="el-icon-arrow-left" circle @click="goBack"></el-button>
+      <div class="header-content">
+        <h1 class="page-title">创建新课程</h1>
+        <p class="page-subtitle">填写课程基本信息，开启教学之旅</p>
+      </div>
     </div>
 
     <div class="create-form-wrapper">
-      <el-card shadow="hover">
-        <el-form
-          ref="courseForm"
-          :model="courseForm"
-          :rules="rules"
-          label-width="120px"
-          size="medium"
-        >
-          <!-- 课程基本信息 -->
-          <div class="form-section">
-            <h3>基本信息</h3>
-            
-            <el-form-item label="课程名称" prop="title">
-              <el-input
-                v-model="courseForm.title"
-                placeholder="请输入课程名称"
-                maxlength="100"
-                show-word-limit
-              />
-            </el-form-item>
-
-            <el-form-item label="课程描述" prop="description">
-              <el-input
-                v-model="courseForm.description"
-                type="textarea"
-                rows="4"
-                placeholder="请输入课程描述"
-                maxlength="500"
-                show-word-limit
-              />
-            </el-form-item>
-
-            <el-form-item label="课程分类" prop="category">
-              <el-select v-model="courseForm.category" placeholder="请选择分类">
-                <el-option label="Web 前端" value="web" />
-                <el-option label="后端开发" value="backend" />
-                <el-option label="移动开发" value="mobile" />
-                <el-option label="数据科学" value="data" />
-                <el-option label="DevOps" value="devops" />
-                <el-option label="其他" value="other" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="课程价格" prop="price">
-              <el-input-number
-                v-model="courseForm.price"
-                :min="0"
-                :max="99999"
-                placeholder="0"
-                controls-position="right"
-              />
-              <span class="price-unit">元</span>
-            </el-form-item>
-
-            <el-form-item label="课程封面" prop="coverImage">
-              <el-upload
-                ref="coverUpload"
-                action="/api/upload/image"
-                :file-list="fileList"
-                :on-success="handleUploadSuccess"
-                :on-error="handleUploadError"
-                limit="1"
-                accept="image/*"
-              >
-                <el-button slot="trigger" type="primary" size="small">
-                  选择图片
-                </el-button>
-                <span slot="tip" class="el-upload__tip">
-                  请上传课程封面图片（建议尺寸: 800x600px）
-                </span>
-              </el-upload>
-              <div v-if="courseForm.coverImage" class="preview">
-                <img :src="courseForm.coverImage" alt="封面预览" />
+      <div class="form-layout">
+        <!-- 左侧表单 -->
+        <div class="form-card">
+          <el-form
+            ref="courseForm"
+            :model="courseForm"
+            :rules="rules"
+            label-width="100px"
+            size="medium"
+          >
+            <!-- 课程基本信息 -->
+            <div class="form-section">
+              <div class="section-header">
+                <i class="el-icon-document section-icon"></i>
+                <h3 class="section-title">基本信息</h3>
               </div>
-            </el-form-item>
+              
+              <el-form-item label="课程名称" prop="title">
+                <el-input
+                  v-model="courseForm.title"
+                  placeholder="请输入课程名称"
+                  maxlength="100"
+                  show-word-limit
+                />
+              </el-form-item>
+
+              <el-form-item label="课程分类" prop="categories">
+                <el-select 
+                  v-model="courseForm.categories" 
+                  multiple 
+                  placeholder="请选择分类（可多选）" 
+                  style="width: 100%;"
+                  collapse-tags
+                >
+                  <el-option label="计算机" value="计算机" />
+                  <el-option label="经济学" value="经济学" />
+                  <el-option label="农林园艺" value="农林园艺" />
+                  <el-option label="医药卫生" value="医药卫生" />
+                  <el-option label="理学" value="理学" />
+                  <el-option label="历史" value="历史" />
+                  <el-option label="哲学" value="哲学" />
+                  <el-option label="法学" value="法学" />
+                  <el-option label="文学文化" value="文学文化" />
+                  <el-option label="艺术设计" value="艺术设计" />
+                  <el-option label="外语" value="外语" />
+                  <el-option label="教育教学" value="教育教学" />
+                  <el-option label="管理学" value="管理学" />
+                  <el-option label="工学" value="工学" />
+                  <el-option label="其他" value="其他" />
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="课程描述">
+                <el-input
+                  v-model="courseForm.description"
+                  type="textarea"
+                  rows="6"
+                  placeholder="请输入课程描述（选填）"
+                  maxlength="500"
+                  show-word-limit
+                />
+              </el-form-item>
+
+              <el-form-item label="课程封面">
+                <el-upload
+                  ref="coverUpload"
+                  action="/api/upload/image"
+                  :file-list="fileList"
+                  :on-success="handleUploadSuccess"
+                  :on-error="handleUploadError"
+                  :show-file-list="false"
+                  limit="1"
+                  accept="image/*"
+                >
+                  <el-button size="small" icon="el-icon-upload">
+                    {{ courseForm.coverImage ? '更换封面' : '上传封面' }}
+                  </el-button>
+                  <div slot="tip" class="el-upload__tip">
+                    建议尺寸: 800x600px，支持jpg/png格式
+                  </div>
+                </el-upload>
+              </el-form-item>
+            </div>
+
+            <!-- 提交按钮 -->
+            <div class="form-actions">
+              <el-button size="large" @click="goBack">
+                取消
+              </el-button>
+              <el-button type="primary" size="large" :loading="submitting" @click="createCourse">
+                {{ submitting ? '创建中...' : '创建课程' }}
+              </el-button>
+            </div>
+          </el-form>
+        </div>
+
+        <!-- 右侧预览 -->
+        <div class="preview-card">
+          <div class="preview-header">
+            <i class="el-icon-view"></i>
+            <span>课程预览</span>
           </div>
-
-          <!-- 课程概览 -->
-          <div class="form-section">
-            <h3>课程概览</h3>
-
-            <el-form-item label="学习人数" prop="capacity">
-              <el-input-number
-                v-model="courseForm.capacity"
-                :min="1"
-                :max="10000"
-                placeholder="0"
-                controls-position="right"
-              />
-              <span class="tip">预计学习人数</span>
-            </el-form-item>
-
-            <el-form-item label="学习周期" prop="duration">
-              <el-select v-model="courseForm.duration" placeholder="请选择课程时长">
-                <el-option label="4 周" value="4" />
-                <el-option label="8 周" value="8" />
-                <el-option label="12 周" value="12" />
-                <el-option label="16 周" value="16" />
-                <el-option label="自定进度" value="0" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="难度级别" prop="level">
-              <el-select v-model="courseForm.level" placeholder="请选择难度级别">
-                <el-option label="入门" value="beginner" />
-                <el-option label="中级" value="intermediate" />
-                <el-option label="高级" value="advanced" />
-                <el-option label="专家" value="expert" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="前置要求" prop="prerequisites">
-              <el-input
-                v-model="courseForm.prerequisites"
-                type="textarea"
-                rows="3"
-                placeholder="请输入学习本课程的前置要求（如有）"
-                maxlength="200"
-              />
-            </el-form-item>
+          <div class="preview-content">
+            <div class="preview-cover">
+              <img v-if="courseForm.coverImage" :src="courseForm.coverImage" alt="课程封面" />
+              <div v-else class="no-cover">
+                <i class="el-icon-picture-outline"></i>
+                <p>暂无封面</p>
+              </div>
+            </div>
+            <div class="preview-info">
+              <h3 class="preview-title">{{ courseForm.title || '课程名称' }}</h3>
+              <div class="preview-categories">
+                <el-tag 
+                  v-for="(cat, index) in courseForm.categories" 
+                  :key="index" 
+                  size="small"
+                  type="info"
+                  style="margin-right: 8px; margin-bottom: 8px;"
+                >
+                  {{ cat }}
+                </el-tag>
+                <span v-if="courseForm.categories.length === 0" class="placeholder">未选择分类</span>
+              </div>
+              <p class="preview-desc">{{ courseForm.description || '暂无描述' }}</p>
+            </div>
           </div>
-
-          <!-- 课程目标 -->
-          <div class="form-section">
-            <h3>学习目标</h3>
-
-            <el-form-item label="学习目标" prop="objectives">
-              <el-input
-                v-model="courseForm.objectives"
-                type="textarea"
-                rows="4"
-                placeholder="请输入学生完成本课程后将学到什么（每行一个要点）"
-                maxlength="500"
-              />
-              <span class="tip">提示：使用换行符分隔多个目标</span>
-            </el-form-item>
-          </div>
-
-          <!-- 提交按钮 -->
-          <div class="form-actions">
-            <el-button @click="goBack">取消</el-button>
-            <el-button type="primary" :loading="submitting" @click="saveDraft">
-              保存为草稿
-            </el-button>
-            <el-button type="success" :loading="submitting" @click="createAndPublish">
-              创建并发布
-            </el-button>
-          </div>
-        </el-form>
-      </el-card>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -180,7 +162,7 @@ export default {
       courseForm: {
         title: '',
         description: '',
-        category: '',
+        categories: [], // 改为多选数组
         price: 0,
         coverImage: '',
         capacity: 100,
@@ -191,18 +173,8 @@ export default {
       },
       rules: {
         title: [{ validator: validateTitle, trigger: 'blur' }],
-        description: [
-          { required: true, message: '请输入课程描述', trigger: 'blur' },
-          { min: 10, message: '课程描述至少10个字符', trigger: 'blur' }
-        ],
-        category: [
-          { required: true, message: '请选择课程分类', trigger: 'change' }
-        ],
-        price: [
-          { type: 'number', required: true, message: '请输入课程价格', trigger: 'blur' }
-        ],
-        coverImage: [
-          { required: true, message: '请上传课程封面', trigger: 'change' }
+        categories: [
+          { required: true, message: '请至少选择一个课程分类', trigger: 'change', type: 'array' }
         ]
       },
       fileList: [],
@@ -225,45 +197,45 @@ export default {
       this.$message.error('图片上传失败')
     },
 
-    // 保存为草稿
-    saveDraft() {
+    // 创建课程（仅保存为草稿，不发布）
+    createCourse() {
       this.$refs.courseForm.validate(valid => {
         if (valid) {
-          this.submitCourse('draft')
+          this.submitting = true
+          const payload = {
+            ...this.courseForm,
+            status: 'draft' // 只创建草稿，不发布
+          }
+
+          // 临时使用 mock 数据，避免 API 不存在导致无限加载
+          // 生产环境请替换为实际 API 调用
+          const useMock = true // 设置为 false 使用真实 API
+
+          if (useMock) {
+            // Mock 成功响应
+            setTimeout(() => {
+              const mockCourseId = Date.now() // 使用时间戳作为临时 ID
+              this.$message.success('课程创建成功')
+              this.$router.push(`/teacher/course/${mockCourseId}?tab=courseManagement`)
+              this.submitting = false
+            }, 800)
+          } else {
+            // 实际 API 调用
+            this.$api.post('/courses', payload)
+              .then(res => {
+                this.$message.success('课程创建成功')
+                this.$router.push(`/teacher/course/${res.data.id}?tab=courseManagement`)
+              })
+              .catch(err => {
+                console.error('课程创建失败:', err)
+                this.$message.error(err.response?.data?.message || '创建失败，请稍后重试')
+              })
+              .finally(() => {
+                this.submitting = false
+              })
+          }
         }
       })
-    },
-
-    // 创建并发布
-    createAndPublish() {
-      this.$refs.courseForm.validate(valid => {
-        if (valid) {
-          this.submitCourse('pending_review')
-        }
-      })
-    },
-
-    // 提交课程
-    submitCourse(status) {
-      this.submitting = true
-      const payload = {
-        ...this.courseForm,
-        status
-      }
-
-      this.$api.post('/courses', payload)
-        .then(res => {
-          this.$message.success(
-            status === 'draft' ? '课程已保存为草稿' : '课程已发布，请等待管理员审核'
-          )
-          this.$router.push(`/course/${res.data.id}`)
-        })
-        .catch(err => {
-          this.$message.error(err.response?.data?.message || '创建失败')
-        })
-        .finally(() => {
-          this.submitting = false
-        })
     },
 
     // 返回
@@ -282,79 +254,257 @@ export default {
 }
 
 .page-header {
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+  background: white;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  gap: 20px;
-}
+  gap: 16px;
+  border-left: 4px solid #667eea;
 
-.page-header h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #333;
+  ::v-deep .el-button {
+    background: #f5f7fa;
+    color: #606266;
+    border: 1px solid #dcdfe6;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+  }
+
+  .header-content {
+    flex: 1;
+
+    .page-title {
+      margin: 0 0 4px 0;
+      font-size: 24px;
+      color: #303133;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: #909399;
+    }
+  }
 }
 
 .create-form-wrapper {
-  max-width: 900px;
+  max-width: 1400px;
+  margin: 0 auto;
 
-  /deep/ .el-card {
-    border: none;
-    border-radius: 4px;
+  .form-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+    align-items: start;
   }
 
-  /deep/ .el-form-item {
+  .form-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 32px;
+  }
+
+  ::v-deep .el-form-item {
     margin-bottom: 22px;
 
-    label {
-      color: #333;
+    .el-form-item__label {
+      color: #606266;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .el-input__inner,
+    .el-textarea__inner {
+      border-radius: 6px;
+      border: 1px solid #dcdfe6;
+      transition: all 0.3s ease;
+      
+      &:focus {
+        border-color: #667eea;
+      }
+    }
+
+    .el-select {
+      width: 100%;
     }
   }
 
   .form-section {
-    margin-bottom: 40px;
+    margin-bottom: 32px;
 
-    h3 {
-      font-size: 16px;
-      color: #333;
-      font-weight: bold;
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f0f0;
+
+      .section-icon {
+        font-size: 20px;
+        color: #667eea;
+      }
+
+      .section-title {
+        font-size: 18px;
+        color: #303133;
+        font-weight: 600;
+        margin: 0;
+      }
+    }
+  }
+
+  .preview-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    position: sticky;
+    top: 20px;
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #1890ff;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f0f0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #303133;
+
+      i {
+        font-size: 18px;
+        color: #667eea;
+      }
     }
 
-    .form-section + .form-section h3 {
-      margin-top: 0;
+    .preview-content {
+      .preview-cover {
+        width: 100%;
+        height: 200px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 16px;
+        background: #f5f7fa;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .no-cover {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #c0c4cc;
+
+          i {
+            font-size: 48px;
+            margin-bottom: 8px;
+          }
+
+          p {
+            margin: 0;
+            font-size: 14px;
+          }
+        }
+      }
+
+      .preview-info {
+        .preview-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #303133;
+          margin: 0 0 12px 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+
+        .preview-categories {
+          margin-bottom: 12px;
+          min-height: 28px;
+
+          .placeholder {
+            color: #c0c4cc;
+            font-size: 13px;
+          }
+        }
+
+        .preview-desc {
+          font-size: 13px;
+          color: #606266;
+          line-height: 1.6;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+        }
+      }
     }
   }
 
-  .price-unit,
-  .tip {
-    margin-left: 10px;
-    color: #999;
-    font-size: 12px;
-  }
-
-  .preview {
-    margin-top: 15px;
-
-    img {
-      max-width: 200px;
-      max-height: 200px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
+  ::v-deep .el-upload {
+    .el-upload__tip {
+      font-size: 12px;
+      color: #909399;
+      margin-top: 8px;
     }
   }
 
   .form-actions {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 40px;
-    padding-top: 20px;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
     border-top: 1px solid #f0f0f0;
 
-    /deep/ .el-button {
+    ::v-deep .el-button {
       min-width: 120px;
+      height: 40px;
+      
+      &.el-button--primary {
+        background: #667eea;
+        border-color: #667eea;
+        
+        &:hover {
+          background: #5568d3;
+          border-color: #5568d3;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .form-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .preview-card {
+      position: static;
     }
   }
 }
+</style>

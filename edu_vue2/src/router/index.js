@@ -23,6 +23,7 @@ import Community from '@/views/community/Community.vue'
 import CourseCommunity from '@/views/community/CourseCommunity.vue'
 import NewPost from '@/views/community/NewPost.vue'
 import PostDetail from '@/views/community/PostDetail.vue'
+import CommunityPostDetail from '@/views/community/CommunityPostDetail.vue'
 
 // 考试相关
 import ExamCenter from '@/views/exam/ExamCenter.vue'
@@ -184,7 +185,7 @@ const routes = [
         component: MyCoursesCourseView
       },
       {
-        path: 'course/enroll',
+        path: 'enrollment',
         name: 'StudentEnrollment',
         component: StudentEnrollment
       },
@@ -192,6 +193,48 @@ const routes = [
         path: 'student/course/:id',
         name: 'StudentCourseDetail',
         component: StudentCourseDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/lesson/:lessonId',
+        name: 'StudentLessonPlayer',
+        component: () => import('@/views/course/StudentLessonPlayer.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/homework/:homeworkId',
+        name: 'StudentHomeworkDetail',
+        component: () => import('@/views/course/StudentHomeworkDetail.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/exam/:examId',
+        name: 'StudentExamConfirm',
+        component: () => import('@/views/course/StudentExamConfirm.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/exam/:examId/answer',
+        name: 'StudentExamAnswer',
+        component: () => import('@/views/course/StudentExamAnswer.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/thread/create',
+        name: 'StudentCommunityThreadCreate',
+        component: () => import('@/views/course/StudentCommunityThreadCreate.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/thread/:threadId/edit',
+        name: 'StudentCommunityThreadEdit',
+        component: () => import('@/views/course/StudentCommunityThreadEdit.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'student/course/:courseId/thread/:threadId',
+        name: 'StudentThreadDetail',
+        component: () => import('@/views/course/StudentThreadDetail.vue'),
         meta: { requiresAuth: true }
       },
       {
@@ -218,6 +261,13 @@ const routes = [
         component: MyCertificates
       },
       
+      // 消息
+      {
+        path: 'messages',
+        name: 'Messages',
+        component: () => import('@/views/message/Messages.vue')
+      },
+      
       // 社区
       {
         path: 'community',
@@ -228,6 +278,11 @@ const routes = [
         path: 'community/new-post',
         name: 'NewPost',
         component: NewPost
+      },
+      {
+        path: 'community/:id',
+        name: 'CommunityPostDetail',
+        component: CommunityPostDetail
       },
       {
         path: 'community/post/:id',
@@ -244,19 +299,34 @@ const routes = [
       {
         path: 'exam-center',
         name: 'ExamCenter',
-        component: ExamCenter
+        component: ExamCenter,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'exam/:id',
+        name: 'ExamDetail',
+        component: () => import('@/pages/exam/ExamDetail.vue'),
+        meta: { requiresAuth: true }
       },
       {
         path: 'exam/:id/answer',
         name: 'ExamAnswer',
-        component: ExamAnswer
+        component: ExamAnswer,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'exam/:id/result',
+        name: 'ExamResult',
+        component: () => import('@/pages/exam/ExamResult.vue'),
+        meta: { requiresAuth: true }
       },
       
       // 作业相关
       {
         path: 'homework-center',
         name: 'HomeworkCenter',
-        component: HomeworkCenter
+        component: HomeworkCenter,
+        meta: { requiresAuth: true }
       },
       
       // 讲师相关（需要课程创建者权限，暂时不做全局限制）
@@ -421,8 +491,8 @@ const routes = [
     ]
   },
   
-  // 重定向
-  { path: '*', redirect: '/login' }
+  // 404 重定向到首页
+  { path: '*', redirect: '/' }
 ]
 
 const router = new VueRouter({
@@ -432,8 +502,27 @@ const router = new VueRouter({
 
 // 路由守卫：检查认证状态和角色权限
 router.beforeEach((to, from, next) => {
+  // ==========================================
+  // 开发模式：完全禁用认证检查（仅用于测试）
+  // 生产环境请删除或注释掉下面这段代码
+  // ==========================================
+  const isDevelopment = process.env.NODE_ENV === 'development'
+  
+  if (isDevelopment) {
+    // 开发模式下，自动设置测试用户信息
+    if (!localStorage.getItem('token')) {
+      localStorage.setItem('token', 'dev-test-token')
+      localStorage.setItem('userRole', 'student')
+      localStorage.setItem('userId', '1')
+      localStorage.setItem('userName', '测试用户')
+    }
+    // 开发模式直接放行所有路由
+    return next()
+  }
+  // ==========================================
+  
   const token = localStorage.getItem('token')
-  const userRole = localStorage.getItem('userRole') || 'user'
+  const userRole = localStorage.getItem('userRole') || 'student'
   const isAuthenticated = !!token
   
   // 需要认证的路由

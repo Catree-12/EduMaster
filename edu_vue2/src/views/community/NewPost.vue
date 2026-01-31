@@ -1,8 +1,7 @@
 <template>
   <div class="new-post-container">
-    <div class="breadcrumb">
-      <router-link to="/">首页</router-link> / 
-      <router-link to="/community">社区</router-link> / 发表话题
+    <div class="back-bar">
+      <button @click="$router.back()" class="back-btn">← 返回</button>
     </div>
 
     <div class="new-post-card">
@@ -100,20 +99,26 @@ export default {
 .new-post-container {
   padding: 30px;
   background: #f5f5f5;
-  min-height: 100vh;
   max-width: 900px;
   margin: 0 auto;
 }
 
-.breadcrumb {
-  color: #999;
-  margin-bottom: 30px;
-  font-size: 14px;
+.back-bar {
+  margin-bottom: 20px;
 }
 
-.breadcrumb a {
+.back-btn {
+  background: none;
+  border: none;
   color: #667eea;
-  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.3s;
+}
+
+.back-btn:hover {
+  color: #764ba2;
 }
 
 .new-post-card {

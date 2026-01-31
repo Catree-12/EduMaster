@@ -1,87 +1,21 @@
 <template>
   <div class="enrollment-container">
     <div class="page-header">
-      <h1>选课报名</h1>
-      <p class="subtitle">选择课程和班期，立即报名学习</p>
+      <h1>🎓 课程报名</h1>
+      <p class="subtitle">选择班期和班级，开启学习之旅</p>
     </div>
 
     <el-card shadow="hover" class="enrollment-wrapper">
       <el-steps :active="step" process-status="wait" align-center style="margin-bottom: 40px">
-        <el-step title="选择课程" />
         <el-step title="选择班期" />
         <el-step title="选择班级" />
         <el-step title="确认报名" />
       </el-steps>
 
-      <!-- 第一步：选择课程 -->
+      <!-- 第一步：选择班期 -->
       <div v-if="step === 0" class="step-content">
-        <h3>选择课程</h3>
-        
-        <!-- 搜索和筛选 -->
-        <div class="filters">
-          <el-input
-            v-model="courseSearch"
-            placeholder="搜索课程名称..."
-            prefix-icon="el-icon-search"
-            style="width: 250px"
-          />
-          <el-select
-            v-model="selectedCategory"
-            placeholder="课程分类"
-            style="width: 150px; margin-left: 10px"
-            clearable
-          >
-            <el-option label="Web 前端" value="web" />
-            <el-option label="后端开发" value="backend" />
-            <el-option label="移动开发" value="mobile" />
-            <el-option label="数据科学" value="data" />
-          </el-select>
-        </div>
-
-        <!-- 课程列表 -->
-        <div class="courses-grid">
-          <div
-            v-for="course in filteredCourses"
-            :key="course.id"
-            class="course-item"
-            :class="{ selected: formData.courseId === course.id }"
-            @click="selectCourse(course)"
-          >
-            <div class="course-cover">
-              <img :src="course.coverImage" :alt="course.title" />
-            </div>
-            <div class="course-info">
-              <h4>{{ course.title }}</h4>
-              <p class="category">{{ getCategoryText(course.category) }}</p>
-              <p class="description">{{ course.description | truncate(100) }}</p>
-              <div class="course-meta">
-                <span>👥 {{ course.studentCount }} 人</span>
-                <span>⭐ {{ course.rating }}</span>
-                <span>¥{{ course.price }}</span>
-              </div>
-            </div>
-            <div v-if="formData.courseId === course.id" class="check-mark">
-              ✓
-            </div>
-          </div>
-        </div>
-
-        <div class="step-actions">
-          <el-button @click="step = 0" disabled>上一步</el-button>
-          <el-button
-            type="primary"
-            :disabled="!formData.courseId"
-            @click="step = 1"
-          >
-            下一步
-          </el-button>
-        </div>
-      </div>
-
-      <!-- 第二步：选择班期 -->
-      <div v-if="step === 1" class="step-content">
         <h3>选择班期</h3>
-        <p class="tip">课程：<strong>{{ selectedCourseTitle }}</strong></p>
+        <p class="tip">课程：<strong>{{ selectedCourseTitle || '加载中...' }}</strong></p>
 
         <div v-if="availableTerms.length > 0" class="terms-grid">
           <div
@@ -110,24 +44,25 @@
         </div>
 
         <div v-else class="empty-state">
-          <i class="el-icon-document-copy" />
-          <p>暂无可用班期</p>
+          <i class="el-icon-warning-outline" style="font-size: 64px; color: #909399;"></i>
+          <p>该课程暂无可用班期</p>
+          <p class="hint">请联系老师或稍后再试</p>
         </div>
 
         <div class="step-actions">
-          <el-button @click="step = 0">上一步</el-button>
           <el-button
             type="primary"
+            size="large"
             :disabled="!formData.termId"
-            @click="step = 2"
+            @click="step = 1"
           >
-            下一步
+            下一步：选择班级 <i class="el-icon-arrow-right"></i>
           </el-button>
         </div>
       </div>
 
-      <!-- 第三步：选择班级 -->
-      <div v-if="step === 2" class="step-content">
+      <!-- 第二步：选择班级 -->
+      <div v-if="step === 1" class="step-content">
         <h3>选择班级</h3>
         <p class="tip">班期：<strong>{{ selectedTermName }}</strong></p>
 
@@ -161,24 +96,28 @@
         </div>
 
         <div v-else class="empty-state">
-          <i class="el-icon-document-copy" />
-          <p>暂无可用班级</p>
+          <i class="el-icon-warning-outline" style="font-size: 64px; color: #909399;"></i>
+          <p>该班期暂无可用班级</p>
+          <p class="hint">请选择其他班期或联系老师</p>
         </div>
 
         <div class="step-actions">
-          <el-button @click="step = 1">上一步</el-button>
+          <el-button @click="step = 0" size="large">
+            <i class="el-icon-arrow-left"></i> 上一步
+          </el-button>
           <el-button
             type="primary"
+            size="large"
             :disabled="!formData.classId || isClassFull"
-            @click="step = 3"
+            @click="step = 2"
           >
-            下一步
+            下一步：确认报名 <i class="el-icon-arrow-right"></i>
           </el-button>
         </div>
       </div>
 
-      <!-- 第四步：确认报名 -->
-      <div v-if="step === 3" class="step-content">
+      <!-- 第三步：确认报名 -->
+      <div v-if="step === 2" class="step-content">
         <h3>确认报名信息</h3>
 
         <div class="confirm-info">
@@ -224,14 +163,17 @@
         </div>
 
         <div class="step-actions">
-          <el-button @click="step = 2">上一步</el-button>
+          <el-button @click="step = 1" size="large">
+            <i class="el-icon-arrow-left"></i> 上一步
+          </el-button>
           <el-button
             type="primary"
+            size="large"
             :loading="submitting"
             :disabled="!agreeTerms"
             @click="confirmEnroll"
           >
-            确认报名
+            <i class="el-icon-check"></i> 确认报名
           </el-button>
         </div>
       </div>
@@ -268,7 +210,7 @@ export default {
           title: 'Vue.js 全栈开发',
           description: '掌握 Vue.js 框架，学习现代前端开发技术',
           category: 'web',
-          price: 599,
+          price: 0,
           rating: 4.8,
           studentCount: 1200,
           coverImage: 'https://via.placeholder.com/300x200?text=Vue.js',
@@ -399,6 +341,16 @@ export default {
       ]
     }
   },
+
+  created() {
+    // 从路由参数获取课程ID
+    const courseId = this.$route.query.courseId
+    if (courseId) {
+      // 确保from路由获取的courseId与courses数据中的id类型一致
+      this.formData.courseId = String(courseId)
+    }
+  },
+
   computed: {
     filteredCourses() {
       return this.courses.filter(course => {
@@ -536,22 +488,35 @@ export default {
       this.submitting = true
 
       // 调用API提交报名
-      this.$api.post('/enrollments', {
-        courseId: this.formData.courseId,
-        termId: this.formData.termId,
-        classId: this.formData.classId
-      })
-        .then(() => {
-          this.$message.success('报名成功，欢迎开始学习！')
-          this.submitting = false
+      setTimeout(() => {
+        const selectedCourse = this.courses.find(c => c.id === this.formData.courseId)
+        const isFree = selectedCourse && selectedCourse.price === 0
+
+        this.$message.success('报名成功！')
+        this.submitting = false
+
+        if (isFree) {
+          // 免费课程直接进入课程页面
+          this.$message.success('免费课程，正在进入课程...')
           setTimeout(() => {
-            this.$router.push('/course/my-courses')
-          }, 1500)
-        })
-        .catch(err => {
-          this.$message.error(err.response?.data?.message || '报名失败，请重试')
-          this.submitting = false
-        })
+            this.$router.push(`/student/course/${this.formData.courseId}?tab=sections`)
+          }, 1000)
+        } else {
+          // 付费课程显示缴费等待状态
+          this.$alert(
+            '请完成缴费后再开始学习。缴费后课程将自动解锁。',
+            '缴费提示',
+            {
+              confirmButtonText: '去缴费',
+              type: 'info',
+              callback: () => {
+                // 跳转到缴费页面或我的课程
+                this.$router.push('/user-center/my-courses')
+              }
+            }
+          )
+        }
+      }, 1000)
     }
   }
 }
@@ -566,17 +531,22 @@ export default {
 
 .page-header {
   margin-bottom: 30px;
+  text-align: center;
+  padding: 2rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
 
   h1 {
     margin: 0 0 10px 0;
-    font-size: 28px;
-    color: #333;
+    font-size: 32px;
+    font-weight: 700;
   }
 
   .subtitle {
     margin: 0;
-    font-size: 14px;
-    color: #999;
+    font-size: 16px;
+    opacity: 0.9;
   }
 }
 
@@ -584,26 +554,59 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
   background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+  ::v-deep .el-steps {
+    .el-step__title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .el-step__head.is-process {
+      color: #667eea;
+      border-color: #667eea;
+    }
+
+    .el-step__head.is-finish {
+      color: #67c23a;
+      border-color: #67c23a;
+    }
+  }
 
   .step-content {
     min-height: 400px;
     padding: 30px 0;
 
     h3 {
-      font-size: 18px;
-      color: #333;
+      font-size: 22px;
+      color: #2c3e50;
       margin-bottom: 20px;
-      font-weight: bold;
+      font-weight: 700;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #667eea;
+      display: inline-block;
     }
 
     .tip {
-      margin-bottom: 20px;
-      color: #666;
-      font-size: 14px;
+      margin-bottom: 25px;
+      padding: 15px 20px;
+      background: #f0f7ff;
+      border-left: 4px solid #667eea;
+      border-radius: 4px;
+      color: #606266;
+      font-size: 15px;
 
       strong {
-        color: #333;
+        color: #667eea;
+        font-weight: 600;
       }
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #909399;
+      margin-top: 8px;
     }
   }
 
@@ -718,21 +721,23 @@ export default {
   .term-item,
   .class-item {
     position: relative;
-    border: 2px solid #f0f0f0;
-    border-radius: 8px;
-    padding: 20px;
+    border: 2px solid #e4e7ed;
+    border-radius: 12px;
+    padding: 24px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    background: white;
 
     &:hover {
-      border-color: #3498db;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transform: translateY(-5px);
+      border-color: #667eea;
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15);
+      transform: translateY(-4px);
     }
 
     &.selected {
-      border-color: #3498db;
-      background: #f0f7ff;
+      border-color: #667eea;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
 
     .term-header,
@@ -778,36 +783,43 @@ export default {
 
     .check-mark {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 30px;
-      height: 30px;
-      background: #3498db;
+      bottom: 15px;
+      right: 15px;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
     }
   }
 
   .empty-state {
     text-align: center;
-    padding: 60px 20px;
-    color: #999;
+    padding: 80px 20px;
+    color: #909399;
 
     i {
-      font-size: 48px;
+      font-size: 72px;
       display: block;
-      margin-bottom: 15px;
-      color: #bbb;
+      margin-bottom: 20px;
+      color: #c0c4cc;
     }
 
     p {
-      margin: 0;
+      margin: 10px 0;
       font-size: 16px;
+      color: #606266;
+
+      &.hint {
+        font-size: 14px;
+        color: #909399;
+      }
     }
   }
 
@@ -862,13 +874,38 @@ export default {
 
   .step-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #f0f0f0;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #f0f0f0;
 
     .el-button {
-      min-width: 120px;
+      flex: 1;
+      max-width: 200px;
+      height: 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s;
+
+      &.el-button--primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+      }
+
+      i {
+        font-weight: bold;
+      }
+    }
+
+    &:has(.el-button:only-child) {
+      justify-content: center;
     }
   }
 }

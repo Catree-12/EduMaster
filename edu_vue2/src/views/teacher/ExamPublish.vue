@@ -17,6 +17,28 @@
       <div class="settings-section">
         <el-form :model="publishForm" :rules="rules" ref="publishForm" label-width="120px" label-position="left">
           
+          <!-- 选择班期 -->
+          <el-form-item label="选择班期" prop="termId">
+            <el-select 
+              v-model="publishForm.termId" 
+              placeholder="请选择班期"
+              style="width: 100%"
+              @change="handleTermChange"
+            >
+              <el-option
+                v-for="term in termList"
+                :key="term.id"
+                :label="term.name"
+                :value="term.id"
+              >
+                <span>{{ term.name }}</span>
+                <span style="color: #8492a6; font-size: 13px; margin-left: 8px;">
+                  {{ term.startDate }} ~ {{ term.endDate }}
+                </span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+
           <!-- 发放对象 -->
           <el-form-item label="发放对象" prop="targets">
             <el-select 
@@ -25,10 +47,11 @@
               placeholder="请选择班级或学生"
               style="width: 100%"
               filterable
+              :disabled="!publishForm.termId"
             >
               <el-option-group label="班级">
                 <el-option
-                  v-for="cls in classList"
+                  v-for="cls in filteredClassList"
                   :key="'class-' + cls.id"
                   :label="cls.name"
                   :value="'class-' + cls.id"
@@ -39,13 +62,16 @@
               </el-option-group>
               <el-option-group label="学生">
                 <el-option
-                  v-for="student in studentList"
+                  v-for="student in filteredStudentList"
                   :key="'student-' + student.id"
                   :label="student.name"
                   :value="'student-' + student.id"
                 />
               </el-option-group>
             </el-select>
+            <div v-if="!publishForm.termId" style="margin-top: 8px; font-size: 12px; color: #f56c6c;">
+              <i class="el-icon-warning"></i> 请先选择班期
+            </div>
           </el-form-item>
 
           <!-- 时间排期 -->
@@ -154,6 +180,7 @@ export default {
         totalScore: 100
       },
       publishForm: {
+        termId: '', // 新增班期ID
         targets: [],
         startTime: '',
         startImmediately: false,
@@ -164,17 +191,27 @@ export default {
         allowSubmitAfter: 30,
         switchLimit: 3
       },
+      termList: [
+        { id: 1, name: '2024春季班', startDate: '2024-03-01', endDate: '2024-06-30' },
+        { id: 2, name: '2024秋季班', startDate: '2024-09-01', endDate: '2025-01-15' },
+        { id: 3, name: '2025春季班', startDate: '2025-03-01', endDate: '2025-06-30' }
+      ],
       classList: [
-        { id: 1, name: '计算机科学2021级1班', studentCount: 45 },
-        { id: 2, name: '计算机科学2021级2班', studentCount: 42 },
-        { id: 3, name: '软件工程2021级1班', studentCount: 48 }
+        { id: 1, name: '计算机科学2021级1班', studentCount: 45, termId: 1 },
+        { id: 2, name: '计算机科学2021级2班', studentCount: 42, termId: 1 },
+        { id: 3, name: '软件工程2021级1班', studentCount: 48, termId: 2 },
+        { id: 4, name: '软件工程2022级1班', studentCount: 50, termId: 2 },
+        { id: 5, name: '数据科学2023级1班', studentCount: 38, termId: 3 }
       ],
       studentList: [
-        { id: 1, name: '张三' },
-        { id: 2, name: '李四' },
-        { id: 3, name: '王五' }
+        { id: 1, name: '张三', termId: 1 },
+        { id: 2, name: '李四', termId: 1 },
+        { id: 3, name: '王五', termId: 2 }
       ],
       rules: {
+        termId: [
+          { required: true, message: '请选择班期', trigger: 'change' }
+        ],
         targets: [
           { required: true, message: '请选择发放对象', trigger: 'change' }
         ],
@@ -209,7 +246,27 @@ export default {
     // TODO: 从后端加载试卷信息
     console.log('加载试卷信息:', examId)
   },
+  computed: {
+    // 根据选择的班期过滤班级
+    filteredClassList() {
+      if (!this.publishForm.termId) {
+        return []
+      }
+      return this.classList.filter(cls => cls.termId === this.publishForm.termId)
+    },
+    // 根据选择的班期过滤学生
+    filteredStudentList() {
+      if (!this.publishForm.termId) {
+        return []
+      }
+      return this.studentList.filter(student => student.termId === this.publishForm.termId)
+    }
+  },
   methods: {
+    // 班期变化时清空已选对象
+    handleTermChange() {
+      this.publishForm.targets = []
+    },
     cancel() {
       this.$confirm('取消后将不保存本次发布设置，确定要取消吗？', '提示', {
         confirmButtonText: '确定',

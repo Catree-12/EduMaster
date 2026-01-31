@@ -223,39 +223,89 @@ export default {
     }
   },
   created() {
-    this.fetchCertificates()
-    this.fetchStats()
+    // 使用模拟数据代替 API 调用
+    this.loadMockData()
   },
   methods: {
+    // 加载模拟数据
+    loadMockData() {
+      this.loading = true
+      
+      // 模拟统计数据
+      this.stats = {
+        total: 5,
+        active: 3,
+        revoked: 1,
+        expired: 1
+      }
+      
+      // 模拟证书列表数据
+      setTimeout(() => {
+        this.certificates = [
+          {
+            id: 1,
+            courseName: 'Vue.js 从入门到精通',
+            termName: '2024年春季班',
+            score: 95,
+            status: 'active',
+            issueDate: '2024-06-15',
+            expiryDate: '2026-06-15',
+            certificateNumber: 'CERT-VUE-2024-001'
+          },
+          {
+            id: 2,
+            courseName: 'React 现代实战指南',
+            termName: '2024年夏季班',
+            score: 88,
+            status: 'active',
+            issueDate: '2024-08-20',
+            expiryDate: '2026-08-20',
+            certificateNumber: 'CERT-REACT-2024-002'
+          },
+          {
+            id: 3,
+            courseName: 'Node.js 全栈开发',
+            termName: '2024年春季班',
+            score: 92,
+            status: 'active',
+            issueDate: '2024-05-10',
+            expiryDate: '2026-05-10',
+            certificateNumber: 'CERT-NODE-2024-003'
+          },
+          {
+            id: 4,
+            courseName: 'Python 数据分析',
+            termName: '2023年秋季班',
+            score: 85,
+            status: 'expired',
+            issueDate: '2023-12-01',
+            expiryDate: '2025-12-01',
+            certificateNumber: 'CERT-PY-2023-004'
+          },
+          {
+            id: 5,
+            courseName: 'UI/UX 设计原则',
+            termName: '2024年春季班',
+            score: 78,
+            status: 'revoked',
+            issueDate: '2024-04-15',
+            expiryDate: '2026-04-15',
+            certificateNumber: 'CERT-UIUX-2024-005'
+          }
+        ]
+        this.total = this.certificates.length
+        this.loading = false
+      }, 500)
+    },
+    
     // 获取证书列表
     fetchCertificates() {
-      this.loading = true
-      this.$api.get('/user/certificates', {
-        params: {
-          page: this.page,
-          limit: this.pageSize,
-          search: this.searchKey,
-          status: this.filterStatus
-        }
-      })
-        .then(res => {
-          this.certificates = res.data || []
-          this.total = res.total || 0
-          this.loading = false
-        })
-        .catch(() => {
-          this.$message.error('加载证书失表')
-          this.loading = false
-        })
+      this.loadMockData()
     },
 
     // 获取统计信息
     fetchStats() {
-      this.$api.get('/user/certificates/stats')
-        .then(res => {
-          this.stats = res.data || {}
-        })
-        .catch(() => {})
+      // 已在 loadMockData 中处理
     },
 
     // 搜索
@@ -320,23 +370,29 @@ export default {
 
 <style scoped lang="scss">
 .certificates-container {
-  padding: 20px;
-  background: #f5f7fa;
+  padding: 1.5rem;
+  background: #f9fafb;
   min-height: 100vh;
 
   .page-header {
-    margin-bottom: 30px;
+    margin-bottom: 1rem;
+    text-align: center;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.2);
 
     h1 {
       margin: 0;
-      font-size: 28px;
-      color: #333;
+      font-size: 1.25rem;
+      font-weight: 700;
     }
 
     .subtitle {
-      margin: 10px 0 0 0;
-      color: #999;
-      font-size: 14px;
+      margin: 0.25rem 0 0 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.875rem;
     }
   }
 

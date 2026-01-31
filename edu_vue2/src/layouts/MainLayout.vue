@@ -18,17 +18,32 @@
             <router-link to="/course/my-courses" class="nav-link">我的课程</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/user-center/certificates" class="nav-link">我的证书</router-link>
+            <router-link to="/community" class="nav-link">社区</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/community" class="nav-link">社区</router-link>
+            <router-link to="/messages" class="nav-link">消息</router-link>
           </li>
         </ul>
 
         <div class="nav-right">
-          <router-link to="/user-center/profile" class="user-icon">
-            👤 个人中心
-          </router-link>
+          <!-- 设置下拉菜单 -->
+          <div class="dropdown">
+            <span class="user-icon">
+              ⚙️ 设置
+            </span>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link to="/user-center/profile" class="dropdown-link">
+                  👤 个人中心
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/user-center/certificates" class="dropdown-link">
+                  🎓 我的证书
+                </router-link>
+              </li>
+            </ul>
+          </div>
           <button @click="logout" class="logout-btn">退出登录</button>
         </div>
       </div>
@@ -69,7 +84,8 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  height: 64px;
 }
 
 .nav-container {
@@ -79,11 +95,14 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
 }
 
 .nav-logo h2 {
   color: white;
   margin: 0;
+  text-align: left; /* 确保文字在容器内也是靠左的 */
+  
 }
 
 .nav-logo a {
@@ -121,27 +140,59 @@ export default {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: calc(100% + 0.5rem);
+  right: 0;
   background: #34495e;
   list-style: none;
   margin: 0;
   padding: 0.5rem 0;
-  border-radius: 4px;
-  min-width: 150px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+/* 添加延迟和扩展hover区域 */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+  background: transparent;
 }
 
 .dropdown:hover .dropdown-menu {
   display: block;
+  animation: fadeIn 0.2s ease-in-out;
+  animation-delay: 0.1s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu li {
+  margin: 0;
 }
 
 .dropdown-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   color: white;
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.2s;
+  font-size: 0.95rem;
 }
 
 .dropdown-link:hover {
@@ -155,14 +206,26 @@ export default {
   align-items: center;
 }
 
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
 .user-icon {
   color: white;
   text-decoration: none;
   transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
 }
 
-.user-icon:hover {
+.user-icon:hover,
+.dropdown:hover .user-icon {
   color: #3498db;
+  background: rgba(52, 152, 219, 0.1);
 }
 
 .logout-btn {
@@ -183,8 +246,5 @@ export default {
 .main-container {
   flex: 1;
   width: 100%;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 </style>

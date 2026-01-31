@@ -1,53 +1,46 @@
 <template>
   <div class="student-course-detail">
-    <!-- 预览模式提示条 -->
-    <div v-if="isPreviewMode" class="preview-banner">
-      <i class="el-icon-view"></i>
-      <span>当前为学生视角预览模式 - 点击小节可查看内容块详情</span>
-    </div>
-    
-    <div class="page-header">
-      <div class="header-left">
-        <el-button icon="el-icon-arrow-left" @click="goBack">返回</el-button>
-        <div class="course-title">
-          <h1>{{ courseInfo.title }}</h1>
-          <p>{{ courseInfo.instructorName }}</p>
-        </div>
+    <!-- 左侧固定导航栏 -->
+    <aside class="sidebar-fixed">
+      <!-- 课程名称 -->
+      <div class="sidebar-logo">
+        <h1>{{ courseInfo.name }}</h1>
+        <p class="instructor-name">授课教师：{{ courseInfo.instructorName }}</p>
       </div>
-    </div>
+      
+      <!-- 导航菜单 -->
+      <nav class="nav-menu">
+        <div
+          v-for="item in navItems"
+          :key="item.id"
+          :class="['nav-item', { active: activeModule === item.id }]"
+          @click="selectModule(item.id)"
+          tabindex="0"
+          role="button"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </div>
+      </nav>
+    </aside>
 
-    <div class="course-container">
-      <!-- 左侧导航栏 -->
-      <aside class="sidebar">
-        <nav class="nav-menu">
-          <div
-            v-for="item in navItems"
-            :key="item.id"
-            :class="['nav-item', { active: activeModule === item.id }]"
-            @click="selectModule(item.id)"
-            tabindex="0"
-            role="button"
-          >
-            <span class="nav-icon">{{ item.icon }}</span>
-            <span class="nav-label">{{ item.label }}</span>
-          </div>
-        </nav>
-      </aside>
-
-      <!-- 右侧内容区 -->
+    <!-- 右侧内容区 -->
+    <div class="main-wrapper">
       <main class="content-area">
-        <!-- 章节模块 - 章节目录概览 -->
+        <!-- 章节模块 -->
         <section v-if="activeModule === 'sections'" class="module-section">
           <div class="sections-overview">
             <div class="overview-header">
               <h2>课程章节</h2>
-              <el-input
-                v-model="chapterSearch"
-                placeholder="搜索章节或课程..."
-                prefix-icon="el-icon-search"
-                clearable
-                style="width: 300px;"
-              />
+              <div class="header-actions">
+                <el-input
+                  v-model="chapterSearch"
+                  placeholder="搜索章节或课程..."
+                  prefix-icon="el-icon-search"
+                  clearable
+                  style="width: 300px;"
+                />
+              </div>
             </div>
 
             <div class="sections-list">
@@ -74,179 +67,112 @@
                     v-for="(lesson, index) in section.lessons"
                     :key="lesson.id"
                     class="lesson-card"
-                    @click="selectLesson(lesson, section)"
                   >
                     <div class="lesson-index">{{ index + 1 }}</div>
                     <div class="lesson-icon">
                       {{ lesson.type === 'video' ? '🎥' : '📄' }}
                     </div>
-                    <div class="lesson-content">
+                    <div class="lesson-content" @click="selectLesson(lesson, section)">
                       <div class="lesson-name">{{ lesson.name }}</div>
                       <div class="lesson-meta">
-                        <span>{{ lesson.duration }}</span>
+                        <span v-if="lesson.duration">{{ lesson.duration }}</span>
+                        <span v-if="lesson.completed" class="completed-badge">✓ 已完成</span>
                       </div>
-                    </div>
-                    <div class="lesson-action">
-                      <el-button type="text" size="small">
-                        {{ lesson.type === 'video' ? '观看' : '查看' }}
-                        <i class="el-icon-arrow-right"></i>
-                      </el-button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div v-if="filteredSections.length === 0" class="no-data">
+            <div v-if="filteredSections.length === 0 && sections.length > 0" class="no-data">
               <i class="el-icon-folder-opened" style="font-size: 48px; color: #dcdfe6;"></i>
               <p>未找到相关章节</p>
+            </div>
+            
+            <div v-if="sections.length === 0" class="no-data">
+              <i class="el-icon-folder-add" style="font-size: 48px; color: #dcdfe6;"></i>
+              <p>暂无章节数据</p>
             </div>
           </div>
         </section>
 
         <!-- 作业模块 -->
         <section v-if="activeModule === 'homework'" class="module-section">
-          <!-- 课程标题 -->
-          <div class="course-title-bar">
-            <h2>{{ courseInfo.title }}</h2>
-          </div>
-
-          <!-- 筛选区域 -->
-          <div class="filter-bar">
-            <div class="filter-tabs">
-              <button 
-                :class="['filter-tab', { active: homeworkFilter === 'all' }]"
-                @click="homeworkFilter = 'all'"
-              >
-                全部
-              </button>
-              <button 
-                :class="['filter-tab', { active: homeworkFilter === 'completed' }]"
-                @click="homeworkFilter = 'completed'"
-              >
-                已完成
-              </button>
-              <button 
-                :class="['filter-tab', { active: homeworkFilter === 'pending' }]"
-                @click="homeworkFilter = 'pending'"
-              >
-                未完成
-              </button>
-            </div>
-          </div>
-
-          <!-- 作业列表 -->
-          <div v-if="filteredHomeworks.length > 0" class="task-list">
-            <div 
-              v-for="homework in filteredHomeworks" 
-              :key="homework.id" 
-              class="task-item"
-              @click="viewHomework(homework)"
-            >
-              <div class="task-type-badge">作业</div>
-              <div class="task-content">
-                <div class="task-title">{{ homework.title }}</div>
-                <div class="task-meta">
-                  <span>截止: {{ homework.dueDate }}</span>
-                  <span v-if="homework.score !== null">得分: {{ homework.score }}/{{ homework.totalPoints }}</span>
-                </div>
-              </div>
-              <div :class="['task-status', homework.status]">
-                {{ getHomeworkStatusText(homework.status) }}
-              </div>
-            </div>
-          </div>
-
-          <div v-else class="no-data">
-            <p>{{ homeworkFilter === 'all' ? '暂无作业' : '暂无相关作业' }}</p>
-          </div>
-        </section>
-
-        <!-- 考试模块 -->
-        <section v-if="activeModule === 'exams'" class="module-section">
-          <!-- 课程标题 -->
-          <div class="course-title-bar">
-            <h2>{{ courseInfo.title }}</h2>
-          </div>
-
-          <!-- 筛选区域 -->
-          <div class="filter-bar">
-            <div class="filter-tabs">
-              <button 
-                :class="['filter-tab', { active: examFilter === 'all' }]"
-                @click="examFilter = 'all'"
-              >
-                全部
-              </button>
-              <button 
-                :class="['filter-tab', { active: examFilter === 'completed' }]"
-                @click="examFilter = 'completed'"
-              >
-                已完成
-              </button>
-              <button 
-                :class="['filter-tab', { active: examFilter === 'pending' }]"
-                @click="examFilter = 'pending'"
-              >
-                未完成
-              </button>
-            </div>
-          </div>
-
-          <!-- 考试列表 -->
-          <div v-if="filteredExams.length > 0" class="task-list">
-            <div 
-              v-for="exam in filteredExams" 
-              :key="exam.id" 
-              class="task-item"
-              @click="handleExamClick(exam)"
-            >
-              <div class="task-type-badge exam">考试</div>
-              <div class="task-content">
-                <div class="task-title">{{ exam.title }}</div>
-                <div class="task-meta">
-                  <span>时长: {{ exam.duration }}分钟</span>
-                  <span>题目: {{ exam.questionCount }}题</span>
-                  <span v-if="exam.score !== null">得分: {{ exam.score }}/{{ exam.totalPoints }}</span>
-                </div>
-              </div>
-              <div :class="['task-status', exam.status]">
-                {{ getExamStatusText(exam.status) }}
-              </div>
-            </div>
-          </div>
-
-          <div v-else class="no-data">
-            <p>{{ examFilter === 'all' ? '暂无考试' : '暂无相关考试' }}</p>
-          </div>
-        </section>
-
-        <!-- 课程社区模块 -->
-        <section v-if="activeModule === 'community'" class="module-section">
           <div class="module-header">
-            <h2>课程社区</h2>
-            <el-button type="primary" size="small" @click="goToNewPost">
-              发布话题
-            </el-button>
+            <h2>{{ studentClassName }}</h2>
           </div>
 
-          <div v-if="communityPosts.length > 0" class="community-list">
-            <div v-for="post in communityPosts" :key="post.id" class="post-card">
-              <div class="post-header">
-                <div class="post-author">
-                  <span class="avatar">{{ post.author.name[0] }}</span>
-                  <div>
-                    <p class="author-name">{{ post.author.name }}</p>
-                    <p class="post-time">{{ post.createdAt }}</p>
+          <!-- 筛选区 -->
+          <div class="filter-section">
+            <div class="filter-group">
+              <label>状态筛选：</label>
+              <div class="status-filter-btns">
+                <button
+                  v-for="status in homeworkStatusOptions"
+                  :key="status.value"
+                  :class="['filter-btn', { active: homeworkFilter === status.value }]"
+                  @click="homeworkFilter = status.value"
+                >
+                  {{ status.label }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 列表区 -->
+          <div v-if="filteredHomeworks.length > 0" class="list-section">
+            <div v-for="hw in filteredHomeworks" :key="hw.id" class="homework-item-card">
+              <!-- 顶部区域 -->
+              <div class="card-top-section">
+                <!-- 左侧：标题和状态 -->
+                <div class="card-header">
+                  <h3 class="task-title clickable-title" @click="viewHomeworkDetail(hw)">{{ hw.name }}</h3>
+                  <span :class="['status-capsule', hw.status]">{{ hw.status }}</span>
+                </div>
+                
+                <!-- 右侧：成绩展示 -->
+                <div class="stats-inline" v-if="hw.score !== null">
+                  <div class="stat-item">
+                    <div class="stat-label">我的得分</div>
+                    <div class="stat-number">{{ hw.score }} / {{ hw.totalScore }}</div>
                   </div>
                 </div>
               </div>
-              <h3 class="post-title">{{ post.title }}</h3>
-              <p class="post-content">{{ post.content }}</p>
-              <div class="post-footer">
-                <span>💬 {{ post.replyCount }} 回复</span>
-                <span>👁 {{ post.viewCount }} 浏览</span>
-                <el-button type="text" size="small" @click="viewPost(post)">
+
+              <!-- 中部区域：信息行 -->
+              <div class="card-middle-section">
+                <div class="info-item">
+                  <span class="info-label">发布时间：</span>
+                  <span class="info-value">{{ hw.startTime }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">截止时间：</span>
+                  <span class="info-value">{{ hw.endTime }}</span>
+                </div>
+                <div class="info-item" v-if="hw.submitTime">
+                  <span class="info-label">提交时间：</span>
+                  <span class="info-value">{{ hw.submitTime }}</span>
+                </div>
+              </div>
+
+              <!-- 底部区域：操作按钮 -->
+              <div class="card-bottom-section">
+                <el-button 
+                  v-if="hw.status === '未完成'"
+                  type="primary" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="startHomework(hw)"
+                >
+                  开始作答
+                </el-button>
+                <el-button 
+                  v-else
+                  type="info" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="viewHomeworkResult(hw)"
+                >
                   查看详情
                 </el-button>
               </div>
@@ -254,11 +180,210 @@
           </div>
 
           <div v-else class="no-data">
-            <p>暂无讨论</p>
+            <p>暂无作业数据</p>
+          </div>
+        </section>
+
+        <!-- 考试模块 -->
+        <section v-if="activeModule === 'exam'" class="module-section">
+          <div class="module-header">
+            <h2>考试管理</h2>
+          </div>
+
+          <!-- 筛选区 -->
+          <div class="filter-section">
+            <div class="filter-group">
+              <label>状态筛选：</label>
+              <div class="status-filter-btns">
+                <button
+                  v-for="status in examStatusOptions"
+                  :key="status.value"
+                  :class="['filter-btn', { active: examFilter === status.value }]"
+                  @click="examFilter = status.value"
+                >
+                  {{ status.label }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 列表区 -->
+          <div v-if="filteredExams.length > 0" class="list-section">
+            <div v-for="exam in filteredExams" :key="exam.id" class="exam-item-card">
+              <!-- 顶部区域：标题 + 状态 + 统计 -->
+              <div class="card-top-section">
+                <div class="card-header">
+                  <h3 class="task-title clickable-title" @click="viewExamDetail(exam)">{{ exam.name }}</h3>
+                  <span :class="['status-capsule', exam.status]">{{ exam.status }}</span>
+                </div>
+                
+                <!-- 右侧：成绩展示 -->
+                <div class="stats-inline" v-if="exam.score !== null">
+                  <div class="stat-item">
+                    <div class="stat-label">我的得分</div>
+                    <div class="stat-number">{{ exam.score }} / {{ exam.totalScore }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 中部区域：信息行 -->
+              <div class="card-middle-section">
+                <div class="info-item">
+                  <span class="info-label">考试时长：</span>
+                  <span class="info-value">{{ exam.duration }}分钟</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">题目数量：</span>
+                  <span class="info-value">{{ exam.questionCount }}题</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">考试时间：</span>
+                  <span class="info-value">{{ exam.startTime }} ~ {{ exam.endTime }}</span>
+                </div>
+              </div>
+
+              <!-- 底部区域：操作按钮 -->
+              <div class="card-bottom-section">
+                <el-button 
+                  v-if="exam.status === '未开始' || exam.status === '进行中'"
+                  type="primary" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="startExam(exam)"
+                  :disabled="exam.status === '未开始'"
+                >
+                  {{ exam.status === '未开始' ? '等待开始' : '进入考试' }}
+                </el-button>
+                <el-button 
+                  v-else
+                  type="info" 
+                  size="large" 
+                  class="primary-action-btn"
+                  @click.stop="viewExamResult(exam)"
+                >
+                  查看成绩
+                </el-button>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="no-data">
+            <p>暂无考试数据</p>
+          </div>
+        </section>
+
+        <!-- 课程社区模块 -->
+        <section v-if="activeModule === 'discussion'" class="module-section community-module">
+          <div class="community-layout">
+            <!-- 左侧：话题列表区域 -->
+            <div class="community-main">
+              <!-- 1. 顶部操作区 -->
+              <div class="community-top-bar">
+                <input 
+                  v-model="communitySearch"
+                  type="text"
+                  placeholder="搜索话题标题或内容..."
+                  class="community-search-input"
+                >
+                <button @click="createNewThread" class="community-publish-btn">
+                  ➕ 发布话题
+                </button>
+              </div>
+
+              <!-- 2. 筛选与排序条 -->
+              <div class="community-filter-bar">
+                <div class="sort-tabs">
+                  <button
+                    v-for="sort in ['最新', '热门']"
+                    :key="sort"
+                    :class="['sort-tab', { active: communitySortBy === sort }]"
+                    @click="communitySortBy = sort"
+                  >
+                    {{ sort }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. 话题列表容器 -->
+              <div v-if="filteredCommunityThreads.length > 0" class="community-thread-list">
+                <div v-for="thread in filteredCommunityThreads" :key="thread.id" class="thread-card">
+                  <!-- 标题层 -->
+                  <div class="thread-title-row">
+                    <h3 class="thread-title" @click="viewThreadDetail(thread.id)">{{ thread.title }}</h3>
+                    <div class="thread-badges">
+                      <span v-if="thread.authorRole === 'teacher'" class="badge-role teacher">老师</span>
+                      <span v-if="thread.authorRole === 'student'" class="badge-role student">学生</span>
+                      <span v-if="thread.essence" class="badge-tag essence">精选</span>
+                    </div>
+                  </div>
+
+                  <!-- 摘要层 -->
+                  <div class="thread-preview">
+                    <p class="thread-excerpt">{{ getThreadExcerpt(thread.content) }}</p>
+                  </div>
+
+                  <!-- 元数据层 -->
+                  <div class="thread-meta-row">
+                    <div class="thread-info">
+                      <span class="author-name">{{ thread.author }}</span>
+                      <span class="separator">·</span>
+                      <span class="publish-time">{{ thread.createTime }}</span>
+                    </div>
+                    <div class="thread-stats">
+                      <span class="stat-item">
+                        <i class="icon-view">👁</i>
+                        {{ thread.viewCount }}
+                      </span>
+                      <span class="stat-item clickable" @click.stop="viewThreadDetail(thread.id)">
+                        <i class="icon-reply">💬</i>
+                        {{ thread.replyCount }}
+                      </span>
+                      <button :class="['like-btn-list', { liked: thread.isLiked }]" @click.stop="toggleThreadLike(thread)">
+                        {{ thread.isLiked ? '❤️' : '🤍' }}
+                        {{ thread.likeCount }}
+                      </button>
+                      <!-- 仅自己的帖子可以编辑/删除 -->
+                      <div v-if="canEditThread(thread)" class="thread-manage">
+                        <a class="manage-link edit" @click.stop="editThread(thread.id)">编辑</a>
+                        <a class="manage-link delete" @click.stop="deleteThread(thread.id)">删除</a>
+                      </div>
+                      <!-- 老师可以删除其他人的帖子 -->
+                      <div v-else-if="canDeleteThread(thread)" class="thread-manage">
+                        <a class="manage-link delete" @click.stop="deleteThread(thread.id)">删除</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div v-else class="no-data">
+                <p>暂无话题</p>
+                <p class="hint">点击"发布话题"按钮创建第一个讨论</p>
+              </div>
+            </div>
+
+            <!-- 右侧：分类目录 -->
+            <aside class="community-sidebar">
+              <div class="sidebar-section">
+                <h3 class="sidebar-title">我的（讨论）</h3>
+                <div class="category-list">
+                  <div 
+                    v-for="category in myCategories" 
+                    :key="category.id"
+                    :class="['category-item', { active: communityCategory === category.id }]"
+                    @click="selectCategory(category.id)"
+                  >
+                    <span class="category-icon">{{ category.icon }}</span>
+                    <span class="category-label">{{ category.label }}</span>
+                  </div>
+                </div>
+              </div>
+            </aside>
           </div>
         </section>
       </main>
     </div>
+
   </div>
 </template>
 
@@ -268,61 +393,70 @@ export default {
   data() {
     return {
       courseId: this.$route.params.id,
-      isPreviewMode: this.$route.query.preview === 'true', // 是否为预览模式
       activeModule: 'sections',
+      
+      // 导航菜单项
       navItems: [
         { id: 'sections', label: '章节', icon: '📚' },
         { id: 'homework', label: '作业', icon: '📝' },
-        { id: 'exams', label: '考试', icon: '✍️' },
-        { id: 'community', label: '课程社区', icon: '💬' }
+        { id: 'exam', label: '考试', icon: '✍️' },
+        { id: 'discussion', label: '课程社区', icon: '💬' }
       ],
+      
+      // 课程信息
       courseInfo: {
-        title: '加载中...',
-        instructorName: ''
+        name: 'Web前端开发实战',
+        instructorName: '张老师'
       },
+      
+      // 学生班级信息
+      studentClassName: '2024级计算机科学1班',
+      
+      // 章节数据
       sections: [],
-      homeworks: [],
-      exams: [],
-      communityPosts: [],
-      // 筛选状态
-      homeworkFilter: 'all',
-      examFilter: 'all',
-      // 章节搜索
+      expandedSections: [],
       chapterSearch: '',
-      expandedSections: []
+      
+      // 作业数据
+      homeworks: [],
+      homeworkFilter: '全部',
+      homeworkStatusOptions: [
+        { value: '全部', label: '全部' },
+        { value: '已完成', label: '已完成' },
+        { value: '未完成', label: '未完成' }
+      ],
+      
+      // 考试数据
+      exams: [],
+      examFilter: '全部',
+      examStatusOptions: [
+        { value: '全部', label: '全部' },
+        { value: '未开始', label: '未开始' },
+        { value: '进行中', label: '进行中' },
+        { value: '已完成', label: '已完成' }
+      ],
+      
+      // 社区数据
+      communityThreads: [],
+      communitySearch: '',
+      communitySortBy: '最新',
+      showMyThreadsOnly: false,
+      currentUserId: 1, // 当前学生用户ID
+      currentUserRole: 'student', // 当前用户角色
+      communityCategory: 'all', // 当前选中的分类
+      
+      // 社区分类目录
+      myCategories: [
+        { id: 'all', label: '全部', icon: '📋' },
+        { id: 'my-published', label: '我发布的', icon: '✏️' }
+      ]
     }
   },
-  created() {
-    this.loadCourseData()
-  },
+  
   computed: {
-    // 筛选作业
-    filteredHomeworks() {
-      if (this.homeworkFilter === 'all') {
-        return this.homeworks
-      } else if (this.homeworkFilter === 'completed') {
-        return this.homeworks.filter(hw => hw.status === 'submitted' || hw.status === 'graded')
-      } else if (this.homeworkFilter === 'incomplete') {
-        return this.homeworks.filter(hw => hw.status === 'pending')
-      }
-      return this.homeworks
-    },
-    // 筛选考试
-    filteredExams() {
-      if (this.examFilter === 'all') {
-        return this.exams
-      } else if (this.examFilter === 'completed') {
-        return this.exams.filter(exam => exam.status === 'completed')
-      } else if (this.examFilter === 'incomplete') {
-        return this.exams.filter(exam => exam.status === 'not_started' || exam.status === 'in_progress')
-      }
-      return this.exams
-    },
-    // 搜索章节
+    // 筛选章节
     filteredSections() {
-      if (!this.chapterSearch) {
-        return this.sections
-      }
+      if (!this.chapterSearch) return this.sections
       const keyword = this.chapterSearch.toLowerCase()
       return this.sections.filter(section => {
         const titleMatch = section.title.toLowerCase().includes(keyword)
@@ -331,216 +465,230 @@ export default {
         )
         return titleMatch || lessonMatch
       })
-    }
-  },
-  methods: {
-    goBack() {
-      // 预览模式返回章节编辑器
-      if (this.isPreviewMode) {
-        // 清除预览数据
-        sessionStorage.removeItem('coursePreviewData')
-        this.$router.push(`/teacher/course/${this.courseId}/chapters`)
-      } else {
-        this.$router.push('/course/my-courses')
-      }
     },
     
-    selectModule(moduleId) {
-      this.activeModule = moduleId
+    // 筛选作业
+    filteredHomeworks() {
+      if (this.homeworkFilter === '全部') {
+        return this.homeworks
+      }
+      return this.homeworks.filter(hw => hw.status === this.homeworkFilter)
     },
-
-    loadCourseData() {
-      // 如果是预览模式，从 sessionStorage 加载编辑器数据
-      if (this.isPreviewMode) {
-        const previewData = sessionStorage.getItem('coursePreviewData')
-        if (previewData) {
-          const data = JSON.parse(previewData)
-          this.courseInfo = {
-            title: data.courseInfo.name || '未命名课程',
-            instructorName: '预览模式'
-          }
-          
-          // 转换章节数据格式
-          this.sections = data.chapters.map((chapter, chIdx) => ({
-            id: chapter.id,
-            title: `第${chIdx + 1}章 ${chapter.title || '未命名章节'}`,
-            description: '',
-            lessons: chapter.sections.map((section, secIdx) => ({
-              id: section.id,
-              name: `${chIdx + 1}.${secIdx + 1} ${section.title || '未命名小节'}`,
-              type: 'video', // 默认为视频类型
-              duration: `${section.contentBlocks.length}个内容块`,
-              contentBlocks: section.contentBlocks // 保存完整内容块数据
-            }))
-          }))
-          
-          // 默认展开所有章节
-          this.expandedSections = this.sections.map(s => s.id)
-          return
-        }
+    
+    // 筛选考试
+    filteredExams() {
+      if (this.examFilter === '全部') {
+        return this.exams
+      }
+      return this.exams.filter(exam => exam.status === this.examFilter)
+    },
+    
+    // 筛选社区话题
+    filteredCommunityThreads() {
+      let result = this.communityThreads
+      
+      // 分类过滤
+      if (this.communityCategory === 'my-published') {
+        result = result.filter(thread => thread.isMyPost)
       }
       
-      // TODO: 从 API 加载真实数据
-      // 模拟数据
-      this.courseInfo = {
-        title: 'React 现代实战指南',
-        instructorName: '张三'
+      // 搜索过滤
+      if (this.communitySearch) {
+        const keyword = this.communitySearch.toLowerCase()
+        result = result.filter(thread => 
+          thread.title.toLowerCase().includes(keyword) ||
+          thread.content.toLowerCase().includes(keyword)
+        )
       }
-
+      
+      // 排序
+      if (this.communitySortBy === '最新') {
+        result = [...result].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+      } else if (this.communitySortBy === '热门') {
+        result = [...result].sort((a, b) => (b.viewCount + b.replyCount + b.likeCount) - (a.viewCount + a.replyCount + a.likeCount))
+      }
+      
+      return result
+    }
+  },
+  
+  created() {
+    // 根据路由参数初始化activeModule
+    const tab = this.$route.query.tab
+    if (tab) {
+      const validTabs = this.navItems.map(item => item.id)
+      if (validTabs.includes(tab)) {
+        this.activeModule = tab
+      }
+    }
+    this.loadCourseData()
+  },
+  
+  methods: {
+    // 选择模块
+    selectModule(moduleId) {
+      this.activeModule = moduleId
+      
+      // 更新URL参数
+      this.$router.replace({
+        name: 'StudentCourseDetail',
+        params: { id: this.$route.params.id },
+        query: { tab: moduleId }
+      }).catch(err => {
+        // 忽略重复导航错误
+        if (err.name !== 'NavigationDuplicated') {
+          console.error(err)
+        }
+      })
+    },
+    
+    // 加载课程数据
+    loadCourseData() {
+      // 加载章节数据
       this.sections = [
         {
           id: 1,
-          title: 'React 基础',
-          description: '学习 React 的核心概念',
+          title: '第一章：HTML基础',
           lessons: [
-            { id: 1, name: 'React 简介', type: 'video', duration: '15:30' },
-            { id: 2, name: '组件与 Props', type: 'video', duration: '20:45' },
-            { id: 3, name: 'State 与生命周期', type: 'video', duration: '25:10' }
+            { id: 101, name: 'HTML简介', type: 'video', duration: '15分钟', completed: true },
+            { id: 102, name: 'HTML标签详解', type: 'video', duration: '25分钟', completed: true },
+            { id: 103, name: 'HTML表单', type: 'document', duration: '10分钟', completed: false }
           ]
         },
         {
           id: 2,
-          title: 'React Hooks',
-          description: 'Hooks 是 React 16.8 的新增特性',
+          title: '第二章：CSS样式',
           lessons: [
-            { id: 4, name: 'useState 详解', type: 'video', duration: '18:20' },
-            { id: 5, name: 'useEffect 使用', type: 'video', duration: '22:15' },
-            { id: 6, name: '自定义 Hook', type: 'video', duration: '16:40' }
-          ]
-        },
-        {
-          id: 3,
-          title: '高级特性',
-          description: 'Context、Refs、性能优化等',
-          lessons: [
-            { id: 7, name: 'Context API', type: 'video', duration: '19:30' },
-            { id: 8, name: 'useRef 与 forwardRef', type: 'video', duration: '14:50' },
-            { id: 9, name: 'React.memo 性能优化', type: 'video', duration: '21:00' }
+            { id: 201, name: 'CSS选择器', type: 'video', duration: '20分钟', completed: false },
+            { id: 202, name: 'CSS布局', type: 'video', duration: '30分钟', completed: false }
           ]
         }
       ]
-
-      // 默认展开第一个章节并选择第一课
-      this.expandedSections = [1]
-      this.currentLesson = this.sections[0].lessons[0]
-
+      
+      // 加载作业数据
       this.homeworks = [
         {
           id: 1,
-          title: '第一周练习',
-          description: '完成 React 组件练习',
-          dueDate: '2024-12-31',
-          totalPoints: 100,
-          score: null,
-          status: 'pending'
+          name: 'HTML基础练习',
+          status: '已完成',
+          startTime: '2024-01-20 09:00',
+          endTime: '2024-01-27 23:59',
+          submitTime: '2024-01-25 18:30',
+          score: 85,
+          totalScore: 100
         },
         {
           id: 2,
-          title: 'Hooks 实践作业',
-          description: '使用 Hooks 重构组件',
-          dueDate: '2025-01-07',
-          totalPoints: 100,
-          score: 95,
-          status: 'graded'
+          name: 'CSS布局作业',
+          status: '未完成',
+          startTime: '2024-01-22 09:00',
+          endTime: '2024-01-29 23:59',
+          submitTime: null,
+          score: null,
+          totalScore: 100
         }
       ]
-
+      
+      // 加载考试数据
       this.exams = [
         {
           id: 1,
-          title: 'React 基础测试',
-          description: '测试 React 基础知识掌握情况',
-          duration: 60,
-          questionCount: 20,
-          totalPoints: 100,
-          score: null,
-          status: 'not_started'
+          name: '期中考试',
+          status: '已完成',
+          startTime: '2024-01-20 14:00',
+          endTime: '2024-01-20 16:00',
+          duration: 120,
+          questionCount: 50,
+          score: 92,
+          totalScore: 100
         },
         {
           id: 2,
-          title: 'Hooks 进阶测试',
-          description: '测试 Hooks 高级用法',
-          duration: 45,
-          questionCount: 15,
-          totalPoints: 100,
-          score: 88,
-          status: 'completed'
+          name: '期末考试',
+          status: '未开始',
+          startTime: '2024-02-15 14:00',
+          endTime: '2024-02-15 16:30',
+          duration: 150,
+          questionCount: 60,
+          score: null,
+          totalScore: 100
         }
       ]
-
-      this.communityPosts = [
+      
+      // 加载社区话题数据
+      this.communityThreads = [
         {
           id: 1,
-          title: '关于 React Hooks 的疑问',
-          content: '使用 useState 时遇到了一些问题...',
-          author: { name: '李四' },
-          createdAt: '2小时前',
-          replyCount: 5,
-          viewCount: 120
+          title: '关于CSS Grid布局的疑问',
+          content: '在学习CSS Grid的时候遇到了一些问题，想请教一下大家...',
+          author: '李同学',
+          authorId: 1, // 作者ID（当前用户）
+          authorRole: 'student',
+          createTime: '2024-01-24 10:30',
+          viewCount: 156,
+          replyCount: 12,
+          likeCount: 8,
+          isLiked: false,
+          essence: false,
+          isMyPost: true,
+          hasMyReply: true,
+          hasReplyToMe: true
+        },
+        {
+          id: 2,
+          title: '第二章重点知识总结',
+          content: '整理了第二章的重点知识，分享给大家参考...',
+          author: '张老师',
+          authorId: 100, // 老师ID
+          authorRole: 'teacher',
+          createTime: '2024-01-23 15:20',
+          viewCount: 289,
+          replyCount: 23,
+          likeCount: 45,
+          isLiked: true,
+          essence: true,
+          isMyPost: false,
+          hasMyReply: true,
+          hasReplyToMe: false
+        },
+        {
+          id: 3,
+          title: 'Flexbox和Grid该如何选择？',
+          content: '在实际项目中，Flexbox和Grid各有什么优势，应该如何选择？',
+          author: '王同学',
+          authorId: 2, // 其他学生ID
+          authorRole: 'student',
+          createTime: '2024-01-22 09:15',
+          viewCount: 203,
+          replyCount: 18,
+          likeCount: 15,
+          isLiked: false,
+          essence: false,
+          isMyPost: false,
+          hasMyReply: false,
+          hasReplyToMe: true
+        },
+        {
+          id: 4,
+          title: 'JavaScript异步编程最佳实践',
+          content: '分享一些JavaScript异步编程的经验和技巧...',
+          author: '赵同学',
+          authorId: 3, // 其他学生ID
+          authorRole: 'student',
+          createTime: '2024-01-21 14:00',
+          viewCount: 178,
+          replyCount: 15,
+          likeCount: 20,
+          isLiked: false,
+          essence: false,
+          isMyPost: false,
+          hasMyReply: false,
+          hasReplyToMe: false
         }
       ]
     },
-
-    getHomeworkStatusText(status) {
-      const map = {
-        pending: '待提交',
-        submitted: '已提交',
-        graded: '已批改'
-      }
-      return map[status] || status
-    },
-
-    getExamStatusText(status) {
-      const map = {
-        not_started: '未开始',
-        in_progress: '进行中',
-        completed: '已完成'
-      }
-      return map[status] || status
-    },
-
-    viewLesson(lesson) {
-      this.$message.info(`观看课程: ${lesson.name}`)
-      // TODO: 跳转到视频播放页面
-    },
-
-    submitHomework(homework) {
-      this.$message.info(`提交作业: ${homework.title}`)
-      // TODO: 跳转到作业提交页面
-    },
-
-    viewHomework(homework) {
-      this.$message.info(`查看作业: ${homework.title}`)
-      // TODO: 跳转到作业详情页面
-    },
-
-    startExam(exam) {
-      this.$confirm('确定要开始考试吗？考试开始后将开始计时。', '提示', {
-        confirmButtonText: '开始',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$router.push(`/exam/${exam.id}/answer`)
-      })
-    },
-
-    continueExam(exam) {
-      this.$router.push(`/exam/${exam.id}/answer`)
-    },
-
-    viewExamResult(exam) {
-      this.$router.push(`/exam/${exam.id}/result`)
-    },
-
-    goToNewPost() {
-      this.$router.push(`/course/${this.courseId}/community/new-post`)
-    },
-
-    viewPost(post) {
-      this.$router.push(`/community/post/${post.id}`)
-    },
-
-    // 章节展开/收起
+    
+    // 章节相关方法
     toggleSection(sectionId) {
       const index = this.expandedSections.indexOf(sectionId)
       if (index > -1) {
@@ -549,127 +697,174 @@ export default {
         this.expandedSections.push(sectionId)
       }
     },
-
-    // 选择课程，跳转到播放页面
+    
     selectLesson(lesson, section) {
-      // 预览模式下显示内容详情
-      if (this.isPreviewMode && lesson.contentBlocks) {
-        const blocksInfo = lesson.contentBlocks.map(block => {
-          switch(block.type) {
-            case 'video':
-              return `📹 视频: ${block.videoName || '未命名视频'}`
-            case 'document':
-              return `📄 文档: ${block.displayName || block.docName || '未命名文档'}`
-            case 'text':
-              return `📝 文本内容`
-            case 'quiz':
-              return `✅ 测验: ${block.quizCreated ? '已创建' : '待创建'}`
-            default:
-              return `📦 ${block.type}`
-          }
-        }).join('\n')
-        
-        this.$alert(
-          blocksInfo || '该小节暂无内容',
-          `${lesson.name} - 内容预览`,
-          {
-            confirmButtonText: '确定',
-            dangerouslyUseHTMLString: false
-          }
-        )
-        return
-      }
-      
+      // 跳转到学生课程播放页面
       this.$router.push({
-        path: `/course/${this.courseId}/lesson/${lesson.id}`,
+        path: `/student/course/${this.courseId}/lesson/${lesson.id}`,
         query: {
           sectionId: section.id
         }
       })
     },
-
-    // 考试点击处理
-    handleExamClick(exam) {
-      if (exam.status === 'not_started') {
-        this.startExam(exam)
-      } else if (exam.status === 'in_progress') {
-        this.continueExam(exam)
-      } else if (exam.status === 'completed') {
-        this.viewExamResult(exam)
+    
+    // 作业相关方法
+    viewHomeworkDetail(homework) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/homework/${homework.id}`
+      })
+    },
+    
+    startHomework(homework) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/homework/${homework.id}`
+      })
+    },
+    
+    viewHomeworkResult(homework) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/homework/${homework.id}`
+      })
+    },
+    
+    // 考试相关方法
+    viewExamDetail(exam) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/exam/${exam.id}`
+      })
+    },
+    
+    startExam(exam) {
+      if (exam.status === '未开始') {
+        this.$message.warning('考试尚未开始')
+        return
       }
+      this.$router.push({
+        path: `/student/course/${this.courseId}/exam/${exam.id}`
+      })
+    },
+    
+    viewExamResult(exam) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/exam/${exam.id}`
+      })
+    },
+    
+    // 社区相关方法
+    createNewThread() {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/thread/create`
+      })
+    },
+    
+    viewThreadDetail(threadId) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/thread/${threadId}`
+      })
+    },
+    
+    getThreadExcerpt(content) {
+      return content.length > 100 ? content.substring(0, 100) + '...' : content
+    },
+    
+    toggleThreadLike(thread) {
+      thread.isLiked = !thread.isLiked
+      thread.likeCount += thread.isLiked ? 1 : -1
+      this.$message.success(thread.isLiked ? '已点赞' : '已取消点赞')
+    },
+    
+    editThread(threadId) {
+      this.$router.push({
+        path: `/student/course/${this.courseId}/thread/${threadId}/edit`
+      })
+    },
+    
+    deleteThread(threadId) {
+      this.$confirm('确定要删除这个话题吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const index = this.communityThreads.findIndex(t => t.id === threadId)
+        if (index > -1) {
+          this.communityThreads.splice(index, 1)
+          this.$message.success('话题已删除')
+        }
+      }).catch(() => {})
+    },
+    
+    // 分类选择
+    selectCategory(categoryId) {
+      this.communityCategory = categoryId
+    },
+    
+    // 权限判断
+    canEditThread(thread) {
+      // 只能编辑自己的帖子
+      return thread.isMyPost
+    },
+    
+    canDeleteThread() {
+      // 老师可以删除他人的帖子，但不能编辑
+      // 学生只能删除自己的
+      // 这里假设学生角色，所以返回false
+      return false
     }
   }
 }
 </script>
 
 <style scoped>
+/* 整体布局 */
 .student-course-detail {
-  width: 100%;
+  display: flex;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f9fafb;
 }
 
-.preview-banner {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
-}
-
-.preview-banner i {
-  font-size: 18px;
-}
-
-.page-header {
-  background: white;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.course-title h1 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.5rem;
-  color: #2c3e50;
-}
-
-.course-title p {
-  margin: 0;
-  color: #7f8c8d;
-  font-size: 0.9rem;
-}
-
-.course-container {
-  display: flex;
-  gap: 1.5rem;
-  padding: 0 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.sidebar {
+/* 左侧固定导航栏 */
+.sidebar-fixed {
   width: 220px;
-  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.sidebar-logo h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.instructor-name {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 
 .nav-menu {
-  background: white;
-  border-radius: 8px;
-  padding: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 1.5rem 0.75rem;
+  flex: 1;
 }
 
 .nav-item {
@@ -677,467 +872,103 @@ export default {
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s;
-  color: #606266;
+  transition: all 0.3s;
+  color: #6b7280;
+  font-weight: 500;
+  user-select: none;
+  -webkit-user-select: none;
+  margin-bottom: 0.25rem;
 }
 
 .nav-item:hover {
-  background: #f5f7fa;
-  color: #409EFF;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .nav-item.active {
-  background: #ecf5ff;
-  color: #409EFF;
-  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .nav-icon {
   font-size: 1.2rem;
 }
 
-.content-area {
+.nav-label {
+  font-size: 0.95rem;
+}
+
+/* 右侧主内容区 */
+.main-wrapper {
   flex: 1;
-  min-width: 0;
+  margin-left: 220px;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 右侧内容区 */
+.content-area {
+  background: white;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .module-section {
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .module-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 0;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .module-header h2 {
   margin: 0;
-  font-size: 1.5rem;
   color: #2c3e50;
-}
-
-/* 章节样式 */
-.section-card {
-  background: #fafafa;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.section-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.section-header h3 {
-  margin: 0;
-  flex: 1;
-  font-size: 1.1rem;
-}
-
-.lesson-count {
-  color: #909399;
-  font-size: 0.9rem;
-}
-
-.section-desc {
-  color: #606266;
-  margin: 0 0 1rem 0;
-}
-
-.lessons-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.lesson-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: white;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.lesson-item:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.lesson-number {
-  background: #e8e8e8;
-  color: #606266;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.lesson-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.lesson-type {
-  font-size: 1.1rem;
-}
-
-.lesson-duration {
-  color: #909399;
-  font-size: 0.85rem;
-}
-
-/* 作业样式 */
-.homework-list,
-.exam-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.homework-card,
-.exam-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: all 0.2s;
-}
-
-.homework-card:hover,
-.exam-card:hover {
-  border-color: #409EFF;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.1);
-}
-
-.homework-header,
-.exam-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.homework-header h3,
-.exam-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
-}
-
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status-badge.pending,
-.status-badge.not_started {
-  background: #fff3e0;
-  color: #e65100;
-}
-
-.status-badge.submitted,
-.status-badge.in_progress {
-  background: #e3f2fd;
-  color: #1565c0;
-}
-
-.status-badge.graded,
-.status-badge.completed {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.homework-desc,
-.exam-desc {
-  color: #606266;
-  margin: 0 0 1rem 0;
-}
-
-.homework-meta,
-.exam-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  color: #909399;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.homework-actions,
-.exam-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* 社区样式 */
-.community-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.post-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: all 0.2s;
-}
-
-.post-card:hover {
-  border-color: #409EFF;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.1);
-}
-
-.post-header {
-  margin-bottom: 1rem;
-}
-
-.post-author {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-}
-
-.author-name {
-  margin: 0;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.post-time {
-  margin: 0;
-  color: #909399;
-  font-size: 0.85rem;
-}
-
-.post-title {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
-}
-
-.post-content {
-  color: #606266;
-  margin: 0 0 1rem 0;
-}
-
-.post-footer {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  color: #909399;
-  font-size: 0.9rem;
-}
-
-/* 空数据状态 */
-.no-data {
-  text-align: center;
-  padding: 3rem;
-  color: #909399;
-}
-
-.no-data p {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-/* 新增：课程标题栏 */
-.course-title-bar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1.5rem;
-  border-radius: 8px 8px 0 0;
-  margin-bottom: 0;
-}
-
-.course-title-bar h2 {
-  margin: 0;
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* 新增：筛选栏 */
-.filter-bar {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-top: none;
-  display: flex;
-  padding: 0.5rem 1.5rem;
-}
-
-.filter-tab {
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  color: #606266;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s;
-  font-size: 0.95rem;
-}
-
-.filter-tab:hover {
-  color: #409EFF;
-}
-
-.filter-tab.active {
-  color: #409EFF;
-  border-bottom-color: #409EFF;
-  font-weight: 600;
-}
-
-/* 新增：任务列表 */
-.task-list {
-  padding: 1.5rem;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-}
-
-.task-item {
-  display: flex;
-  align-items: center;
-  padding: 1.25rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.task-item:last-child {
-  margin-bottom: 0;
-}
-
-.task-item:hover {
-  border-color: #409EFF;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.task-type-badge {
-  background: #909399;
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-right: 1rem;
-  min-width: 50px;
-  text-align: center;
-}
-
-.task-type-badge.exam {
-  background: #909399;
-}
-
-.task-content {
-  flex: 1;
-}
-
-.task-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.task-meta {
-  display: flex;
-  gap: 1.5rem;
-  color: #909399;
-  font-size: 0.9rem;
-}
-
-.task-meta span {
-  display: flex;
-  align-items: center;
-}
-
-.task-status {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-left: 1rem;
-}
-
-.task-status.pending,
-.task-status.not_started {
-  background: #fff3e0;
-  color: #e65100;
-}
-
-.task-status.submitted,
-.task-status.in_progress {
-  background: #e3f2fd;
-  color: #1565c0;
-}
-
-.task-status.graded,
-.task-status.completed {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-/* 章节概览样式 */
+/* 章节模块样式 */
 .sections-overview {
-  background: white;
-  border-radius: 8px;
-  padding: 1.5rem;
+  width: 100%;
 }
 
 .overview-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .overview-header h2 {
-  margin: 0;
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: #1f2937;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
 }
 
 .sections-list {
@@ -1147,14 +978,14 @@ export default {
 }
 
 .section-card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .section-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .section-card-header {
@@ -1162,25 +993,25 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-  background: #f7f8fa;
+  background: #f9fafb;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s;
 }
 
 .section-card-header:hover {
-  background: #ebeef5;
+  background: #f3f4f6;
 }
 
 .section-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .expand-icon {
-  color: #909399;
-  transition: transform 0.3s;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  transition: transform 0.2s;
 }
 
 .expand-icon.expanded {
@@ -1188,57 +1019,63 @@ export default {
 }
 
 .section-info h3 {
+  font-size: 1.125rem;
+  color: #1f2937;
   margin: 0;
-  font-size: 1.1rem;
-  color: #2c3e50;
   font-weight: 600;
 }
 
 .section-meta {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
 }
 
 .lesson-count {
-  color: #909399;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .section-lessons {
-  padding: 0.5rem;
-  background: white;
+  border-top: 1px solid #e5e7eb;
 }
 
 .lesson-card {
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-radius: 6px;
+  border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
-  transition: all 0.2s;
-  gap: 1rem;
+  transition: background 0.2s;
+}
+
+.lesson-card:last-child {
+  border-bottom: none;
 }
 
 .lesson-card:hover {
-  background: #f5f7fa;
+  background: #f9fafb;
 }
 
 .lesson-index {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
+  background: #e5e7eb;
   border-radius: 50%;
-  background: #e8eaed;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #606266;
+  color: #6b7280;
+  margin-right: 1rem;
 }
 
 .lesson-icon {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
+  margin-right: 1rem;
 }
 
 .lesson-content {
@@ -1247,23 +1084,643 @@ export default {
 
 .lesson-name {
   font-size: 1rem;
-  color: #2c3e50;
+  color: #1f2937;
   margin-bottom: 0.25rem;
   font-weight: 500;
 }
 
 .lesson-meta {
-  color: #909399;
-  font-size: 0.85rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 
-.lesson-action {
-  opacity: 0;
-  transition: opacity 0.2s;
+.completed-badge {
+  color: #10b981;
+  font-weight: 600;
 }
 
-.lesson-card:hover .lesson-action {
-  opacity: 1;
+/* 筛选区域样式 */
+.filter-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-group label {
+  font-size: 0.9375rem;
+  color: #4b5563;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-filter-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #6b7280;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.filter-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.filter-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+/* 列表区域样式 */
+.list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.homework-item-card,
+.exam-item-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.homework-item-card:hover,
+.exam-item-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-color: #d1d5db;
+}
+
+.card-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.task-title {
+  font-size: 1.125rem;
+  color: #1f2937;
+  margin: 0;
+  font-weight: 600;
+}
+
+.clickable-title {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.clickable-title:hover {
+  color: #667eea;
+}
+
+.status-capsule {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-capsule.未完成 {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.status-capsule.已完成 {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-capsule.未开始 {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.stats-inline {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.stat-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.card-middle-section {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 1rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.info-label {
+  color: #6b7280;
+}
+
+.info-value {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.card-bottom-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.primary-action-btn {
+  padding: 0.75rem 2rem !important;
+  font-size: 1rem !important;
+}
+
+/* 社区模块样式 */
+.community-module {
+  padding: 0;
+}
+
+.community-layout {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+}
+
+.community-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.community-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.community-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.community-search-input {
+  flex: 1;
+  max-width: 400px;
+  padding: 0.625rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.community-search-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.community-publish-btn {
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.community-publish-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.community-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sort-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sort-tab {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 0.9375rem;
+}
+
+.sort-tab:hover {
+  background: white;
+  color: #1f2937;
+}
+
+.sort-tab.active {
+  background: white;
+  color: #667eea;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.personal-filter {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: #4b5563;
+}
+
+.filter-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.community-thread-list {
+  padding: 1.5rem 2rem;
+}
+
+.thread-card {
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: white;
+  transition: all 0.2s;
+}
+
+.thread-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-color: #d1d5db;
+}
+
+.thread-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.thread-title {
+  font-size: 1.125rem;
+  color: #1f2937;
+  margin: 0;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 600;
+  flex: 1;
+}
+
+.thread-title:hover {
+  color: #667eea;
+}
+
+.thread-badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.badge-role {
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-role.teacher {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.badge-role.student {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.badge-tag.essence {
+  background: #fce7f3;
+  color: #ec4899;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.thread-preview {
+  margin-bottom: 1rem;
+}
+
+.thread-excerpt {
+  color: #6b7280;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.thread-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.thread-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.author-name {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.separator {
+  color: #d1d5db;
+}
+
+.publish-time {
+  color: #9ca3af;
+}
+
+.thread-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.stat-item.clickable {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.stat-item.clickable:hover {
+  color: #667eea;
+}
+
+.icon-view,
+.icon-reply {
+  font-size: 1rem;
+}
+
+.like-btn-list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.like-btn-list:hover {
+  border-color: #667eea;
+  background: #f5f7ff;
+}
+
+.like-btn-list.liked {
+  border-color: #ec4899;
+  background: #fdf2f8;
+  color: #ec4899;
+}
+
+.thread-manage {
+  display: flex;
+  gap: 1rem;
+}
+
+.manage-link {
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.manage-link.edit {
+  color: #667eea;
+}
+
+.manage-link.edit:hover {
+  color: #5568d3;
+  text-decoration: underline;
+}
+
+.manage-link.delete {
+  color: #ef4444;
+}
+
+.manage-link.delete:hover {
+  color: #dc2626;
+  text-decoration: underline;
+}
+
+/* 空状态样式 */
+.no-data {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #9ca3af;
+}
+
+.no-data p {
+  margin: 1rem 0 0.5rem;
+  font-size: 1rem;
+}
+
+.no-data .hint {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+/* 社区右侧边栏样式 */
+.sidebar-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 1.5rem;
+}
+
+.sidebar-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.category-item:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.category-item.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-color: #667eea;
+}
+
+.category-item.active .category-icon {
+  filter: grayscale(0);
+}
+
+.category-item.active .category-label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.category-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  filter: grayscale(0.3);
+  transition: filter 0.2s;
+}
+
+.category-label {
+  font-size: 0.9375rem;
+  color: #4b5563;
+  transition: all 0.2s;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .sidebar-fixed {
+    width: 200px;
+  }
+  
+  .main-wrapper {
+    margin-left: 200px;
+  }
+  
+  .community-sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-fixed {
+    width: 180px;
+  }
+  
+  .community-layout {
+    flex-direction: column;
+  }
+  
+  .community-sidebar {
+    width: 100%;
+    order: -1;
+  }
+  
+  .sidebar-section {
+    position: static;
+  }
+  
+  .main-wrapper {
+    margin-left: 180px;
+  }
+  
+  .content-area {
+    padding: 1rem;
+  }
 }
 </style>
-

@@ -171,23 +171,41 @@
         <!-- 题目块列表 -->
         <div class="questions-container">
           <!-- 只显示选中的题目 -->
-          <div v-if="selectedQuestion" class="question-block">
+          <div v-if="selectedQuestion" class="question-block editable">
             <div class="question-block-header">
               <div class="question-block-title">
                 <span class="question-num">{{ getQuestionDisplayNumber(selectedQuestion) }}</span>
                 <el-tag size="small" type="info">{{ getQuestionTypeLabel(selectedQuestion.type) }}</el-tag>
-                <span class="question-score">
-                  {{ selectedQuestion.points || 0 }}分
-                </span>
+                <el-input-number 
+                  v-if="isEditMode"
+                  v-model="selectedQuestion.points" 
+                  :min="0" 
+                  :max="100"
+                  size="mini"
+                  controls-position="right"
+                  @change="updateTotalScore"
+                  style="width: 100px; margin-left: 10px;"
+                ></el-input-number>
+                <span v-else style="margin-left: 10px; color: #f56c6c; font-weight: 500;">{{ selectedQuestion.points || 0 }}分</span>
               </div>
               <div class="question-block-actions">
                 <el-button 
-                  type="text" 
+                  v-if="!isEditMode"
+                  type="primary"
                   size="small" 
                   icon="el-icon-edit"
-                  @click="editQuestion(selectedQuestion)"
+                  @click="isEditMode = true"
                 >
                   编辑
+                </el-button>
+                <el-button 
+                  v-else
+                  type="success"
+                  size="small" 
+                  icon="el-icon-check"
+                  @click="isEditMode = false"
+                >
+                  完成
                 </el-button>
                 <el-button 
                   type="text" 
@@ -202,40 +220,196 @@
             </div>
 
             <div class="question-block-content">
-              <!-- 题干 -->
-              <div class="question-stem">
-                <span v-if="selectedQuestion.title" v-html="selectedQuestion.title"></span>
-                <span v-else class="placeholder-text">点击编辑添加题目内容...</span>
-              </div>
-
-              <!-- 选项（单选/多选） -->
-              <div v-if="['single', 'multiple'].includes(selectedQuestion.type)" class="question-options">
-                <div v-for="(opt, optIdx) in selectedQuestion.options" :key="optIdx" class="option-item">
-                  <span class="option-label">{{ String.fromCharCode(65 + optIdx) }}.</span>
-                  <span>{{ opt }}</span>
+              <!-- 题干编辑 -->
+              <div class="question-stem-edit">
+                <label class="edit-label">题目内容</label>
+                <el-input 
+                  v-if="isEditMode"
+                  v-model="selectedQuestion.title" 
+                  type="textarea" 
+                  rows="3"
+                  placeholder="请输入题目内容"
+                  @change="updateTotalScore"
+                ></el-input>
+                <div v-else class="question-stem-view">
+                  <span v-if="selectedQuestion.title">{{ selectedQuestion.title }}</span>
+                  <span v-else class="placeholder-text">暂无题目内容</span>
                 </div>
-                <div v-if="!selectedQuestion.options || selectedQuestion.options.length === 0" class="placeholder-text">
-                  暂无选项
+              </div>
+
+              <!-- 选项编辑（单选/多选） -->
+              <div v-if="['single', 'multiple'].includes(selectedQuestion.type)" class="question-options-edit">
+                <label class="edit-label">选项设置</label>
+                <div v-if="isEditMode">
+                  <div v-for="(opt, optIdx) in selectedQuestion.options" :key="optIdx" class="option-input-row">
+                    <span 
+                      class="option-label clickable"
+                      :class="{ selected: isAnswerSelected(optIdx) }"
+                      @click="toggleAnswer(optIdx)"
+                    >
+                      {{ String.fromCharCode(65 + optIdx) }}
+                    </span>
+                    <el-input v-model="selectedQuestion.options[optIdx]" placeholder="请输入选项内容"></el-input>
+                    <el-button 
+                      v-if="selectedQuestion.options.length > 2"
+                      type="text" 
+                      icon="el-icon-delete" 
+                      @click="removeOption(optIdx)"
+                      style="color: #f56c6c;"
+                    ></el-button>
+                  </div>
+                  <el-button size="small" @click="addOption" style="margin-top: 10px;">
+                    <i class="el-icon-plus"></i> 添加选项
+                  </el-button>
+                </div>
+                <div v-else class="options-view">
+                  <div v-for="(opt, optIdx) in selectedQuestion.options" :key="optIdx" class="option-view-item">
+                    <span 
+                      class="option-label"
+                      :class="{ selected: isAnswerSelected(optIdx) }"
+                    >
+                      {{ String.fromCharCode(65 + optIdx) }}
+                    </span>
+                    <span>{{ opt || '（选项未设置）' }}</span>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- 填空题答案 -->
+              <div v-if="selectedQuestion.type === 'fill'" class="answer-edit">
+                <label class="edit-label">参考答案</label>
+                <el-input v-if="isEditMode" v-model="selectedQuestion.answer" placeholder="请输入参考答案"></el-input>
+                <div v-else class="answer-view">{{ selectedQuestion.answer || '（未设置）' }}</div>
+              </div>
+
+              <!-- 判断题答案 -->
+              <div v-if="selectedQuestion.type === 'judge'" class="answer-edit">
+                <label class="edit-label">正确答案</label>
+                <el-radio-group v-if="isEditMode" v-model="selectedQuestion.answer">
+                  <el-radio :label="true">正确</el-radio>
+                  <el-radio :label="false">错误</el-radio>
+                </el-radio-group>
+                <div v-else class="answer-view">
+                  <el-tag :type="selectedQuestion.answer ? 'success' : 'danger'">
+                    {{ selectedQuestion.answer ? '正确' : '错误' }}
+                  </el-tag>
                 </div>
               </div>
 
-              <!-- 答案提示 -->
-              <div v-if="selectedQuestion.answer !== null && selectedQuestion.answer !== undefined && selectedQuestion.answer !== ''" class="question-answer-hint">
-                <i class="el-icon-check"></i>
-                <span v-if="selectedQuestion.type === 'single'">答案：{{ String.fromCharCode(65 + selectedQuestion.answer) }}</span>
-                <span v-else-if="selectedQuestion.type === 'multiple'">答案：{{ selectedQuestion.answer.map(a => String.fromCharCode(65 + a)).join(', ') }}</span>
-                <span v-else-if="selectedQuestion.type === 'judge'">答案：{{ selectedQuestion.answer ? '正确' : '错误' }}</span>
-                <span v-else>已设置参考答案</span>
+              <!-- 简答题答案 -->
+              <div v-if="selectedQuestion.type === 'essay'" class="answer-edit">
+                <label class="edit-label">参考答案</label>
+                <el-input 
+                  v-if="isEditMode"
+                  v-model="selectedQuestion.answer" 
+                  type="textarea" 
+                  rows="4"
+                  placeholder="请输入参考答案（选填）"
+                ></el-input>
+                <div v-else class="answer-view" style="white-space: pre-wrap;">{{ selectedQuestion.answer || '（未设置）' }}</div>
               </div>
 
-              <!-- 难度和知识点 -->
-              <div v-if="selectedQuestion.difficulty || selectedQuestion.knowledgePoints" class="question-meta">
-                <el-tag v-if="selectedQuestion.difficulty" size="mini" type="warning">
-                  难度：{{ selectedQuestion.difficulty }}
-                </el-tag>
-                <el-tag v-if="selectedQuestion.knowledgePoints" size="mini">
-                  知识点：{{ selectedQuestion.knowledgePoints }}
-                </el-tag>
+              <!-- 答案解析 -->
+              <div class="answer-analysis-edit">
+                <label class="edit-label">答案解析</label>
+                <el-input 
+                  v-if="isEditMode"
+                  v-model="selectedQuestion.analysis" 
+                  type="textarea" 
+                  rows="3"
+                  placeholder="请输入答案解析（选填）"
+                ></el-input>
+                <div v-else class="answer-view" style="white-space: pre-wrap;">{{ selectedQuestion.analysis || '（未设置）' }}</div>
+              </div>
+
+              <!-- 难度、知识点、标签 -->
+              <div class="question-metadata-edit">
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <label class="edit-label">难度（0.1-1.0）</label>
+                    <el-input-number
+                      v-if="isEditMode"
+                      v-model="selectedQuestion.difficulty"
+                      :min="0.1"
+                      :max="1.0"
+                      :step="0.1"
+                      :precision="1"
+                      placeholder="选择难度"
+                      style="width: 100%;"
+                    ></el-input-number>
+                    <div v-else class="metadata-view">
+                      <el-tag v-if="selectedQuestion.difficulty" type="warning" size="small">
+                        {{ selectedQuestion.difficulty }}
+                      </el-tag>
+                      <span v-else class="placeholder-text">未设置</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <label class="edit-label">知识点 <el-button v-if="isEditMode" type="text" size="mini" @click="showKnowledgeDialog = true">创建</el-button></label>
+                    <el-select 
+                      v-if="isEditMode"
+                      v-model="selectedQuestion.knowledgePoints" 
+                      multiple 
+                      filterable
+                      allow-create
+                      default-first-option
+                      placeholder="选择或创建知识点" 
+                      style="width: 100%;"
+                    >
+                      <el-option 
+                        v-for="kp in knowledgeList" 
+                        :key="kp.id" 
+                        :label="kp.name" 
+                        :value="kp.name"
+                      ></el-option>
+                    </el-select>
+                    <div v-else class="metadata-view">
+                      <el-tag 
+                        v-for="(kp, idx) in selectedQuestion.knowledgePoints" 
+                        :key="idx" 
+                        size="small" 
+                        style="margin-right: 5px;"
+                      >
+                        {{ kp }}
+                      </el-tag>
+                      <span v-if="!selectedQuestion.knowledgePoints || selectedQuestion.knowledgePoints.length === 0" class="placeholder-text">未设置</span>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <label class="edit-label">标签 <el-button v-if="isEditMode" type="text" size="mini" @click="showTagDialog = true">创建</el-button></label>
+                    <el-select 
+                      v-if="isEditMode"
+                      v-model="selectedQuestion.tags" 
+                      multiple 
+                      filterable
+                      allow-create
+                      default-first-option
+                      placeholder="选择或创建标签" 
+                      style="width: 100%;"
+                    >
+                      <el-option 
+                        v-for="tag in tagList" 
+                        :key="tag.id" 
+                        :label="tag.name" 
+                        :value="tag.name"
+                      ></el-option>
+                    </el-select>
+                    <div v-else class="metadata-view">
+                      <el-tag 
+                        v-for="(tag, idx) in selectedQuestion.tags" 
+                        :key="idx" 
+                        type="info"
+                        size="small" 
+                        style="margin-right: 5px;"
+                      >
+                        {{ tag }}
+                      </el-tag>
+                      <span v-if="!selectedQuestion.tags || selectedQuestion.tags.length === 0" class="placeholder-text">未设置</span>
+                    </div>
+                  </el-col>
+                </el-row>
               </div>
             </div>
           </div>
@@ -350,95 +524,37 @@
       </span>
     </el-dialog>
 
-    <!-- 题目编辑对话框 -->
+    <!-- 标签管理对话框 - 简化版 -->
     <el-dialog
-      :title="(editingIndex !== null ? '编辑' : '添加') + getQuestionTypeLabel(currentQuestion.type)"
-      :visible.sync="showQuestionDialog"
-      width="700px"
-      :close-on-click-modal="false"
+      title="快速创建标签"
+      :visible.sync="showTagDialog"
+      width="500px"
     >
-      <el-form :model="currentQuestion" label-width="80px">
-        <el-form-item label="题目">
-          <el-input 
-            v-model="currentQuestion.title" 
-            type="textarea" 
-            rows="3"
-            placeholder="请输入题目内容"
-          ></el-input>
-        </el-form-item>
-
-        <!-- 单选题/多选题选项 -->
-        <template v-if="currentQuestion.type === 'single' || currentQuestion.type === 'multiple'">
-          <el-form-item label="选项">
-            <div v-for="(option, optIdx) in currentQuestion.options" :key="optIdx" class="option-input-row">
-              <span class="option-label">{{ String.fromCharCode(65 + optIdx) }}.</span>
-              <el-input v-model="currentQuestion.options[optIdx]" placeholder="请输入选项内容"></el-input>
-              <el-button 
-                v-if="currentQuestion.options.length > 2"
-                type="text" 
-                icon="el-icon-delete" 
-                @click="removeOption(optIdx)"
-                style="color: #f56c6c;"
-              ></el-button>
-            </div>
-            <el-button size="small" @click="addOption" style="margin-top: 10px;">
-              <i class="el-icon-plus"></i> 添加选项
-            </el-button>
-          </el-form-item>
-
-          <el-form-item label="正确答案">
-            <el-checkbox-group v-if="currentQuestion.type === 'multiple'" v-model="currentQuestion.answer">
-              <el-checkbox 
-                v-for="(opt, optIdx) in currentQuestion.options" 
-                :key="optIdx" 
-                :label="optIdx"
-              >
-                {{ String.fromCharCode(65 + optIdx) }}
-              </el-checkbox>
-            </el-checkbox-group>
-            <el-radio-group v-else v-model="currentQuestion.answer">
-              <el-radio 
-                v-for="(opt, optIdx) in currentQuestion.options" 
-                :key="optIdx" 
-                :label="optIdx"
-              >
-                {{ String.fromCharCode(65 + optIdx) }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </template>
-
-        <!-- 填空题 -->
-        <el-form-item v-if="currentQuestion.type === 'fill'" label="参考答案">
-          <el-input v-model="currentQuestion.answer" placeholder="请输入参考答案"></el-input>
-        </el-form-item>
-
-        <!-- 判断题 -->
-        <el-form-item v-if="currentQuestion.type === 'judge'" label="正确答案">
-          <el-radio-group v-model="currentQuestion.answer">
-            <el-radio :label="true">正确</el-radio>
-            <el-radio :label="false">错误</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <!-- 简答题 -->
-        <el-form-item v-if="currentQuestion.type === 'essay'" label="参考答案">
-          <el-input 
-            v-model="currentQuestion.answer" 
-            type="textarea" 
-            rows="4"
-            placeholder="请输入参考答案（选填）"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="分值">
-          <el-input-number v-model="currentQuestion.points" :min="0" :max="100"></el-input-number>
+      <el-form label-width="80px">
+        <el-form-item label="标签名称">
+          <el-input v-model="newTagName" placeholder="输入标签名称" @keyup.enter.native="addTagQuick"></el-input>
         </el-form-item>
       </el-form>
-
       <span slot="footer">
-        <el-button @click="showQuestionDialog = false">取消</el-button>
-        <el-button type="primary" @click="saveQuestion">确定</el-button>
+        <el-button @click="showTagDialog = false">取消</el-button>
+        <el-button type="primary" @click="addTagQuick">创建</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 知识点管理对话框 - 简化版 -->
+    <el-dialog
+      title="快速创建知识点"
+      :visible.sync="showKnowledgeDialog"
+      width="500px"
+    >
+      <el-form label-width="80px">
+        <el-form-item label="知识点">
+          <el-input v-model="newKnowledgeName" placeholder="输入知识点名称" @keyup.enter.native="addKnowledgeQuick"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showKnowledgeDialog = false">取消</el-button>
+        <el-button type="primary" @click="addKnowledgeQuick">创建</el-button>
       </span>
     </el-dialog>
   </div>
@@ -469,12 +585,26 @@ export default {
         { label: '判断题', value: 'judge' },
         { label: '简答题', value: 'essay' }
       ],
-      showQuestionDialog: false,
       showPreviewDialog: false,
       showBatchActions: false,
-      currentQuestion: {},
-      editingIndex: null,
-      selectedQuestion: null
+      selectedQuestion: null,
+      isEditMode: false, // 编辑模式控制
+      
+      // 标签和知识点管理
+      showTagDialog: false,
+      showKnowledgeDialog: false,
+      newTagName: '',
+      newKnowledgeName: '',
+      tagList: [
+        { id: 1, name: '期中考试', color: '#409EFF' },
+        { id: 2, name: '期末考试', color: '#67C23A' },
+        { id: 3, name: '单元测试', color: '#E6A23C' }
+      ],
+      knowledgeList: [
+        { id: 1, name: '数据结构', category: 'basic' },
+        { id: 2, name: '算法分析', category: 'basic' },
+        { id: 3, name: '面向对象', category: 'core' }
+      ]
     }
   },
   computed: {
@@ -592,7 +722,11 @@ export default {
         id: Date.now() + Math.random(),
         type: type,
         title: '',
-        points: 5
+        points: 5,
+        analysis: '', // 答案解析
+        difficulty: '', // 难度
+        knowledgePoints: [], // 知识点数组
+        tags: [] // 标签数组
       }
 
       if (type === 'single' || type === 'multiple') {
@@ -614,30 +748,79 @@ export default {
       }
       return baseQuestion
     },
-    editQuestion(question) {
-      this.currentQuestion = JSON.parse(JSON.stringify(question))
-      this.editingIndex = this.exam.questions.findIndex(q => q.id === question.id)
-      this.showQuestionDialog = true
-    },
-    saveQuestion() {
-      if (!this.currentQuestion.title) {
-        this.$message.error('请输入题目内容')
+    // 快速添加标签
+    addTagQuick() {
+      if (!this.newTagName.trim()) {
+        this.$message.warning('请输入标签名称')
         return
       }
-
-      if (this.editingIndex !== null) {
-        this.$set(this.exam.questions, this.editingIndex, { ...this.currentQuestion })
-        // 更新选中的题目
-        if (this.selectedQuestion && this.selectedQuestion.id === this.currentQuestion.id) {
-          this.selectedQuestion = this.exam.questions[this.editingIndex]
-        }
-      } else {
-        this.exam.questions.push({ ...this.currentQuestion })
-        this.selectedQuestion = this.exam.questions[this.exam.questions.length - 1]
+      const newTag = {
+        id: Date.now(),
+        name: this.newTagName.trim(),
+        color: '#409EFF'
       }
-
-      this.showQuestionDialog = false
-      this.updateTotalScore()
+      this.tagList.push(newTag)
+      this.$message.success(`标签"${newTag.name}"创建成功`)
+      this.newTagName = ''
+      this.showTagDialog = false
+    },
+    // 快速添加知识点
+    addKnowledgeQuick() {
+      if (!this.newKnowledgeName.trim()) {
+        this.$message.warning('请输入知识点名称')
+        return
+      }
+      const newKnowledge = {
+        id: Date.now(),
+        name: this.newKnowledgeName.trim(),
+        category: 'basic'
+      }
+      this.knowledgeList.push(newKnowledge)
+      this.$message.success(`知识点"${newKnowledge.name}"创建成功`)
+      this.newKnowledgeName = ''
+      this.showKnowledgeDialog = false
+    },
+    // 判断答案是否被选中
+    isAnswerSelected(optIdx) {
+      if (!this.selectedQuestion) return false
+      if (this.selectedQuestion.type === 'single') {
+        return this.selectedQuestion.answer === optIdx
+      } else if (this.selectedQuestion.type === 'multiple') {
+        return this.selectedQuestion.answer && this.selectedQuestion.answer.includes(optIdx)
+      }
+      return false
+    },
+    // 切换答案选择
+    toggleAnswer(optIdx) {
+      if (!this.isEditMode || !this.selectedQuestion) return
+      
+      if (this.selectedQuestion.type === 'single') {
+        // 单选题：直接设置
+        this.selectedQuestion.answer = optIdx
+      } else if (this.selectedQuestion.type === 'multiple') {
+        // 多选题：切换
+        if (!this.selectedQuestion.answer) {
+          this.selectedQuestion.answer = []
+        }
+        const index = this.selectedQuestion.answer.indexOf(optIdx)
+        if (index > -1) {
+          this.selectedQuestion.answer.splice(index, 1)
+        } else {
+          this.selectedQuestion.answer.push(optIdx)
+        }
+      }
+    },
+    addOption() {
+      if (!this.selectedQuestion || !this.selectedQuestion.options) {
+        return
+      }
+      this.selectedQuestion.options.push('')
+    },
+    removeOption(index) {
+      if (!this.selectedQuestion || !this.selectedQuestion.options) {
+        return
+      }
+      this.selectedQuestion.options.splice(index, 1)
     },
     // 从目录删除题目
     deleteQuestionFromCatalog(question) {
@@ -667,12 +850,6 @@ export default {
         // 不归类时，显示总序号
         return this.exam.questions.findIndex(q => q.id === question.id) + 1
       }
-    },
-    addOption() {
-      this.currentQuestion.options.push('')
-    },
-    removeOption(index) {
-      this.currentQuestion.options.splice(index, 1)
     },
     onDragEnd() {
       this.$message.success('题目顺序已调整')
@@ -1075,6 +1252,11 @@ export default {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     border-color: #c0c4cc;
   }
+
+  &.editable {
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+  }
 }
 
 .question-block-header {
@@ -1110,7 +1292,132 @@ export default {
 }
 
 .question-block-content {
-  padding: 16px;
+  padding: 20px;
+
+  .edit-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #606266;
+    margin-bottom: 10px;
+  }
+
+  .question-stem-edit,
+  .question-options-edit,
+  .answer-edit,
+  .answer-analysis-edit,
+  .question-metadata-edit {
+    margin-bottom: 20px;
+  }
+
+  .option-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    .option-label {
+      font-weight: 600;
+      min-width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #909399;
+      border: 2px solid #dcdfe6;
+      border-radius: 50%;
+      transition: all 0.3s;
+
+      &.clickable {
+        cursor: pointer;
+        
+        &:hover {
+          border-color: #409eff;
+          color: #409eff;
+          transform: scale(1.1);
+        }
+      }
+
+      &.selected {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+      }
+    }
+
+    .el-input {
+      flex: 1;
+    }
+  }
+
+  .options-view {
+    .option-view-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .option-label {
+        font-weight: 600;
+        min-width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #909399;
+        border: 2px solid #dcdfe6;
+        border-radius: 50%;
+
+        &.selected {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-color: #667eea;
+        }
+      }
+    }
+  }
+
+  .answer-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #e6f7ff;
+    border-left: 3px solid #1890ff;
+    border-radius: 4px;
+    color: #1890ff;
+    font-size: 13px;
+  }
+
+  .question-stem-view,
+  .answer-view {
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    min-height: 40px;
+    line-height: 1.6;
+  }
+
+  .metadata-view {
+    padding: 8px 0;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .answer-selection {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+  }
 }
 
 .question-stem {

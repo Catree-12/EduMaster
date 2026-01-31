@@ -8,16 +8,11 @@
           <h1>{{ courseInfo.title }}</h1>
         </div>
       </div>
-      <div class="header-right">
-        <el-button type="primary" icon="el-icon-edit" @click="editChapter">
-          编辑章节
-        </el-button>
-      </div>
     </div>
 
     <!-- 主体内容 -->
     <div class="player-container">
-      <!-- 左侧：内容播放区 -->
+      <!-- 左侧:内容播放区 -->
       <div class="content-player">
         <!-- 视频/文档播放器 -->
         <div v-if="currentLesson" class="player-wrapper">
@@ -25,12 +20,14 @@
             <div class="video-placeholder">
               <div class="play-icon">▶</div>
               <p class="video-tip">视频播放器占位区</p>
+              <p class="video-info">{{ currentLesson.name }}</p>
             </div>
           </div>
           <div v-else class="document-viewer">
             <div class="doc-placeholder">
               <i class="el-icon-document" style="font-size: 64px; color: #909399;"></i>
               <p>文档查看器占位区</p>
+              <p class="doc-name">{{ currentLesson.name }}</p>
             </div>
           </div>
 
@@ -100,13 +97,14 @@
               <div
                 v-for="(lesson, index) in section.lessons"
                 :key="lesson.id"
-                :class="['lesson-item', { active: currentLesson && currentLesson.id === lesson.id }]"
+                :class="['lesson-item', { active: currentLesson && currentLesson.id === lesson.id, completed: lesson.completed }]"
                 @click="selectLesson(lesson, section)"
               >
                 <span class="lesson-number">{{ index + 1 }}</span>
                 <span class="lesson-type-icon">{{ lesson.type === 'video' ? '🎥' : '📄' }}</span>
                 <span class="lesson-name">{{ lesson.name }}</span>
-                <span class="lesson-duration">{{ lesson.duration }}</span>
+                <span v-if="lesson.completed" class="completed-icon">✓</span>
+                <span v-else class="lesson-duration">{{ lesson.duration }}</span>
               </div>
             </div>
           </div>
@@ -126,11 +124,11 @@
 
 <script>
 export default {
-  name: 'LessonPlayer',
+  name: 'StudentLessonPlayer',
   data() {
     return {
       courseId: this.$route.params.id || this.$route.params.courseId || '1',
-      lessonId: parseInt(this.$route.params.lessonId),
+      lessonId: this.$route.params.lessonId ? parseInt(this.$route.params.lessonId) : null,
       sectionId: this.$route.query.sectionId ? parseInt(this.$route.query.sectionId) : null,
       courseInfo: {
         title: '加载中...'
@@ -169,7 +167,8 @@ export default {
     },
     // 当前课程在列表中的索引
     currentLessonIndex() {
-      return this.allLessons.findIndex(item => item.lesson.id === this.lessonId)
+      if (!this.currentLesson) return -1
+      return this.allLessons.findIndex(item => item.lesson.id === this.currentLesson.id)
     },
     // 上一课
     previousLesson() {
@@ -199,19 +198,16 @@ export default {
   },
   watch: {
     '$route.params.lessonId'(newId) {
-      this.lessonId = parseInt(newId)
-      this.loadCurrentLesson()
+      if (newId) {
+        this.lessonId = parseInt(newId)
+        this.loadCurrentLesson()
+      }
     }
   },
   methods: {
     goBack() {
-      // 返回到教师课程详情页
-      this.$router.push(`/teacher/course/${this.courseId}`)
-    },
-
-    editChapter() {
-      // 跳转到章节编辑页面
-      this.$router.push(`/teacher/course/${this.courseId}/chapters/edit`)
+      // 返回到学生课程详情页
+      this.$router.push(`/student/course/${this.courseId}`)
     },
 
     loadCourseData() {
@@ -227,9 +223,9 @@ export default {
           title: 'React 基础',
           description: '学习 React 的核心概念',
           lessons: [
-            { id: 1, name: 'React 简介', type: 'video', duration: '15:30', description: '了解React的基本概念和优势' },
-            { id: 2, name: '组件与 Props', type: 'video', duration: '20:45', description: '学习如何创建和使用React组件' },
-            { id: 3, name: 'State 与生命周期', type: 'video', duration: '25:10', description: '掌握组件状态管理和生命周期方法' }
+            { id: 1, name: 'React 简介', type: 'video', duration: '15:30', description: '了解React的基本概念和优势', completed: false },
+            { id: 2, name: '组件与 Props', type: 'video', duration: '20:45', description: '学习如何创建和使用React组件', completed: false },
+            { id: 3, name: 'State 与生命周期', type: 'video', duration: '25:10', description: '掌握组件状态管理和生命周期方法', completed: false }
           ]
         },
         {
@@ -237,9 +233,9 @@ export default {
           title: 'React Hooks',
           description: 'Hooks 是 React 16.8 的新增特性',
           lessons: [
-            { id: 4, name: 'useState 详解', type: 'video', duration: '18:20', description: 'useState Hook的使用方法' },
-            { id: 5, name: 'useEffect 使用', type: 'video', duration: '22:15', description: '处理副作用的Hook' },
-            { id: 6, name: '自定义 Hook', type: 'video', duration: '16:40', description: '创建可复用的自定义Hook' }
+            { id: 4, name: 'useState 详解', type: 'video', duration: '18:20', description: 'useState Hook的使用方法', completed: false },
+            { id: 5, name: 'useEffect 使用', type: 'video', duration: '22:15', description: '处理副作用的Hook', completed: false },
+            { id: 6, name: '自定义 Hook', type: 'document', duration: '16:40', description: '创建可复用的自定义Hook', completed: false }
           ]
         },
         {
@@ -247,9 +243,9 @@ export default {
           title: '高级特性',
           description: 'Context、Refs、性能优化等',
           lessons: [
-            { id: 7, name: 'Context API', type: 'video', duration: '19:30', description: 'React的上下文API使用' },
-            { id: 8, name: 'useRef 与 forwardRef', type: 'video', duration: '14:50', description: 'Ref的高级用法' },
-            { id: 9, name: 'React.memo 性能优化', type: 'video', duration: '21:00', description: '组件性能优化技巧' }
+            { id: 7, name: 'Context API', type: 'video', duration: '19:30', description: 'React的上下文API使用', completed: false },
+            { id: 8, name: 'useRef 与 forwardRef', type: 'document', duration: '14:50', description: 'Ref的高级用法', completed: false },
+            { id: 9, name: 'React.memo 性能优化', type: 'video', duration: '21:00', description: '组件性能优化技巧', completed: false }
           ]
         }
       ]
@@ -285,7 +281,7 @@ export default {
         
         // 更新URL到第一个课程
         this.$router.replace({
-          path: `/course/${this.courseId}/lesson/${firstLesson.id}`,
+          path: `/student/course/${this.courseId}/lesson/${firstLesson.id}`,
           query: { sectionId: firstSection.id }
         }).catch(err => {
           if (err.name !== 'NavigationDuplicated') {
@@ -310,8 +306,12 @@ export default {
         return
       }
       
-      this.$router.push({
-        path: `/course/${this.courseId}/lesson/${lesson.id}`,
+      this.currentLesson = lesson
+      this.currentSection = section
+      
+      // 更新路由
+      this.$router.replace({
+        path: `/student/course/${this.courseId}/lesson/${lesson.id}`,
         query: {
           sectionId: section.id
         }
@@ -336,7 +336,7 @@ export default {
 /* ==================== 1. 容器锁死 ==================== */
 .lesson-player {
   width: 100%;
-  height: 100vh !important;
+  height: calc(100vh - 64px) !important;
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -352,17 +352,16 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 10;
+  position: relative;
+  min-height: 60px;
+  border-bottom: 3px solid #667eea;
 }
 
 .header-left {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
 }
 
 .course-title h1 {
@@ -433,19 +432,19 @@ export default {
 /* ==================== 内容区样式 ==================== */
 .player-wrapper {
   padding: 0;
-  min-height: 1200px;
+  min-height: 1200px; /* 临时：强制内容超出视口 */
 }
 
 .video-player,
 .document-viewer {
-  min-height: 600px;
+  min-height: 600px; /* 增加高度 */
 }
 
 .video-placeholder,
 .doc-placeholder {
   width: 100%;
   height: 100%;
-  min-height: 600px;
+  min-height: 600px; /* 增加高度 */
   background: #000;
   display: flex;
   flex-direction: column;
@@ -479,15 +478,21 @@ export default {
   background: white;
 }
 
-.video-tip {
+.video-tip,
+.video-info {
   color: rgba(255, 255, 255, 0.7);
   margin: 0.5rem 0;
+}
+
+.doc-name {
+  margin-top: 1rem;
+  font-size: 1.1rem;
 }
 
 .lesson-info {
   padding: 1.5rem;
   border-top: 1px solid #e5e7eb;
-  min-height: 400px;
+  min-height: 400px; /* 增加信息区高度 */
 }
 
 .lesson-header {
@@ -576,6 +581,10 @@ export default {
   border-left: 3px solid #667eea;
 }
 
+.lesson-item.completed {
+  opacity: 0.7;
+}
+
 .lesson-number {
   width: 24px;
   height: 24px;
@@ -593,6 +602,11 @@ export default {
   color: white;
 }
 
+.lesson-item.completed .lesson-number {
+  background: #10b981;
+  color: white;
+}
+
 .lesson-type-icon {
   font-size: 1.1rem;
 }
@@ -606,6 +620,12 @@ export default {
 .lesson-item.active .lesson-name {
   color: #667eea;
   font-weight: 600;
+}
+
+.completed-icon {
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .lesson-duration {

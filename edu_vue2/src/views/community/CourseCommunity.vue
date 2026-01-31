@@ -26,7 +26,6 @@
         <div v-for="thread in threads" :key="thread.id" class="thread-card">
           <div class="thread-header">
             <h3>{{ thread.title }}</h3>
-            <span v-if="thread.solved" class="solved-badge">✓ 已解答</span>
           </div>
 
           <p class="thread-preview">{{ thread.content }}</p>
@@ -34,7 +33,6 @@
           <div class="thread-meta">
             <span>👤 {{ thread.author }}</span>
             <span>💬 {{ thread.replyCount }} 回复</span>
-            <span v-if="thread.bestReply">⭐ 最佳答案</span>
           </div>
 
           <button @click="viewThread(thread.id)" class="view-btn">
@@ -255,27 +253,13 @@ export default {
 }
 
 .thread-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 0.75rem;
 }
 
 .thread-header h3 {
   margin: 0;
   color: #2c3e50;
-  flex: 1;
-}
-
-.solved-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background-color: #d5f4e6;
-  color: #27ae60;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
+  font-size: 1.1rem;
 }
 
 .thread-preview {
