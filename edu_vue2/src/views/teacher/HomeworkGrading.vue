@@ -307,9 +307,8 @@ export default {
     viewSubmission(student) {
       // 跳转到详细批阅页面
       this.$router.push({
-        path: `/teacher/homework/${this.$route.params.id}/grading-detail`,
+        path: `/teacher/homework/${this.$route.params.id}/grading/${student.id}`,
         query: {
-          studentId: student.id,
           studentName: student.name
         }
       })

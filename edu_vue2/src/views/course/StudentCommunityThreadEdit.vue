@@ -115,7 +115,7 @@ export default {
       
       // 返回详情页
       this.$router.push({
-        path: `/student/course/${this.courseId}/thread/${this.threadId}`
+        path: `/mycourse/student/${this.courseId}/community/threads/${this.threadId}`
       })
     }
   }

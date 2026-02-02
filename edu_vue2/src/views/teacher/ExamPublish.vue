@@ -307,7 +307,7 @@ export default {
               this.publishing = false
               this.$message.success('发布成功！')
               // 返回课程详情页的考试列表
-              this.$router.push('/teacher/course-detail')
+              this.$router.push('/mycourse/teacher')
             }, 1000)
           }).catch(() => {})
         } else {

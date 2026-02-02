@@ -981,7 +981,7 @@ export default {
       if (this.$route.query.from === 'chapter-editor') {
         const blockId = this.$route.query.blockId
         this.$router.push({
-          path: `/teacher/course/${this.$route.query.courseId || 1}/chapters/edit`,
+          path: `/mycourse/teacher/${this.$route.query.courseId || 1}/chapters`,
           query: {
             from: 'homework-create',
             homeworkId: this.homework.id,

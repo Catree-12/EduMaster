@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="exam-center">
     <div class="page-header">
       <div class="header-content">
@@ -172,17 +172,27 @@ export default {
       }
       return icons[status] || 'el-icon-info'
     },
-    startExam(examId) {
-      // 未开始的考试，跳转到确认页（与课程详情页流程一致）
-      this.$router.push(`/student/course/1/exam/${examId}`)
+      startExam(examId) {
+      // 修正：根据你的路由表，确认页路径应包含 courseId
+      // 这里假设 courseId 为 1，实际开发中应从 exam 对象中获取
+      // 路径：/mycourse/student/:courseId/exams/:examId
+      this.$router.push(`/mycourse/student/1/exams/${examId}`);
     },
-    continueExam(examId) {
-      // 进行中的考试，直接进入答题页（与课程详情页流程一致）
-      this.$router.push(`/student/course/1/exam/${examId}/answer`)
-    },
-    viewResult(examId) {
-      // 已完成的考试，查看成绩和题目
-      this.$router.push(`/exam/${examId}/result`)
+
+      continueExam(examId) {
+        // 修正：进行中的考试直接进入答题页
+        // 路径：/mycourse/student/:courseId/exams/:examId/answer
+        this.$router.push(`/mycourse/student/1/exams/${examId}/answer`);
+      },
+
+      viewResult(examId) {
+        // 修正：查看成绩
+        // 注意：你之前的路由表中似乎没有专门的 /result 路径
+        // 如果你想复用 ExamDetail 组件来显示成绩，路径如下：
+        this.$router.push(`/teacher/exams/${examId}`);
+        
+        // 或者如果你想跳到“考试中心”的详情（如果有配置的话）：
+        // this.$router.push(`/exams/${examId}/answer`);
     }
   }
 }

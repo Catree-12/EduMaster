@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="thread-detail-page">
     <div class="thread-detail-container">
       <!-- 1. 顶部返回层 -->
@@ -208,7 +208,7 @@ export default {
   methods: {
     goBack() {
       this.$router.push({
-        path: `/student/course/${this.courseId}`,
+        path: `/mycourse/student/${this.courseId}`,
         query: { tab: 'discussion' }
       })
     },

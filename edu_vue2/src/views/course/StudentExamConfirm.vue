@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="exam-confirm-page">
     <div class="confirm-container">
       <div class="confirm-card">
@@ -88,9 +88,8 @@ export default {
       }
       
       // 跳转到考试答题页面
-      // 兼容从课程详情页和考试中心进入的情况
       this.$router.push({
-        path: `/student/course/${this.courseId || '1'}/exam/${this.examId}/answer`
+        path: `/mycourse/student/${this.courseId}/exams/${this.examId}/answer`
       })
     }
   }

@@ -232,13 +232,20 @@ export default {
   },
   methods: {
     goToCourseCenter() {
-      this.$router.push('/course')
+      if (this.$route.path !== '/courses') {
+        this.$router.push('/courses')
+      }
     },
     goToMyCourses() {
-      this.$router.push('/course/my-courses')
+      if (this.$route.path !== '/mycourse/teacher') {
+        this.$router.push('/mycourse/teacher')
+      }
     },
     viewCourse(id) {
-      this.$router.push(`/course/${id}`)
+      const target = `/courses/${id}`
+      if (this.$route.path !== target) {
+        this.$router.push(target)
+      }
     }
   }
 }

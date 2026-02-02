@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="enrollment-container">
     <div class="page-header">
       <h1>🎓 课程报名</h1>
@@ -499,7 +499,7 @@ export default {
           // 免费课程直接进入课程页面
           this.$message.success('免费课程，正在进入课程...')
           setTimeout(() => {
-            this.$router.push(`/student/course/${this.formData.courseId}?tab=sections`)
+            this.$router.push(`/mycourse/student/${this.formData.courseId}?tab=sections`)
           }, 1000)
         } else {
           // 付费课程显示缴费等待状态

@@ -286,7 +286,7 @@ export default {
   methods: {
     goBack() {
       this.$router.push({
-        path: `/teacher/course/${this.$route.params.courseId}`,
+        path: `/mycourse/teacher/${this.$route.params.courseId}`,
         query: { tab: 'discussion' }
       })
     },

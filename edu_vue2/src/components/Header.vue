@@ -16,9 +16,10 @@
             👤 账户<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="profile" v-if="$route.path !== '/main/profile'">个人资料</el-dropdown-item>
-            <el-dropdown-item command="settings" v-if="$route.path !== '/main/settings'">账号设置</el-dropdown-item>
-            <el-dropdown-item command="my-courses" v-if="$route.path !== '/courses/my'">我的课程</el-dropdown-item>
+            <el-dropdown-item command="profile" v-if="$route.path !== '/user/profile'">个人资料1</el-dropdown-item>
+            <el-dropdown-item command="settings" v-if="$route.path !== '/user/settings'">账号设置1</el-dropdown-item>
+            <el-dropdown-item command="my-courses" v-if="$route.path !== '/mycourse/teacher'">我教的课1</el-dropdown-item>
+            <el-dropdown-item command="learning-courses" v-if="$route.path !== '/mycourse/student'">我学的课1</el-dropdown-item>
             <el-dropdown-divider></el-dropdown-divider>
             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -34,16 +35,20 @@ export default {
   methods: {
     handleCommand(command) {
       if (command === 'profile') {
-        if (this.$route.path !== '/main/profile') {
-          this.$router.push('/main/profile').catch(() => {})
+        if (this.$route.path !== '/user/profile') {
+          this.$router.push('/user/profile').catch(() => {})
         }
       } else if (command === 'settings') {
-        if (this.$route.path !== '/main/settings') {
-          this.$router.push('/main/settings').catch(() => {})
+        if (this.$route.path !== '/user/settings') {
+          this.$router.push('/user/settings').catch(() => {})
         }
       } else if (command === 'my-courses') {
-        if (this.$route.path !== '/courses/my') {
-          this.$router.push('/courses/my').catch(() => {})
+        if (this.$route.path !== '/mycourse/teacher') {
+          this.$router.push('/mycourse/teacher').catch(() => {})
+        }
+      } else if (command === 'learning-courses') {
+        if (this.$route.path !== '/mycourse/student') {
+          this.$router.push('/mycourse/student').catch(() => {})
         }
       } else if (command === 'logout') {
         localStorage.removeItem('isLoggedIn')

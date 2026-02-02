@@ -277,7 +277,7 @@ export default {
 
     goBack() {
       sessionStorage.removeItem('coursePreviewData')
-      this.$router.push(`/teacher/course/${this.courseId}/chapters/edit`)
+      this.$router.push(`/mycourse/teacher/${this.courseId}/chapters`)
     }
   }
 }

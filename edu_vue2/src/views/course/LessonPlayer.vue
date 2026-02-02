@@ -206,12 +206,12 @@ export default {
   methods: {
     goBack() {
       // 返回到教师课程详情页
-      this.$router.push(`/teacher/course/${this.courseId}`)
+      this.$router.push(`/mycourse/teacher/${this.courseId}`)
     },
 
     editChapter() {
       // 跳转到章节编辑页面
-      this.$router.push(`/teacher/course/${this.courseId}/chapters/edit`)
+      this.$router.push(`/mycourse/teacher/${this.courseId}/chapters`)
     },
 
     loadCourseData() {

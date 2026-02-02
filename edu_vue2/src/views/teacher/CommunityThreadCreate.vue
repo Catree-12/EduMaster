@@ -81,26 +81,26 @@ export default {
       return this.formData.title.trim() || this.formData.content.trim()
     },
     publishThread() {
-      // 验证表单
-      if (!this.formData.title.trim()) {
-        this.$message.error('请输入话题标题')
-        return
-      }
-      if (!this.formData.content.trim()) {
-        this.$message.error('请输入话题内容')
-        return
-      }
+  // 1. 基础验证
+  if (!this.formData.title.trim() || !this.formData.content.trim()) {
+    alert('请填写完整内容'); // 临时用原生 alert 代替 $message 检查是否是组件库报错
+    return;
+  }
 
-      // TODO: 调用API发布话题
-      console.log('发布话题:', this.formData)
-      this.$message.success('话题发布成功')
-      
-      // 返回课程社区页面
-      this.$router.push({
-        name: 'TeacherCourseDetail',
-        params: { id: this.courseId },
-        query: { tab: 'discussion' }
-      })
+  // 2. 检查 courseId
+  if (!this.courseId) {
+    console.error('缺少课程ID，无法跳转');
+    alert('系统错误：无法关联课程');
+    return;
+  }
+
+  console.log('发布话题:', this.formData);
+
+  // 3. 执行跳转 (建议先用 path 确保能跑通)
+  // 假设你的课程详情页路径是 /teacher/course/:id
+  this.$router.push(`/mycourse/teacher/${this.courseId}?tab=discussion`).catch(err => {
+    console.error('路由跳转失败：', err);
+  });
     }
   }
 }

@@ -97,7 +97,7 @@ export default {
       
       // 返回课程社区页面
       this.$router.push({
-        path: `/student/course/${this.courseId}`,
+        path: `/mycourse/student/${this.courseId}`,
         query: { tab: 'discussion' }
       })
     }

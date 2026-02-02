@@ -638,26 +638,30 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      if (this.hasChanges) {
-        this.$confirm('有未保存的修改，确定要返回吗？', '提示', {
-          confirmButtonText: '保存并返回',
-          cancelButtonText: '放弃修改',
-          type: 'warning'
-        }).then(() => {
-          this.saveAll().then(() => {
-            this.$router.push(`/teacher/course/${this.courseId}`)
-          }).catch(err => {
-            console.error('保存失败:', err)
-            // 保存失败不返回
-          })
-        }).catch(() => {
-          this.$router.push(`/teacher/course/${this.courseId}`)
-        })
-      } else {
-        this.$router.push(`/teacher/course/${this.courseId}`)
-      }
-    },
+  goBack() {
+    const targetPath = `/mycourse/teacher/${this.courseId}`; // 统一定义正确路径
+
+    if (this.hasChanges) {
+      this.$confirm('有未保存的修改，确定要返回吗？', '提示', {
+        confirmButtonText: '保存并返回',
+        cancelButtonText: '放弃修改',
+        type: 'warning'
+      }).then(() => {
+        // 保存并跳转
+        this.saveAll().then(() => {
+          this.$router.push(targetPath);
+        }).catch(err => {
+          console.error('保存失败:', err);
+        });
+      }).catch(() => {
+        // 放弃修改并跳转
+        this.$router.push(targetPath);
+      });
+    } else {
+      // 无修改直接跳转
+      this.$router.push(targetPath);
+    }
+  },
 
     loadCourseData() {
       this.courseInfo = {
@@ -967,7 +971,7 @@ export default {
       
       // 跳转到教师课程预览页（使用教师专用路由）
       this.$router.push({
-        path: `/teacher/course/${this.courseId}/preview`,
+        path: `/mycourse/teacher/${this.courseId}/preview`,
         query: { preview: 'true' }
       }).catch(err => {
         console.error('路由跳转失败:', err)

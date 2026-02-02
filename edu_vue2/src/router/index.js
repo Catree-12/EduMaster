@@ -20,35 +20,31 @@ import MyProfile from '@/views/user/MyProfile.vue'
 
 // 社区
 import Community from '@/views/community/Community.vue'
-import CourseCommunity from '@/views/community/CourseCommunity.vue'
 import NewPost from '@/views/community/NewPost.vue'
-import PostDetail from '@/views/community/PostDetail.vue'
 import CommunityPostDetail from '@/views/community/CommunityPostDetail.vue'
 
 // 考试相关
 import ExamCenter from '@/views/exam/ExamCenter.vue'
-import ExamAnswer from '@/views/exam/ExamAnswer.vue'
+// import ExamAnswer from '@/views/exam/ExamAnswer.vue'
 
 // 作业相关
 import HomeworkCenter from '@/views/homework/HomeworkCenter.vue'
 
 // 讲师相关
 import TeacherCourseDetail from '@/views/teacher/TeacherCourseDetail.vue'
-import ExamCreate from '@/views/teacher/ExamCreate.vue'
+import ExamCreateSelection from '@/views/teacher/ExamCreateSelection.vue'
 import ExamDetail from '@/views/teacher/ExamDetail.vue'
 import ExamPublish from '@/views/teacher/ExamPublish.vue'
 import ExamSettings from '@/views/teacher/ExamSettings.vue'
 import ExamLibrary from '@/views/teacher/ExamLibrary.vue'
-import GradingManage from '@/views/teacher/GradingManage.vue'
 import CourseEdit from '@/views/teacher/CourseEdit.vue'
-import TermManagement from '@/views/teacher/TermManagement.vue'
 import ClassManagement from '@/views/teacher/ClassManagement.vue'
 import HomeworkLibrary from '@/views/teacher/HomeworkLibrary.vue'
 import HomeworkCreate from '@/views/teacher/HomeworkCreate.vue'
 import HomeworkDetail from '@/views/teacher/HomeworkDetail.vue'
 import HomeworkEdit from '@/views/teacher/HomeworkEdit.vue'
-import HomeworkPublish from '@/views/teacher/HomeworkPublish.vue'
 import HomeworkSettings from '@/views/teacher/HomeworkSettings.vue'
+import HomeworkPublish from '@/views/teacher/HomeworkPublish.vue'
 import HomeworkGrading from '@/views/teacher/HomeworkGrading.vue'
 import HomeworkGradingDetail from '@/views/teacher/HomeworkGradingDetail.vue'
 import ExamGrading from '@/views/teacher/ExamGrading.vue'
@@ -64,7 +60,6 @@ import CourseCreate from '@/views/course/CourseCreate.vue'
 import MyCoursesCourseView from '@/views/course/MyCourses.vue'
 import StudentEnrollment from '@/views/course/StudentEnrollment.vue'
 import StudentCourseDetail from '@/views/course/StudentCourseDetail.vue'
-import LessonPlayer from '@/views/course/LessonPlayer.vue'
 
 // 证书相关
 import MyCertificates from '@/views/user/MyCertificates.vue'
@@ -160,333 +155,309 @@ const routes = [
     component: MainLayout,
     meta: { requiresAuth: true },
     children: [
-      // 首页
+      // ==================== 首页 ====================
       {
         path: '',
         name: 'Home',
         component: Home
       },
       
-      // 课程相关
+      // ==================== 课程中心（公开浏览） ====================
       {
-        path: 'course',
+        path: 'courses',
         name: 'CourseCenter',
         component: CourseCenter
       },
       {
-        path: 'course/create',
-        name: 'CourseCreate',
-        component: CourseCreate,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'course/my-courses',
-        name: 'MyCoursesList',
-        component: MyCoursesCourseView
-      },
-      {
-        path: 'enrollment',
-        name: 'StudentEnrollment',
-        component: StudentEnrollment
-      },
-      {
-        path: 'student/course/:id',
-        name: 'StudentCourseDetail',
-        component: StudentCourseDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/lesson/:lessonId',
-        name: 'StudentLessonPlayer',
-        component: () => import('@/views/course/StudentLessonPlayer.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/homework/:homeworkId',
-        name: 'StudentHomeworkDetail',
-        component: () => import('@/views/course/StudentHomeworkDetail.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/exam/:examId',
-        name: 'StudentExamConfirm',
-        component: () => import('@/views/course/StudentExamConfirm.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/exam/:examId/answer',
-        name: 'StudentExamAnswer',
-        component: () => import('@/views/course/StudentExamAnswer.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/thread/create',
-        name: 'StudentCommunityThreadCreate',
-        component: () => import('@/views/course/StudentCommunityThreadCreate.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/thread/:threadId/edit',
-        name: 'StudentCommunityThreadEdit',
-        component: () => import('@/views/course/StudentCommunityThreadEdit.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'student/course/:courseId/thread/:threadId',
-        name: 'StudentThreadDetail',
-        component: () => import('@/views/course/StudentThreadDetail.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'course/:id/lesson/:lessonId',
-        name: 'LessonPlayer',
-        component: LessonPlayer,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'course/:id',
+        path: 'courses/:id',
         name: 'CourseDetail',
         component: CourseDetail
       },
       
-      // 用户中心
+      // ==================== 我的课程（统一入口） ====================
       {
-        path: 'user-center/profile',
-        name: 'MyProfile',
-        component: MyProfile
-      },
-      {
-        path: 'user-center/certificates',
-        name: 'MyCertificates',
-        component: MyCertificates
+        path: 'mycourse',
+        name: 'MyCourses',
+        redirect: '/mycourse/student' // 默认跳转到学习中的课程
       },
       
-      // 消息
+      // 我学的课程（学生视角）
       {
-        path: 'messages',
-        name: 'Messages',
-        component: () => import('@/views/message/Messages.vue')
+        path: '/enrollment',
+        name: 'MyCourseStudent',
+        component: StudentEnrollment,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId',
+        name: 'MyCourseStudentDetail',
+        component: StudentCourseDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/lessons/:lessonId',
+        name: 'MyCourseLessonPlayer',
+        component: () => import('@/views/course/StudentLessonPlayer.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/homework/:homeworkId',
+        name: 'MyCourseHomeworkDetail',
+        component: () => import('@/views/course/StudentHomeworkDetail.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/exams/:examId',
+        name: 'MyCourseExamConfirm',
+        component: () => import('@/views/course/StudentExamConfirm.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/exams/:examId/answer',
+        name: 'MyCourseExamAnswer',
+        component: () => import('@/views/course/StudentExamAnswer.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/community/threads/create',
+        name: 'MyCourseThreadCreate',
+        component: () => import('@/views/course/StudentCommunityThreadCreate.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/community/threads/:threadId',
+        name: 'MyCourseThreadDetail',
+        component: () => import('@/views/course/StudentThreadDetail.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/student/:courseId/community/threads/:threadId/edit',
+        name: 'MyCourseThreadEdit',
+        component: () => import('@/views/course/StudentCommunityThreadEdit.vue'),
+        meta: { requiresAuth: true }
       },
       
-      // 社区
+      // 我教的课程（教师视角）
+      {
+        path: 'mycourse/teacher',
+        name: 'MyCourseTeacher',
+        component: MyCoursesCourseView,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/create',
+        name: 'MyCourseTeacherCreate',
+        component: CourseCreate,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:id',
+        name: 'MyCourseTeacherDetail',
+        component: TeacherCourseDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:id/edit',
+        name: 'MyCourseTeacherEdit',
+        component: CourseEdit,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:id/chapters',
+        name: 'MyCourseTeacherChapters',
+        component: ChapterEditor,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:id/preview',
+        name: 'MyCourseTeacherPreview',
+        component: CoursePreview,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:id/lessons/:lessonId',
+        name: 'MyCourseTeacherLessonPlayer',
+        component: () => import('@/views/course/StudentLessonPlayer.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:courseId/community/threads',
+        redirect: to => `/mycourse/teacher/${to.params.courseId}`
+      },
+      {
+        path: 'mycourse/teacher/:courseId/community/threads/create',
+        name: 'MyCourseTeacherThreadCreate',
+        component: CommunityThreadCreate,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:courseId/community/threads/:threadId',
+        name: 'MyCourseTeacherThreadDetail',
+        component: CommunityThreadDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'mycourse/teacher/:courseId/community/threads/:threadId/edit',
+        name: 'MyCourseTeacherThreadEdit',
+        component: CommunityThreadEdit,
+        meta: { requiresAuth: true }
+      },
+      
+      // ==================== 考试中心 ====================
+      {
+        path: 'exams',
+        name: 'ExamCenter',
+        component: ExamCenter,
+        meta: { requiresAuth: true }
+      },
+
+      {
+        path: 'exams/:id/answer',
+        name: 'ExamDetail',
+        component: ExamDetail,
+        meta: { requiresAuth: true }
+      },
+      
+      // ==================== 作业中心 ====================
+      {
+        path: 'homework',
+        name: 'HomeworkCenter',
+        component: HomeworkCenter,
+        meta: { requiresAuth: true }
+      },
+      
+      // ==================== 教师工具（试卷库、作业库等） ====================
+      {
+        path: 'teacher/exams',
+        name: 'TeacherExamLibrary',
+        component: ExamLibrary,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/create',
+        name: 'TeacherExamCreate',
+        component: ExamCreateSelection,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/:id',
+        name: 'TeacherExamDetail',
+        component: ExamDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/:id/publish',
+        name: 'TeacherExamPublish',
+        component: ExamPublish,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/:id/settings',
+        name: 'TeacherExamSettings',
+        component: ExamSettings,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/:id/grading',
+        name: 'TeacherExamGrading',
+        component: ExamGrading,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/exams/:id/grading/:studentId',
+        name: 'TeacherExamGradingDetail',
+        component: ExamGradingDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework',
+        name: 'TeacherHomeworkLibrary',
+        component: HomeworkLibrary,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/create',
+        name: 'TeacherHomeworkCreate',
+        component: HomeworkCreate,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id',
+        name: 'TeacherHomeworkDetail',
+        component: HomeworkDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id/edit',
+        name: 'TeacherHomeworkEdit',
+        component: HomeworkEdit,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id/settings',
+        name: 'TeacherHomeworkSettings',
+        component: HomeworkSettings,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id/publish',
+        name: 'TeacherHomeworkPublish',
+        component: HomeworkPublish,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id/grading',
+        name: 'TeacherHomeworkGrading',
+        component: HomeworkGrading,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/homework/:id/grading/:studentId',
+        name: 'TeacherHomeworkGradingDetail',
+        component: HomeworkGradingDetail,
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'teacher/classes',
+        name: 'TeacherClasses',
+        component: ClassManagement,
+        meta: { requiresAuth: true }
+      },
+      
+      // ==================== 社区 ====================
       {
         path: 'community',
         name: 'Community',
         component: Community
       },
       {
-        path: 'community/new-post',
-        name: 'NewPost',
+        path: 'community/posts/create',
+        name: 'CommunityPostCreate',
         component: NewPost
       },
       {
-        path: 'community/:id',
+        path: 'community/posts/:id',
         name: 'CommunityPostDetail',
         component: CommunityPostDetail
       },
+      
+      // ==================== 用户中心 ====================
       {
-        path: 'community/post/:id',
-        name: 'PostDetail',
-        component: PostDetail
+        path: 'user/profile',
+        name: 'UserProfile',
+        component: MyProfile
       },
       {
-        path: 'course/:id/community',
-        name: 'CourseCommunity',
-        component: CourseCommunity
+        path: 'user/certificates',
+        name: 'UserCertificates',
+        component: MyCertificates
       },
       
-      // 考试相关
+      // ==================== 消息中心 ====================
       {
-        path: 'exam-center',
-        name: 'ExamCenter',
-        component: ExamCenter,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'exam/:id',
-        name: 'ExamDetail',
-        component: () => import('@/pages/exam/ExamDetail.vue'),
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'exam/:id/answer',
-        name: 'ExamAnswer',
-        component: ExamAnswer,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'exam/:id/result',
-        name: 'ExamResult',
-        component: () => import('@/pages/exam/ExamResult.vue'),
-        meta: { requiresAuth: true }
-      },
-      
-      // 作业相关
-      {
-        path: 'homework-center',
-        name: 'HomeworkCenter',
-        component: HomeworkCenter,
-        meta: { requiresAuth: true }
-      },
-      
-      // 讲师相关（需要课程创建者权限，暂时不做全局限制）
-      {
-        path: 'teacher/course/:id',
-        name: 'TeacherCourseDetail',
-        component: TeacherCourseDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:courseId/thread/:id',
-        name: 'CommunityThreadDetail',
-        component: CommunityThreadDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:courseId/thread/:id/edit',
-        name: 'CommunityThreadEdit',
-        component: CommunityThreadEdit,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:courseId/thread/create',
-        name: 'CommunityThreadCreate',
-        component: CommunityThreadCreate,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:id/chapters/edit',
-        name: 'ChapterEditor',
-        component: ChapterEditor,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:id/preview',
-        name: 'TeacherCoursePreview',
-        component: CoursePreview,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/course/:id/edit',
-        name: 'CourseEdit',
-        component: CourseEdit,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam-create',
-        name: 'ExamCreate',
-        component: ExamCreate,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam/:id/detail',
-        name: 'ExamDetail',
-        component: ExamDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam/:id/publish',
-        name: 'ExamPublish',
-        component: ExamPublish,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam/:id/settings',
-        name: 'ExamSettings',
-        component: ExamSettings,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam-library',
-        name: 'ExamLibrary',
-        component: ExamLibrary,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/grading',
-        name: 'GradingManage',
-        component: GradingManage,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/term-management',
-        name: 'TermManagement',
-        component: TermManagement,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/class-management',
-        name: 'ClassManagement',
-        component: ClassManagement,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/library',
-        name: 'HomeworkLibrary',
-        component: HomeworkLibrary,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/create',
-        name: 'HomeworkCreate',
-        component: HomeworkCreate,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/detail',
-        name: 'HomeworkDetail',
-        component: HomeworkDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/edit',
-        name: 'HomeworkEdit',
-        component: HomeworkEdit,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/publish',
-        name: 'HomeworkPublish',
-        component: HomeworkPublish,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/settings',
-        name: 'HomeworkSettings',
-        component: HomeworkSettings,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/grading',
-        name: 'HomeworkGrading',
-        component: HomeworkGrading,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/homework/:id/grading-detail',
-        name: 'HomeworkGradingDetail',
-        component: HomeworkGradingDetail,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam/:id/grading',
-        name: 'ExamGrading',
-        component: ExamGrading,
-        meta: { requiresAuth: true }
-      },
-      {
-        path: 'teacher/exam/:id/grading-detail',
-        name: 'ExamGradingDetail',
-        component: ExamGradingDetail,
-        meta: { requiresAuth: true }
-      },
-
-      // 管理员相关
-      {
-        path: 'admin/course-audit',
-        name: 'CourseAudit',
-        component: CourseAudit,
-        meta: { requiresAuth: true, requiresRole: 'admin' }
+        path: 'messages',
+        name: 'Messages',
+        component: () => import('@/views/message/Messages.vue')
       }
     ]
   },
@@ -499,6 +470,26 @@ const router = new VueRouter({
   mode: 'history',
   routes
 })
+
+// 解决重复导航错误
+const originalPush = VueRouter.prototype.push
+const originalReplace = VueRouter.prototype.replace
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') {
+      return Promise.reject(err)
+    }
+  })
+}
+
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') {
+      return Promise.reject(err)
+    }
+  })
+}
 
 // 路由守卫：检查认证状态和角色权限
 router.beforeEach((to, from, next) => {

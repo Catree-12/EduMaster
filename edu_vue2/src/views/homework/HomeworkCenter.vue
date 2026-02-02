@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="homework-center">
     <div class="page-header">
       <button class="back-btn" @click="goBack">

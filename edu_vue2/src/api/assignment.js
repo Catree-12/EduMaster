@@ -1,43 +1,16 @@
 import http from './http'
 
+/**
+ * 作业公共API
+ * 教师作业管理请使用 teacher.js 中的作业相关方法
+ * 学生作业提交请使用 student.js 中的作业相关方法
+ * 
+ * 本文件仅包含通用的作业操作（如果后端有这些端点的话）
+ * 注意：如果使用 teacher.js 和 student.js，本文件可能不需要使用
+ */
 export const assignmentAPI = {
-  // 获取课程的作业列表
-  getAssignmentList(courseId, params) {
-    return http.get(`/courses/${courseId}/assignments`, { params })
-  },
-
-  // 获取作业详情
+  // 获取作业详情（公开）
   getAssignmentDetail(assignmentId) {
     return http.get(`/assignments/${assignmentId}`)
-  },
-
-  // 创建作业（老师）
-  createAssignment(courseId, data) {
-    return http.post(`/courses/${courseId}/assignments`, data)
-  },
-
-  // 编辑作业（老师）
-  updateAssignment(assignmentId, data) {
-    return http.put(`/assignments/${assignmentId}`, data)
-  },
-
-  // 删除作业（老师）
-  deleteAssignment(assignmentId) {
-    return http.delete(`/assignments/${assignmentId}`)
-  },
-
-  // 提交作业
-  submitAssignment(assignmentId, data) {
-    return http.post(`/assignments/${assignmentId}/submit`, data)
-  },
-
-  // 获取作业提交记录
-  getSubmissions(assignmentId, params) {
-    return http.get(`/assignments/${assignmentId}/submissions`, { params })
-  },
-
-  // 批改作业
-  gradeSubmission(submissionId, data) {
-    return http.post(`/submissions/${submissionId}/grade`, data)
   }
 }

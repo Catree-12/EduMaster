@@ -12,10 +12,10 @@
             <router-link to="/" class="nav-link">首页</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/course" class="nav-link">课程中心</router-link>
+            <router-link to="/courses" class="nav-link">课程中心</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/course/my-courses" class="nav-link">我的课程</router-link>
+            <router-link to="/mycourse/teacher" class="nav-link">我的课程</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/community" class="nav-link">社区</router-link>
@@ -33,12 +33,12 @@
             </span>
             <ul class="dropdown-menu">
               <li>
-                <router-link to="/user-center/profile" class="dropdown-link">
+                <router-link to="/user/profile" class="dropdown-link">
                   👤 个人中心
                 </router-link>
               </li>
               <li>
-                <router-link to="/user-center/certificates" class="dropdown-link">
+                <router-link to="/user/certificates" class="dropdown-link">
                   🎓 我的证书
                 </router-link>
               </li>
@@ -51,7 +51,7 @@
 
     <!-- 主容器 -->
     <div class="main-container">
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </div>
   </div>
 </template>
@@ -133,6 +133,8 @@ export default {
   color: #3498db;
 }
 
+/* 导航下拉菜单 */
+/* 右侧设置下拉菜单 */
 .dropdown {
   position: relative;
 }

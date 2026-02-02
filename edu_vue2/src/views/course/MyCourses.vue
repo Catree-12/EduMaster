@@ -270,7 +270,7 @@ export default {
 
     // 创建课程
     goToCreateCourse() {
-      this.$router.push('/course/create')
+      this.$router.push('/mycourse/teacher/create')
     },
 
     // 查看课程
@@ -280,7 +280,7 @@ export default {
 
     // 查看课程（讲师视角）
     viewTeachingCourse(course) {
-      this.$router.push(`/teacher/course/${course.id}`)
+      this.$router.push(`/mycourse/teacher/${course.id}`)
     },
 
     // 发布课程
@@ -345,7 +345,7 @@ export default {
 
     // 进入课程学习（学生视角）
     enterCourse(course) {
-      this.$router.push(`/student/course/${course.id}`)
+      this.$router.push(`/mycourse/student/${course.id}`)
     },
 
     // 退课
@@ -379,11 +379,11 @@ export default {
     },
 
     goToExamCenter() {
-      this.$router.push('/exam-center')
+      this.$router.push('/exams')
     },
 
     goToHomeworkCenter() {
-      this.$router.push('/homework-center')
+      this.$router.push('/homework')
     }
   }
 }

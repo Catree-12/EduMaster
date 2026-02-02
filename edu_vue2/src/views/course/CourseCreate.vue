@@ -216,7 +216,7 @@ export default {
             setTimeout(() => {
               const mockCourseId = Date.now() // 使用时间戳作为临时 ID
               this.$message.success('课程创建成功')
-              this.$router.push(`/teacher/course/${mockCourseId}?tab=courseManagement`)
+              this.$router.push(`/mycourse/teacher/${mockCourseId}?tab=courseManagement`)
               this.submitting = false
             }, 800)
           } else {
@@ -224,7 +224,7 @@ export default {
             this.$api.post('/courses', payload)
               .then(res => {
                 this.$message.success('课程创建成功')
-                this.$router.push(`/teacher/course/${res.data.id}?tab=courseManagement`)
+                this.$router.push(`/mycourse/teacher/${res.data.id}?tab=courseManagement`)
               })
               .catch(err => {
                 console.error('课程创建失败:', err)
@@ -437,6 +437,7 @@ export default {
           text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-line-clamp: 2;
+          line-clamp: 2;
           -webkit-box-orient: vertical;
         }
 
@@ -459,6 +460,7 @@ export default {
           text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-line-clamp: 4;
+          line-clamp: 4;
           -webkit-box-orient: vertical;
         }
       }

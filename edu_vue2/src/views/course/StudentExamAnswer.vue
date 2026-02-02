@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="student-exam-answer">
     <!-- 页面头部 (固定) -->
     <div class="page-header">
@@ -269,17 +269,11 @@ export default {
         cancelButtonText: '继续答题',
         type: 'warning'
       }).then(() => {
-        // 判断是否有courseId，决定返回到哪里
-        if (this.courseId && this.courseId !== '1') {
-          // 从课程详情页进入，返回课程详情页
-          this.$router.push({
-            path: `/student/course/${this.courseId}`,
-            query: { tab: 'exams' }
-          })
-        } else {
-          // 从考试中心进入，返回考试中心
-          this.$router.push('/exam-center')
-        }
+        // 返回到学生课程详情页的考试模块
+        this.$router.push({
+          path: `/mycourse/student/${this.courseId}`,
+          query: { tab: 'exam' }
+        })
       }).catch(() => {})
     },
 
@@ -381,8 +375,11 @@ export default {
       // TODO: 调用API提交答案
       this.$message.success('考试已提交')
       
-      // 交卷后统一返回考试中心主页
-      this.$router.push('/exam-center')
+      // 交卷后返回课程详情页的考试模块
+      this.$router.push({
+        path: `/mycourse/student/${this.courseId}`,
+        query: { tab: 'exam' }
+      })
     },
 
     goToQuestion(index) {

@@ -276,7 +276,7 @@ export default {
     },
     
     createExam() {
-      this.$router.push('/teacher/exam-create')
+      this.$router.push('/teacher/exams/create')
     },
     
     // 显示标签管理对话框
@@ -390,17 +390,14 @@ export default {
       // 通过发布次数判断是否发布过
       const published = row.publishCount > 0
       this.$router.push({
-        path: `/teacher/exam/${row.id}/detail`,
+        path: `/teacher/exams/${row.id}`,
         query: { published: published }
       })
     },
     
     publishExam(exam) {
       // 跳转到发布设置页面
-      this.$router.push({
-        name: 'ExamPublish',
-        params: { id: exam.id }
-      })
+      this.$router.push(`/teacher/exams/${exam.id}/publish`)
     },
     
     archiveExam(exam) {

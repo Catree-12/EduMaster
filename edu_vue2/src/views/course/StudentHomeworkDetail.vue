@@ -195,15 +195,11 @@ export default {
     },
 
     goBack() {
-      // 判断是否从作业中心进入（courseId='1'为作业中心标识）
-      if (this.courseId === '1') {
-        this.$router.push('/homework-center')
-      } else {
-        this.$router.push({
-          path: `/student/course/${this.courseId}`,
-          query: { tab: 'homework' }
-        })
-      }
+      // 返回到学生课程详情页的作业模块
+      this.$router.push({
+        path: `/mycourse/student/${this.courseId}`,
+        query: { tab: 'homework' }
+      })
     },
 
     loadHomeworkData() {
@@ -279,17 +275,11 @@ export default {
       // TODO: 调用API提交作业
       this.$message.success('作业已提交')
       
-      // 判断是否从作业中心进入，决定返回位置
-      if (this.courseId === '1') {
-        // 从作业中心进入，返回作业中心
-        this.$router.push('/homework-center')
-      } else {
-        // 从课程详情进入，返回课程详情页
-        this.$router.push({
-          path: `/student/course/${this.courseId}`,
-          query: { tab: 'homework' }
-        })
-      }
+      // 返回课程详情页的作业模块
+      this.$router.push({
+        path: `/mycourse/student/${this.courseId}`,
+        query: { tab: 'homework' }
+      })
     }
   }
 }

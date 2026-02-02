@@ -665,9 +665,7 @@ export default {
     },
 
     viewCourse(id) {
-
-      this.$router.push(`/course/${id}`)
-
+      this.$router.push(`/courses/${id}`)
     },
 
     getLevelTagType(level) {

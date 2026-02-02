@@ -3154,7 +3154,7 @@ export default {
       
       // 更新URL参数
       this.$router.replace({
-        name: 'TeacherCourseDetail',
+        name: 'MyCourseTeacherDetail',
         params: { id: this.$route.params.id },
         query: { tab: moduleId }
       }).catch(err => {
@@ -3176,7 +3176,7 @@ export default {
     selectLesson(lesson, section) {
       // 跳转到课程播放页面
       this.$router.push({
-        path: `/course/${this.courseInfo.id}/lesson/${lesson.id}`,
+        path: `/mycourse/teacher/${this.courseInfo.id}/lessons/${lesson.id}`,
         query: {
           sectionId: section.id
         }
@@ -3226,10 +3226,10 @@ export default {
       return this.classes.filter(c => c.termId === termId)
     },
     goToHomeworkLibrary() {
-      this.$router.push('/teacher/homework/library')
+      this.$router.push('/teacher/homework')
     },
     goToChapterEditor() {
-      this.$router.push(`/teacher/course/${this.courseInfo.id}/chapters/edit`)
+      this.$router.push(`/mycourse/teacher/${this.courseInfo.id}/chapters`)
     },
     goToCreateHomework() {
       this.$router.push('/teacher/homework/create')
@@ -3238,7 +3238,7 @@ export default {
       // 根据是否发布过判断跳转逻辑
       const published = hw.published || false
       this.$router.push({
-        path: `/teacher/homework/${hw.id}/detail`,
+        path: `/teacher/homework/${hw.id}`,
         query: { published: published }
       })
     },
@@ -3299,16 +3299,16 @@ export default {
     // 考试方法
     editExam(exam) {
       // 跳转到修改设置页面
-      this.$router.push(`/teacher/exam/${exam.id}/settings`)
+      this.$router.push(`/teacher/exams/${exam.id}/settings`)
     },
     gradeExam(exam) {
-      this.$router.push(`/teacher/exam/${exam.id}/grading`)
+      this.$router.push(`/teacher/exams/${exam.id}/grading`)
     },
     viewExamDetail(exam) {
       // 根据发放次数判断是否发布过
       const published = exam.publishCount > 0 || exam.published || false
       this.$router.push({
-        path: `/teacher/exam/${exam.id}/detail`,
+        path: `/teacher/exams/${exam.id}`,
         query: { published: published }
       })
     },
@@ -3319,13 +3319,13 @@ export default {
       }
     },
     goToExamLibrary() {
-      this.$router.push('/teacher/exam-library')
+      this.$router.push('/teacher/exams')
     },
     goToExamManage() {
       this.$router.push('/exam-center')
     },
     goToCreateExam() {
-      this.$router.push('/teacher/exam-create')
+      this.$router.push('/teacher/exams/create')
     },
     submitExamForm() {
       if (!this.newExam.name || !this.newExam.className || !this.newExam.startTime || !this.newExam.endTime || !this.newExam.duration) {
@@ -3404,30 +3404,19 @@ export default {
     viewThreadDetail(threadId) {
       // 跳转到话题详情页
       this.$router.push({
-        name: 'CommunityThreadDetail',
-        params: { 
-          courseId: this.courseInfo.id,
-          id: threadId 
-        }
+        path: `/mycourse/teacher/${this.courseInfo.id}/community/threads/${threadId}`
       })
     },
     createNewThread() {
       // 跳转到创建话题页面
       this.$router.push({
-        name: 'CommunityThreadCreate',
-        params: {
-          courseId: this.courseInfo.id
-        }
+        path: `/mycourse/teacher/${this.courseInfo.id}/community/threads/create`
       })
     },
     editThread(threadId) {
       // 跳转到编辑页面
       this.$router.push({
-        name: 'CommunityThreadEdit',
-        params: {
-          courseId: this.courseInfo.id,
-          id: threadId
-        }
+        path: `/mycourse/teacher/${this.courseInfo.id}/community/threads/${threadId}/edit`
       })
     },
     deleteThread(threadId) {

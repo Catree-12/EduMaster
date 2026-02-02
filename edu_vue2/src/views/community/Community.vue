@@ -13,7 +13,7 @@
             @input="handleSearch"
           ></el-input>
         </div>
-        <router-link to="/community/new-post" class="btn-new-post">+ 发表话题</router-link>
+        <router-link to="/community/posts/create" class="btn-new-post">+ 发表话题</router-link>
       </div>
     </div>
 
@@ -274,7 +274,7 @@ export default {
       }
     },
     viewPost(id) {
-      this.$router.push(`/community/${id}`)
+      this.$router.push(`/community/posts/${id}`)
     },
     toggleLike(post) {
       post.isLiked = !post.isLiked
@@ -506,6 +506,7 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    line-clamp: 2;
   }
 
   .thread-meta-row {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="lesson-player">
     <!-- 页面头部 -->
     <div class="page-header">
@@ -206,8 +206,17 @@ export default {
   },
   methods: {
     goBack() {
-      // 返回到学生课程详情页
-      this.$router.push(`/student/course/${this.courseId}`)
+      // 返回到课程详情页
+      // 检查是教师还是学生路由
+      const currentPath = this.$route.path
+      if (currentPath.includes('/mycourse/teacher/')) {
+        this.$router.push(`/mycourse/teacher/${this.courseId}`)
+      } else if (currentPath.includes('/mycourse/student/')) {
+        this.$router.push(`/mycourse/student/${this.courseId}`)
+      } else {
+        // 备用逻辑
+        this.$router.push(`/mycourse/student/${this.courseId}`)
+      }
     },
 
     loadCourseData() {
@@ -280,8 +289,16 @@ export default {
         this.expandedSections.push(firstSection.id)
         
         // 更新URL到第一个课程
+        const currentPath = this.$route.path
+        let basePath
+        if (currentPath.includes('/mycourse/teacher/')) {
+          basePath = `/mycourse/teacher/${this.courseId}/lessons`
+        } else {
+          basePath = `/mycourse/student/${this.courseId}/lessons`
+        }
+        
         this.$router.replace({
-          path: `/student/course/${this.courseId}/lesson/${firstLesson.id}`,
+          path: `${basePath}/${firstLesson.id}`,
           query: { sectionId: firstSection.id }
         }).catch(err => {
           if (err.name !== 'NavigationDuplicated') {
@@ -310,8 +327,16 @@ export default {
       this.currentSection = section
       
       // 更新路由
+      const currentPath = this.$route.path
+      let basePath
+      if (currentPath.includes('/mycourse/teacher/')) {
+        basePath = `/mycourse/teacher/${this.courseId}/lessons`
+      } else {
+        basePath = `/mycourse/student/${this.courseId}/lessons`
+      }
+      
       this.$router.replace({
-        path: `/student/course/${this.courseId}/lesson/${lesson.id}`,
+        path: `${basePath}/${lesson.id}`,
         query: {
           sectionId: section.id
         }

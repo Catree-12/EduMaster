@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="student-course-detail">
     <!-- 左侧固定导航栏 -->
     <aside class="sidebar-fixed">
@@ -392,7 +392,7 @@ export default {
   name: 'StudentCourseDetail',
   data() {
     return {
-      courseId: this.$route.params.id,
+      courseId: this.$route.params.courseId,
       activeModule: 'sections',
       
       // 导航菜单项
@@ -531,8 +531,8 @@ export default {
       
       // 更新URL参数
       this.$router.replace({
-        name: 'StudentCourseDetail',
-        params: { id: this.$route.params.id },
+        name: 'MyCourseStudentDetail',
+        params: { courseId: this.courseId },
         query: { tab: moduleId }
       }).catch(err => {
         // 忽略重复导航错误
@@ -701,7 +701,7 @@ export default {
     selectLesson(lesson, section) {
       // 跳转到学生课程播放页面
       this.$router.push({
-        path: `/student/course/${this.courseId}/lesson/${lesson.id}`,
+        path: `/mycourse/student/${this.courseId}/lessons/${lesson.id}`,
         query: {
           sectionId: section.id
         }
@@ -711,26 +711,26 @@ export default {
     // 作业相关方法
     viewHomeworkDetail(homework) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/homework/${homework.id}`
+        path: `/mycourse/student/${this.courseId}/homework/${homework.id}`
       })
     },
     
     startHomework(homework) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/homework/${homework.id}`
+        path: `/mycourse/student/${this.courseId}/homework/${homework.id}`
       })
     },
     
     viewHomeworkResult(homework) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/homework/${homework.id}`
+        path: `/mycourse/student/${this.courseId}/homework/${homework.id}`
       })
     },
     
     // 考试相关方法
     viewExamDetail(exam) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/exam/${exam.id}`
+        path: `/mycourse/student/${this.courseId}/exams/${exam.id}`
       })
     },
     
@@ -740,26 +740,26 @@ export default {
         return
       }
       this.$router.push({
-        path: `/student/course/${this.courseId}/exam/${exam.id}`
+        path: `/mycourse/student/${this.courseId}/exams/${exam.id}`
       })
     },
     
     viewExamResult(exam) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/exam/${exam.id}`
+        path: `/mycourse/student/${this.courseId}/exams/${exam.id}`
       })
     },
     
     // 社区相关方法
     createNewThread() {
       this.$router.push({
-        path: `/student/course/${this.courseId}/thread/create`
+        path: `/mycourse/student/${this.courseId}/community/threads/create`
       })
     },
     
     viewThreadDetail(threadId) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/thread/${threadId}`
+        path: `/mycourse/student/${this.courseId}/community/threads/${threadId}`
       })
     },
     
@@ -775,7 +775,7 @@ export default {
     
     editThread(threadId) {
       this.$router.push({
-        path: `/student/course/${this.courseId}/thread/${threadId}/edit`
+        path: `/mycourse/student/${this.courseId}/community/threads/${threadId}/edit`
       })
     },
     
