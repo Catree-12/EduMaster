@@ -15,7 +15,7 @@
             <router-link to="/courses" class="nav-link">课程中心</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/mycourse/teacher" class="nav-link">我的课程</router-link>
+            <a @click="goToMyCourses" class="nav-link" style="cursor: pointer;">我的课程</a>
           </li>
           <li class="nav-item">
             <router-link to="/community" class="nav-link">社区</router-link>
@@ -33,14 +33,14 @@
             </span>
             <ul class="dropdown-menu">
               <li>
-                <router-link to="/user/profile" class="dropdown-link">
+                <a @click="goToProfile" class="dropdown-link" style="cursor: pointer;">
                   👤 个人中心
-                </router-link>
+                </a>
               </li>
               <li>
-                <router-link to="/user/certificates" class="dropdown-link">
+                <a @click="goToCertificates" class="dropdown-link" style="cursor: pointer;">
                   🎓 我的证书
-                </router-link>
+                </a>
               </li>
             </ul>
           </div>
@@ -60,6 +60,20 @@
 export default {
   name: 'MainLayout',
   methods: {
+    goToMyCourses() {
+      const userRole = localStorage.getItem('userRole') || 'student'
+      if (userRole === 'teacher') {
+        this.$router.push('/teacher/courses')
+      } else {
+        this.$router.push('/student/courses')
+      }
+    },
+    goToProfile() {
+      this.$router.push('/user/profile')
+    },
+    goToCertificates() {
+      this.$router.push('/user/certificates')
+    },
     logout() {
       // 清理 Vuex 状态
       this.$store.dispatch('user/logout')
