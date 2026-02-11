@@ -1,8 +1,16 @@
 /**
- * 共享路由 - 需要登录，但不限角色
+ * 共享路由 - 需要登录,但不限角色
  */
 
 export default [
+  // ==================== 我的课程 ====================
+  {
+    path: '/courses/mycourses',
+    name: 'MyCourses',
+    component: () => import('@/views/shared/MyCourses.vue'),
+    meta: { requiresAuth: true, title: '我的课程' }
+  },
+
   // ==================== 社区广场 ====================
   {
     path: '/community',

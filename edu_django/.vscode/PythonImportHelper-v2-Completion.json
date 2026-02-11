@@ -1,0 +1,3789 @@
+[
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "django.db.models.deletion",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.db.models.deletion",
+        "description": "django.db.models.deletion",
+        "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "CourseTerm",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "ClassGroup",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "CourseTerm",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "CourseTerm",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "ClassGroup",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "CourseTerm",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "ClassGroup",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "serializers",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "permissions",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
+        "label": "Count",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "Enrollment",
+        "importPath": "learning.models",
+        "description": "learning.models",
+        "isExtraImport": true,
+        "detail": "learning.models",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePoint",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
+        "isExtraImport": true,
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePoint",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
+        "isExtraImport": true,
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "GenericForeignKey",
+        "importPath": "django.contrib.contenttypes.fields",
+        "description": "django.contrib.contenttypes.fields",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.fields",
+        "documentation": {}
+    },
+    {
+        "label": "GenericForeignKey",
+        "importPath": "django.contrib.contenttypes.fields",
+        "description": "django.contrib.contenttypes.fields",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.fields",
+        "documentation": {}
+    },
+    {
+        "label": "ContentType",
+        "importPath": "django.contrib.contenttypes.models",
+        "description": "django.contrib.contenttypes.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.models",
+        "documentation": {}
+    },
+    {
+        "label": "ContentType",
+        "importPath": "django.contrib.contenttypes.models",
+        "description": "django.contrib.contenttypes.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.models",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
+        "label": "django.contrib.auth.models",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "AbstractUser",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "django.contrib.auth.validators",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.auth.validators",
+        "description": "django.contrib.auth.validators",
+        "detail": "django.contrib.auth.validators",
+        "documentation": {}
+    },
+    {
+        "label": "django.utils.timezone",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.utils.timezone",
+        "description": "django.utils.timezone",
+        "detail": "django.utils.timezone",
+        "documentation": {}
+    },
+    {
+        "label": "RefreshToken",
+        "importPath": "rest_framework_simplejwt.tokens",
+        "description": "rest_framework_simplejwt.tokens",
+        "isExtraImport": true,
+        "detail": "rest_framework_simplejwt.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "authenticate",
+        "importPath": "django.contrib.auth",
+        "description": "django.contrib.auth",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth",
+        "documentation": {}
+    },
+    {
+        "label": "cache",
+        "importPath": "django.core.cache",
+        "description": "django.core.cache",
+        "isExtraImport": true,
+        "detail": "django.core.cache",
+        "documentation": {}
+    },
+    {
+        "label": "FileResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "get_asgi_application",
+        "importPath": "django.core.asgi",
+        "description": "django.core.asgi",
+        "isExtraImport": true,
+        "detail": "django.core.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "static",
+        "importPath": "django.conf.urls.static",
+        "description": "django.conf.urls.static",
+        "isExtraImport": true,
+        "detail": "django.conf.urls.static",
+        "documentation": {}
+    },
+    {
+        "label": "get_schema_view",
+        "importPath": "drf_yasg.views",
+        "description": "drf_yasg.views",
+        "isExtraImport": true,
+        "detail": "drf_yasg.views",
+        "documentation": {}
+    },
+    {
+        "label": "openapi",
+        "importPath": "drf_yasg",
+        "description": "drf_yasg",
+        "isExtraImport": true,
+        "detail": "drf_yasg",
+        "documentation": {}
+    },
+    {
+        "label": "get_wsgi_application",
+        "importPath": "django.core.wsgi",
+        "description": "django.core.wsgi",
+        "isExtraImport": true,
+        "detail": "django.core.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.community.migrations.0001_initial",
+        "description": "apps.community.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Comment',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('content', models.TextField(verbose_name='评论内容')),",
+        "detail": "apps.community.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.community.migrations.0002_initial",
+        "description": "apps.community.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('community', '0001_initial'),\n        ('courses', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='comment',",
+        "detail": "apps.community.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "CommunityConfig",
+        "kind": 6,
+        "importPath": "apps.community.apps",
+        "description": "apps.community.apps",
+        "peekOfCode": "class CommunityConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'community'\n    verbose_name = '问答与讨论区'",
+        "detail": "apps.community.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Thread",
+        "kind": 6,
+        "importPath": "apps.community.models",
+        "description": "apps.community.models",
+        "peekOfCode": "class Thread(models.Model):\n    \"\"\"帖子/问题\"\"\"\n    TYPE_CHOICES = [\n        ('question', '问答'),\n        ('discussion', '讨论'),\n    ]\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name='threads',",
+        "detail": "apps.community.models",
+        "documentation": {}
+    },
+    {
+        "label": "Comment",
+        "kind": 6,
+        "importPath": "apps.community.models",
+        "description": "apps.community.models",
+        "peekOfCode": "class Comment(models.Model):\n    \"\"\"回答/评论\"\"\"\n    thread = models.ForeignKey(\n        Thread,\n        on_delete=models.CASCADE,\n        related_name='comments',\n        verbose_name='关联帖子'\n    )\n    author = models.ForeignKey(\n        settings.AUTH_USER_MODEL,",
+        "detail": "apps.community.models",
+        "documentation": {}
+    },
+    {
+        "label": "PostLike",
+        "kind": 6,
+        "importPath": "apps.community.models",
+        "description": "apps.community.models",
+        "peekOfCode": "class PostLike(models.Model):\n    \"\"\"帖子点赞\"\"\"\n    user = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name='post_likes',\n        verbose_name='点赞用户'\n    )\n    thread = models.ForeignKey(\n        Thread,",
+        "detail": "apps.community.models",
+        "documentation": {}
+    },
+    {
+        "label": "CommentLike",
+        "kind": 6,
+        "importPath": "apps.community.models",
+        "description": "apps.community.models",
+        "peekOfCode": "class CommentLike(models.Model):\n    \"\"\"评论点赞\"\"\"\n    user = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name='comment_likes',\n        verbose_name='点赞用户'\n    )\n    comment = models.ForeignKey(\n        Comment,",
+        "detail": "apps.community.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.community.urls",
+        "description": "apps.community.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 公共社区 =====\n    # GET    /api/community/questions/ - 获取社区问题列表\n    path('questions/', views.PublicQuestionListView.as_view(), name='public-question-list'),\n    # GET    /api/community/questions/{id}/ - 获取问题详情\n    path('questions/<int:pk>/', views.PublicQuestionDetailView.as_view(), name='public-question-detail'),\n    # POST   /api/community/questions/ - 发布问题\n    path('questions/', views.PostQuestionView.as_view(), name='post-question'),\n    # PUT    /api/community/questions/{id}/ - 编辑问题\n    path('questions/<int:pk>/', views.UpdateQuestionView.as_view(), name='update-question'),",
+        "detail": "apps.community.urls",
+        "documentation": {}
+    },
+    {
+        "label": "PublicQuestionListView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class PublicQuestionListView(APIView):\n    \"\"\"GET /api/community/questions/ - 获取社区问题列表\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'results': []}})\nclass PublicQuestionDetailView(APIView):\n    \"\"\"GET /api/community/questions/{id}/ - 获取问题详情\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "PublicQuestionDetailView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class PublicQuestionDetailView(APIView):\n    \"\"\"GET /api/community/questions/{id}/ - 获取问题详情\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass PostQuestionView(APIView):\n    \"\"\"POST /api/community/questions/ - 发布问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'question_id': None}}, status=status.HTTP_201_CREATED)",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "PostQuestionView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class PostQuestionView(APIView):\n    \"\"\"POST /api/community/questions/ - 发布问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'question_id': None}}, status=status.HTTP_201_CREATED)\nclass UpdateQuestionView(APIView):\n    \"\"\"PUT /api/community/questions/{id}/ - 编辑问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "UpdateQuestionView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class UpdateQuestionView(APIView):\n    \"\"\"PUT /api/community/questions/{id}/ - 编辑问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})\nclass DeleteQuestionView(APIView):\n    \"\"\"DELETE /api/community/questions/{id}/ - 删除问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        return Response({'code': 200, 'message': '删除成功'})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "DeleteQuestionView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class DeleteQuestionView(APIView):\n    \"\"\"DELETE /api/community/questions/{id}/ - 删除问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        return Response({'code': 200, 'message': '删除成功'})\nclass LikeQuestionView(APIView):\n    \"\"\"POST /api/community/questions/{id}/like/ - 点赞问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '点赞成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "LikeQuestionView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class LikeQuestionView(APIView):\n    \"\"\"POST /api/community/questions/{id}/like/ - 点赞问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '点赞成功', 'data': {}})\n# ==================== 问答 ====================\nclass PostAnswerView(APIView):\n    \"\"\"POST /api/community/questions/{id}/answers/ - 回答问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, question_id):",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "PostAnswerView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class PostAnswerView(APIView):\n    \"\"\"POST /api/community/questions/{id}/answers/ - 回答问题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, question_id):\n        return Response({'code': 200, 'message': '回答成功', 'data': {'answer_id': None}}, status=status.HTTP_201_CREATED)\nclass UpdateAnswerView(APIView):\n    \"\"\"PUT /api/community/answers/{id}/ - 编辑回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "UpdateAnswerView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class UpdateAnswerView(APIView):\n    \"\"\"PUT /api/community/answers/{id}/ - 编辑回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})\nclass DeleteAnswerView(APIView):\n    \"\"\"DELETE /api/community/answers/{id}/ - 删除回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        return Response({'code': 200, 'message': '删除成功'})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "DeleteAnswerView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class DeleteAnswerView(APIView):\n    \"\"\"DELETE /api/community/answers/{id}/ - 删除回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        return Response({'code': 200, 'message': '删除成功'})\nclass LikeAnswerView(APIView):\n    \"\"\"POST /api/community/answers/{id}/like/ - 点赞回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '点赞成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "LikeAnswerView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class LikeAnswerView(APIView):\n    \"\"\"POST /api/community/answers/{id}/like/ - 点赞回答\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '点赞成功', 'data': {}})\n# ==================== 课程社区（学生） ====================\nclass StudentThreadListView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/threads/ - 获取课程话题列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadListView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadListView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/threads/ - 获取课程话题列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'threads': []}})\nclass StudentThreadDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/threads/{threadId}/ - 获取话题详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadDetailView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/threads/{threadId}/ - 获取话题详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass StudentThreadCreateView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/threads/ - 发布话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'thread_id': None}}, status=status.HTTP_201_CREATED)",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadCreateView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadCreateView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/threads/ - 发布话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'thread_id': None}}, status=status.HTTP_201_CREATED)\nclass StudentThreadUpdateView(APIView):\n    \"\"\"PUT /api/student/courses/{courseId}/threads/{threadId}/ - 编辑话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadUpdateView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadUpdateView(APIView):\n    \"\"\"PUT /api/student/courses/{courseId}/threads/{threadId}/ - 编辑话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})\nclass StudentThreadDeleteView(APIView):\n    \"\"\"DELETE /api/student/courses/{courseId}/threads/{threadId}/ - 删除话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '删除成功'})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadDeleteView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadDeleteView(APIView):\n    \"\"\"DELETE /api/student/courses/{courseId}/threads/{threadId}/ - 删除话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '删除成功'})\nclass StudentThreadCommentView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/threads/{threadId}/comments/ - 发布评论\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'comment_id': None}}, status=status.HTTP_201_CREATED)",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentThreadCommentView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class StudentThreadCommentView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/threads/{threadId}/comments/ - 发布评论\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'comment_id': None}}, status=status.HTTP_201_CREATED)\n# ==================== 课程社区（教师） ====================\nclass TeacherThreadListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/threads/ - 获取课程话题列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherThreadListView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class TeacherThreadListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/threads/ - 获取课程话题列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'threads': []}})\nclass TeacherThreadDetailView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/threads/{threadId}/ - 获取话题详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherThreadDetailView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class TeacherThreadDetailView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/threads/{threadId}/ - 获取话题详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass TeacherThreadCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/ - 发布公告/话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'thread_id': None}}, status=status.HTTP_201_CREATED)",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherThreadCreateView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class TeacherThreadCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/ - 发布公告/话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        return Response({'code': 200, 'message': '发布成功', 'data': {'thread_id': None}}, status=status.HTTP_201_CREATED)\nclass TeacherThreadUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/threads/{threadId}/ - 编辑话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherThreadUpdateView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class TeacherThreadUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/threads/{threadId}/ - 编辑话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})\nclass TeacherThreadDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/threads/{threadId}/ - 删除话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '删除成功'})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherThreadDeleteView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class TeacherThreadDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/threads/{threadId}/ - 删除话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '删除成功'})\nclass PinThreadView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/{threadId}/pin/ - 置顶话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '置顶成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "PinThreadView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class PinThreadView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/{threadId}/pin/ - 置顶话题\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '置顶成功', 'data': {}})\nclass UnpinThreadView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/{threadId}/unpin/ - 取消置顶\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '取消置顶成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "UnpinThreadView",
+        "kind": 6,
+        "importPath": "apps.community.views",
+        "description": "apps.community.views",
+        "peekOfCode": "class UnpinThreadView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/threads/{threadId}/unpin/ - 取消置顶\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, thread_id):\n        return Response({'code': 200, 'message': '取消置顶成功', 'data': {}})",
+        "detail": "apps.community.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.courses.migrations.0001_initial",
+        "description": "apps.courses.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='ClassGroup',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('name', models.CharField(help_text='如 计算机1班', max_length=100, verbose_name='班级名称')),",
+        "detail": "apps.courses.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.courses.migrations.0002_initial",
+        "description": "apps.courses.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='classgroup',\n            name='head_teacher',",
+        "detail": "apps.courses.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.courses.migrations.0003_remove_coursecategory_is_visible_and_more",
+        "description": "apps.courses.migrations.0003_remove_coursecategory_is_visible_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0002_initial'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='coursecategory',\n            name='is_visible',\n        ),\n        migrations.AlterField(",
+        "detail": "apps.courses.migrations.0003_remove_coursecategory_is_visible_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.courses.migrations.0004_alter_courseterm_status",
+        "description": "apps.courses.migrations.0004_alter_courseterm_status",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0003_remove_coursecategory_is_visible_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='courseterm',\n            name='status',\n            field=models.CharField(choices=[('in_progress', '进行中'), ('finished', '已结课')], default='recruiting', max_length=20, verbose_name='状态'),\n        ),",
+        "detail": "apps.courses.migrations.0004_alter_courseterm_status",
+        "documentation": {}
+    },
+    {
+        "label": "CoursesConfig",
+        "kind": 6,
+        "importPath": "apps.courses.apps",
+        "description": "apps.courses.apps",
+        "peekOfCode": "class CoursesConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'courses'\n    verbose_name = '课程核心'",
+        "detail": "apps.courses.apps",
+        "documentation": {}
+    },
+    {
+        "label": "CourseCategory",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class CourseCategory(models.Model):\n    \"\"\"课程分类 - 支持树状结构\"\"\"\n    name = models.CharField(max_length=50, verbose_name='分类名称', help_text='如 后端开发, Python')\n    parent = models.ForeignKey(\n        'self', \n        null=True, \n        blank=True, \n        on_delete=models.PROTECT,\n        related_name='children',\n        verbose_name='父分类'",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class Course(models.Model):\n    \"\"\"课程\"\"\"\n    STATUS_CHOICES = [\n        ('draft', '草稿'),\n        ('pending_review', '待审核'),\n        ('published', '已发布'),\n        ('rejected', '已拒绝'),\n    ]\n    DIFFICULTY_CHOICES = [\n        ('beginner', '初级'),",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Chapter",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class Chapter(models.Model):\n    \"\"\"章节 - 支持多级树状结构\"\"\"\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='chapters',\n        verbose_name='所属课程'\n    )\n    parent = models.ForeignKey(\n        'self',",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Lesson",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class Lesson(models.Model):\n    \"\"\"课时/小节\"\"\"\n    chapter = models.ForeignKey(\n        Chapter,\n        on_delete=models.CASCADE,\n        related_name='lessons',\n        verbose_name='所属章节'\n    )\n    title = models.CharField(max_length=200, verbose_name='课时标题')\n    order = models.IntegerField(default=0, verbose_name='排序号')",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "LessonContentBlock",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class LessonContentBlock(models.Model):\n    \"\"\"课时内容块 - 多态内容组件\"\"\"\n    TYPE_CHOICES = [\n        ('video', '视频'),\n        ('rich_text', '富文本'),\n        ('file', '文件附件'),\n        ('image', '图片'),\n        ('code', '代码片段'),\n    ]\n    lesson = models.ForeignKey(",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "CourseTerm",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class CourseTerm(models.Model):\n    \"\"\"课程班期\"\"\"\n    STATUS_CHOICES = [\n        ('in_progress', '进行中'),\n        ('finished', '已结课'),\n    ]\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='terms',",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "ClassGroup",
+        "kind": 6,
+        "importPath": "apps.courses.models",
+        "description": "apps.courses.models",
+        "peekOfCode": "class ClassGroup(models.Model):\n    \"\"\"教学班级\"\"\"\n    term = models.ForeignKey(\n        CourseTerm,\n        on_delete=models.CASCADE,\n        related_name='class_groups',\n        verbose_name='关联班期'\n    )\n    name = models.CharField(max_length=100, verbose_name='班级名称', help_text='如 计算机1班')\n    head_teacher = models.ForeignKey(",
+        "detail": "apps.courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.courses.tests",
+        "description": "apps.courses.tests",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0001_initial'), # 这里要填你上一个迁移文件的名字\n    ]\n    operations = [\n        migrations.RunPython(create_initial_categories),\n    ]",
+        "detail": "apps.courses.tests",
+        "documentation": {}
+    },
+    {
+        "label": "create_initial_categories",
+        "kind": 2,
+        "importPath": "apps.courses.tests",
+        "description": "apps.courses.tests",
+        "peekOfCode": "def create_initial_categories(apps, schema_editor):\n    CourseCategory = apps.get_model('courses', 'CourseCategory') # 替换 courses 为你的 app 名\n    categories = [\n        \"计算机\", \"经济学\", \"农林园艺\", \"医药卫生\", \"理学\", \n        \"历史\", \"哲学\", \"法学\", \"文学文化\", \"艺术设计\", \n        \"外语\", \"教育教学\", \"管理学\", \"工学\"\n    ]\n    for index, name in enumerate(categories):\n        CourseCategory.objects.get_or_create(name=name, defaults={'order': index})\nclass Migration(migrations.Migration):",
+        "detail": "apps.courses.tests",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.courses.urls",
+        "description": "apps.courses.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 公共课程接口 =====\n    # GET    /api/courses/ - 获取课程列表\n    path('courses/', views.PublicCourseListView.as_view(), name='public-course-list'),\n    # GET    /api/courses/{id}/ - 获取课程详情\n    path('courses/<int:pk>/', views.PublicCourseDetailView.as_view(), name='public-course-detail'),\n    # GET    /api/courses/{id}/resources/ - 获取课程资源\n    # path('courses/<int:pk>/resources/', views.CourseResourcesView.as_view(), name='course-resources'),\n    # GET    /api/courses/my-courses/ - 获取我的课程（已选/已教）\n    path('courses/mycourses/', views.MyCoursesView.as_view(), name='my-courses'),",
+        "detail": "apps.courses.urls",
+        "documentation": {}
+    },
+    {
+        "label": "PublicCourseListView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class PublicCourseListView(APIView):\n    \"\"\"GET /api/courses/ - 获取课程列表\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request):\n        page = int(request.query_params.get('page', 1))\n        page_size = int(request.query_params.get('pageSize', 10))\n        category_name = request.query_params.get('category')\n        keyword = request.query_params.get('keyword')\n        queryset = Course.objects.all().select_related('category', 'teacher')\n        #展示不用发布，还没实现发布功能",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "PublicCourseDetailView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class PublicCourseDetailView(APIView):\n    \"\"\"GET /api/courses/{id}/ - 获取课程详情\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request, pk):\n        # TODO: 实现课程详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\n# class CourseResourcesView(APIView):\n#     \"\"\"GET /api/courses/{id}/resources/ - 获取课程资源\"\"\"\n#     permission_classes = [AllowAny]\n#     def get(self, request, pk):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "MyCoursesView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class MyCoursesView(APIView):\n    \"\"\"GET /api/courses/my-courses/ - 获取我的课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"\n        查询用户两个身份下的课程：\n        1. 作为学生：查询已选课的课程\n        2. 作为教师：查询自己创建的课程\n        \"\"\"\n        user = request.user",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "CourseEnrollmentView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class CourseEnrollmentView(APIView):\n    \"\"\"\n    统一处理选课相关操作：\n    GET    /api/courses/{course_id}/enrollment/ - 获取课程的班期和班级信息（供前端选择）\n    POST   /api/courses/{course_id}/enrollment/ - 选课（前端传班期、班级信息）\n    DELETE /api/courses/{course_id}/enrollment/ - 退课\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        \"\"\"获取课程的班期和班级信息，供前端选择\"\"\"",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentCourseDetailView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class StudentCourseDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/ - 获取课程学习详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现学习详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass StudentCourseProgressView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/progress/ - 更新学习进度\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentCourseProgressView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class StudentCourseProgressView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/progress/ - 更新学习进度\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现学习进度更新（BKT/IRT算法支持）\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {'progress': 0}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentLessonDetailView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class StudentLessonDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/lessons/{lessonId}/ - 获取课时详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, lesson_id):\n        # TODO: 实现课时详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass StudentLessonCompleteView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/lessons/{lessonId}/complete/ - 完成课时学习\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, lesson_id):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentLessonCompleteView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class StudentLessonCompleteView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/lessons/{lessonId}/complete/ - 完成课时学习\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, lesson_id):\n        # TODO: 实现课时完成逻辑\n        return Response({\n            'code': 200,\n            'message': '课时已完成',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseDetailView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseDetailView(APIView):\n    \"\"\"GET /api/teacher/courses/{id}/ - 获取课程管理详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现课程管理详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass TeacherCourseCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/create - 创建课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseCreateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/create - 创建课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        \"\"\"\n        创建课程逻辑：\n        1. 根据分类名称查找对应的 CourseCategory\n        2. 创建课程，默认价格为 0.00（免费），状态为草稿\n        3. 自动创建默认班期（不限人数，开课日期为今天，结课日期为一年后）\n        4. 自动创建默认班级（不限人数）",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseUpdateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{id}/ - 更新课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        # TODO: 实现课程更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseDeleteView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{id}/ - 删除课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        # TODO: 实现课程删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherCoursePublishView(APIView):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCoursePublishView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCoursePublishView(APIView):\n    \"\"\"POST /api/teacher/courses/{id}/publish/ - 发布课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现课程发布\n        return Response({\n            'code': 200,\n            'message': '发布成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseCoverUploadView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseCoverUploadView(APIView):\n    \"\"\"POST /api/teacher/courses/{id}/cover/ - 上传课程封面\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        \"\"\"\n        上传课程封面\n        要求：用户必须是该课程的创建者\n        \"\"\"\n        user = request.user\n        # 1. 验证课程存在且属于当前用户",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterListView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/chapters/ - 获取章节列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现章节列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'chapters': []}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterCreateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/chapters/ - 创建章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现章节创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'chapter_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterUpdateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/chapters/{id}/ - 更新章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, chapter_id):\n        # TODO: 实现章节更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterDeleteView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/chapters/{id}/ - 删除章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, chapter_id):\n        # TODO: 实现章节删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherChapterSortView(APIView):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterSortView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterSortView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/chapters/sort/ - 排序章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现章节排序\n        return Response({\n            'code': 200,\n            'message': '排序成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseStudentListView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseStudentListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/students/ - 获取课程学生列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现学生列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherStudentProgressView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherStudentProgressView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/students/{studentId}/progress/ - 获取学生学习进度\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, student_id):\n        # TODO: 实现学生进度查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherTermListView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherTermListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/terms/ - 获取学期列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现学期列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'terms': []}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherTermCreateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherTermCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/terms/ - 创建学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现学期创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'term_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherTermUpdateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherTermUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/terms/{id}/ - 更新学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, term_id):\n        # TODO: 实现学期更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherTermDeleteView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherTermDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/terms/{id}/ - 删除学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, term_id):\n        # TODO: 实现学期删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherClassListView(APIView):",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherClassListView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherClassListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/classes/ - 获取班级列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现班级列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'classes': []}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherClassCreateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherClassCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/classes/ - 创建班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现班级创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'class_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherClassUpdateView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherClassUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/classes/{id}/ - 更新班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, class_id):\n        # TODO: 实现班级更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherClassDeleteView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherClassDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/classes/{id}/ - 删除班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, class_id):\n        # TODO: 实现班级删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\n# ==================== 数据统计 ====================",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherCourseStatisticsView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherCourseStatisticsView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/statistics/ - 获取课程统计数据\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现课程统计查询（学习分析）\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherDashboardView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherDashboardView(APIView):\n    \"\"\"GET /api/teacher/dashboard/ - 获取教师仪表板数据\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现仪表板数据查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0001_initial",
+        "description": "apps.exams.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='ExamAnswer',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.exams.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0002_initial",
+        "description": "apps.exams.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('exams', '0001_initial'),\n        ('knowledge', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='examsubmission',",
+        "detail": "apps.exams.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "ExamsConfig",
+        "kind": 6,
+        "importPath": "apps.exams.apps",
+        "description": "apps.exams.apps",
+        "peekOfCode": "class ExamsConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'exams'\n    verbose_name = '考试系统'",
+        "detail": "apps.exams.apps",
+        "documentation": {}
+    },
+    {
+        "label": "QuestionBank",
+        "kind": 6,
+        "importPath": "apps.exams.models",
+        "description": "apps.exams.models",
+        "peekOfCode": "class QuestionBank(models.Model):\n    \"\"\"题库 - 智能组卷数据源\"\"\"\n    TYPE_CHOICES = [\n        ('single', '单选题'),\n        ('multiple', '多选题'),\n        ('true_false', '判断题'),\n        ('fill', '填空题'),\n        ('essay', '简答题'),\n    ]\n    title = models.CharField(max_length=200, verbose_name='题目名称', help_text='后台管理检索用')",
+        "detail": "apps.exams.models",
+        "documentation": {}
+    },
+    {
+        "label": "ExamPaper",
+        "kind": 6,
+        "importPath": "apps.exams.models",
+        "description": "apps.exams.models",
+        "peekOfCode": "class ExamPaper(models.Model):\n    \"\"\"试卷模板\"\"\"\n    STATUS_CHOICES = [\n        ('draft', '草稿'),\n        ('published', '已发布'),\n    ]\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='exam_papers',",
+        "detail": "apps.exams.models",
+        "documentation": {}
+    },
+    {
+        "label": "ExamSession",
+        "kind": 6,
+        "importPath": "apps.exams.models",
+        "description": "apps.exams.models",
+        "peekOfCode": "class ExamSession(models.Model):\n    \"\"\"考试场次\"\"\"\n    paper = models.ForeignKey(\n        ExamPaper,\n        on_delete=models.CASCADE,\n        related_name='sessions',\n        verbose_name='关联试卷'\n    )\n    term = models.ForeignKey(\n        CourseTerm,",
+        "detail": "apps.exams.models",
+        "documentation": {}
+    },
+    {
+        "label": "ExamSubmission",
+        "kind": 6,
+        "importPath": "apps.exams.models",
+        "description": "apps.exams.models",
+        "peekOfCode": "class ExamSubmission(models.Model):\n    \"\"\"考试记录\"\"\"\n    STATUS_CHOICES = [\n        ('ongoing', '考试中'),\n        ('submitted', '已提交'),\n        ('grading', '阅卷中'),\n        ('graded', '已阅卷'),\n    ]\n    session = models.ForeignKey(\n        ExamSession,",
+        "detail": "apps.exams.models",
+        "documentation": {}
+    },
+    {
+        "label": "ExamAnswer",
+        "kind": 6,
+        "importPath": "apps.exams.models",
+        "description": "apps.exams.models",
+        "peekOfCode": "class ExamAnswer(models.Model):\n    \"\"\"答题详情 - 用于自动阅卷\"\"\"\n    submission = models.ForeignKey(\n        ExamSubmission,\n        on_delete=models.CASCADE,\n        related_name='answer_details',\n        verbose_name='关联考试记录'\n    )\n    question_snapshot = models.JSONField(\n        verbose_name='题目快照',",
+        "detail": "apps.exams.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.exams.urls",
+        "description": "apps.exams.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 学生考试 =====\n    # GET    /api/student/exams/ - 获取考试列表\n    path('student/exams/', views.StudentExamListView.as_view(), name='student-exam-list'),\n    # GET    /api/student/courses/{courseId}/exams/{examId}/ - 获取考试详情\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/', views.StudentExamDetailView.as_view(), name='student-exam-detail'),\n    # POST   /api/student/courses/{courseId}/exams/{examId}/start/ - 开始考试\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/start/', views.StudentExamStartView.as_view(), name='student-exam-start'),\n    # POST   /api/student/courses/{courseId}/exams/{examId}/submit/ - 提交答卷\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/submit/', views.StudentExamSubmitView.as_view(), name='student-exam-submit'),",
+        "detail": "apps.exams.urls",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamListView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamListView(APIView):\n    \"\"\"GET /api/student/exams/ - 获取考试列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现考试列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamDetailView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/exams/{examId}/ - 获取考试详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, exam_id):\n        # TODO: 实现考试详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass StudentExamStartView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/exams/{examId}/start/ - 开始考试\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, exam_id):",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamStartView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamStartView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/exams/{examId}/start/ - 开始考试\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, exam_id):\n        # TODO: 实现考试启动\n        return Response({\n            'code': 200,\n            'message': '考试已开始',\n            'data': {'session_id': None}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamSubmitView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamSubmitView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/exams/{examId}/submit/ - 提交答卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, exam_id):\n        # TODO: 实现答卷提交（Auto-Grading支持）\n        return Response({\n            'code': 200,\n            'message': '提交成功',\n            'data': {'submission_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamResultView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamResultView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/exams/{examId}/result/ - 获取考试成绩\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, exam_id):\n        # TODO: 实现考试成绩查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamListView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamListView(APIView):\n    \"\"\"GET /api/teacher/exams/ - 获取试卷库\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现试卷库列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamDetailView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamDetailView(APIView):\n    \"\"\"GET /api/teacher/exams/{id}/ - 获取试卷详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现试卷详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass TeacherExamCreateView(APIView):\n    \"\"\"POST /api/teacher/exams/ - 创建试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamCreateView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamCreateView(APIView):\n    \"\"\"POST /api/teacher/exams/ - 创建试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        # TODO: 实现试卷创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'exam_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamUpdateView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamUpdateView(APIView):\n    \"\"\"PUT /api/teacher/exams/{id}/ - 更新试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        # TODO: 实现试卷更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamDeleteView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/exams/{id}/ - 删除试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        # TODO: 实现试卷删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherExamPublishView(APIView):",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamPublishView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamPublishView(APIView):\n    \"\"\"POST /api/teacher/exams/{id}/publish/ - 发布试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现试卷发布\n        return Response({\n            'code': 200,\n            'message': '发布成功',\n            'data': {}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamSubmissionsView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamSubmissionsView(APIView):\n    \"\"\"GET /api/teacher/exams/{id}/submissions/ - 获取考试提交列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现提交列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamGradeView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamGradeView(APIView):\n    \"\"\"POST /api/teacher/exams/{exam_id}/submissions/{submission_id}/grade/ - 批改试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, exam_id, submission_id):\n        # TODO: 实现试卷批改（Auto-Grading支持）\n        return Response({\n            'code': 200,\n            'message': '批改成功',\n            'data': {}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentExamSubmitView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class StudentExamSubmitView(APIView):\n    \"\"\"提交考试 - POST Auto-Grading交卷触发自动阅卷\"\"\"\n    pass",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.finance.migrations.0001_initial",
+        "description": "apps.finance.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Order',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.finance.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.finance.migrations.0002_initial",
+        "description": "apps.finance.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('finance', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='order',\n            name='user',",
+        "detail": "apps.finance.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "FinanceConfig",
+        "kind": 6,
+        "importPath": "apps.finance.apps",
+        "description": "apps.finance.apps",
+        "peekOfCode": "class FinanceConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'finance'\n    verbose_name = '财务与订单'",
+        "detail": "apps.finance.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Order",
+        "kind": 6,
+        "importPath": "apps.finance.models",
+        "description": "apps.finance.models",
+        "peekOfCode": "class Order(models.Model):\n    \"\"\"订单\"\"\"\n    STATUS_CHOICES = [\n        ('pending', '待支付'),\n        ('paid', '已支付'),\n        ('cancelled', '已取消'),\n        ('refunded', '已退款'),\n    ]\n    PAYMENT_METHOD_CHOICES = [\n        ('alipay', '支付宝'),",
+        "detail": "apps.finance.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.finance.urls",
+        "description": "apps.finance.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 财务模块 (Finance) - 暂未在前端文档中体现，可扩展 =====\n    # TODO: 根据实际需求添加财务相关接口\n    # 如：订单管理、支付、退款等\n]",
+        "detail": "apps.finance.urls",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.homework.migrations.0001_initial",
+        "description": "apps.homework.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='HomeworkSubmission',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.homework.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.homework.migrations.0002_initial",
+        "description": "apps.homework.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0002_initial'),\n        ('exams', '0002_initial'),\n        ('homework', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(",
+        "detail": "apps.homework.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "HomeworkConfig",
+        "kind": 6,
+        "importPath": "apps.homework.apps",
+        "description": "apps.homework.apps",
+        "peekOfCode": "class HomeworkConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'homework'\n    verbose_name = '作业系统'",
+        "detail": "apps.homework.apps",
+        "documentation": {}
+    },
+    {
+        "label": "HomeworkTemplate",
+        "kind": 6,
+        "importPath": "apps.homework.models",
+        "description": "apps.homework.models",
+        "peekOfCode": "class HomeworkTemplate(models.Model):\n    \"\"\"作业模板/题库\"\"\"\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='homework_templates',\n        verbose_name='所属课程'\n    )\n    title = models.CharField(max_length=200, verbose_name='作业标题')\n    content = models.TextField(null=True, blank=True, verbose_name='作业内容/要求')",
+        "detail": "apps.homework.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeworkAssignment",
+        "kind": 6,
+        "importPath": "apps.homework.models",
+        "description": "apps.homework.models",
+        "peekOfCode": "class HomeworkAssignment(models.Model):\n    \"\"\"作业发布/任务\"\"\"\n    template = models.ForeignKey(\n        HomeworkTemplate,\n        on_delete=models.CASCADE,\n        related_name='assignments',\n        verbose_name='关联作业模板'\n    )\n    title = models.CharField(max_length=200, verbose_name='作业标题', help_text='发布时固化模板标题')\n    term = models.ForeignKey(",
+        "detail": "apps.homework.models",
+        "documentation": {}
+    },
+    {
+        "label": "HomeworkSubmission",
+        "kind": 6,
+        "importPath": "apps.homework.models",
+        "description": "apps.homework.models",
+        "peekOfCode": "class HomeworkSubmission(models.Model):\n    \"\"\"学生作业提交\"\"\"\n    STATUS_CHOICES = [\n        ('draft', '草稿'),\n        ('submitted', '已提交'),\n        ('graded', '已批改'),\n    ]\n    assignment = models.ForeignKey(\n        HomeworkAssignment,\n        on_delete=models.CASCADE,",
+        "detail": "apps.homework.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.homework.urls",
+        "description": "apps.homework.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 学生作业 =====\n    # GET    /api/student/homework/ - 获取作业列表\n    path('student/homework/', views.StudentHomeworkListView.as_view(), name='student-homework-list'),\n    # GET    /api/student/courses/{courseId}/homework/{homeworkId}/ - 获取作业详情\n    path('student/courses/<int:course_id>/homework/<int:homework_id>/', views.StudentHomeworkDetailView.as_view(), name='student-homework-detail'),\n    # POST   /api/student/courses/{courseId}/homework/{homeworkId}/submit/ - 提交作业\n    path('student/courses/<int:course_id>/homework/<int:homework_id>/submit/', views.StudentHomeworkSubmitView.as_view(), name='student-homework-submit'),\n    # GET    /api/student/courses/{courseId}/homework/{homeworkId}/submission/ - 获取作业提交详情\n    path('student/courses/<int:course_id>/homework/<int:homework_id>/submission/', views.StudentHomeworkSubmissionView.as_view(), name='student-homework-submission'),",
+        "detail": "apps.homework.urls",
+        "documentation": {}
+    },
+    {
+        "label": "StudentHomeworkListView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class StudentHomeworkListView(APIView):\n    \"\"\"GET /api/student/homework/ - 获取作业列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现作业列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentHomeworkDetailView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class StudentHomeworkDetailView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/homework/{homeworkId}/ - 获取作业详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, homework_id):\n        # TODO: 实现作业详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass StudentHomeworkSubmitView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/homework/{homeworkId}/submit/ - 提交作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, homework_id):",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentHomeworkSubmitView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class StudentHomeworkSubmitView(APIView):\n    \"\"\"POST /api/student/courses/{courseId}/homework/{homeworkId}/submit/ - 提交作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, homework_id):\n        # TODO: 实现作业提交（NLP/Rule-Based预判分）\n        return Response({\n            'code': 200,\n            'message': '提交成功',\n            'data': {'submission_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentHomeworkSubmissionView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class StudentHomeworkSubmissionView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/homework/{homeworkId}/submission/ - 获取作业提交详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, homework_id):\n        # TODO: 实现提交详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\n# ==================== 教师作业管理 ====================\nclass TeacherHomeworkListView(APIView):\n    \"\"\"GET /api/teacher/homework/ - 获取作业库\"\"\"\n    permission_classes = [IsAuthenticated]",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkListView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkListView(APIView):\n    \"\"\"GET /api/teacher/homework/ - 获取作业库\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现作业库列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkDetailView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkDetailView(APIView):\n    \"\"\"GET /api/teacher/homework/{id}/ - 获取作业详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现作业详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass TeacherHomeworkCreateView(APIView):\n    \"\"\"POST /api/teacher/homework/ - 创建作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkCreateView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkCreateView(APIView):\n    \"\"\"POST /api/teacher/homework/ - 创建作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        # TODO: 实现作业创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'homework_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkUpdateView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkUpdateView(APIView):\n    \"\"\"PUT /api/teacher/homework/{id}/ - 更新作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        # TODO: 实现作业更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkDeleteView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/homework/{id}/ - 删除作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        # TODO: 实现作业删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherHomeworkPublishView(APIView):",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkPublishView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkPublishView(APIView):\n    \"\"\"POST /api/teacher/homework/{id}/publish/ - 发布作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现作业发布\n        return Response({\n            'code': 200,\n            'message': '发布成功',\n            'data': {}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkSubmissionsView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkSubmissionsView(APIView):\n    \"\"\"GET /api/teacher/homework/{id}/submissions/ - 获取作业提交列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现提交列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'results': []}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherHomeworkGradeView",
+        "kind": 6,
+        "importPath": "apps.homework.views",
+        "description": "apps.homework.views",
+        "peekOfCode": "class TeacherHomeworkGradeView(APIView):\n    \"\"\"POST /api/teacher/homework/{homework_id}/submissions/{submission_id}/grade/ - 批改作业\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, homework_id, submission_id):\n        # TODO: 实现作业批改（Auto-Grading支持）\n        return Response({\n            'code': 200,\n            'message': '批改成功',\n            'data': {}\n        })",
+        "detail": "apps.homework.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.knowledge.migrations.0001_initial",
+        "description": "apps.knowledge.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('contenttypes', '0002_remove_content_type_name'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='KnowledgePoint',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.knowledge.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgeConfig",
+        "kind": 6,
+        "importPath": "apps.knowledge.apps",
+        "description": "apps.knowledge.apps",
+        "peekOfCode": "class KnowledgeConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'knowledge'\n    verbose_name = '知识点与图谱'",
+        "detail": "apps.knowledge.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
+        "kind": 6,
+        "importPath": "apps.knowledge.models",
+        "description": "apps.knowledge.models",
+        "peekOfCode": "class Tag(models.Model):\n    \"\"\"标签 - 通用多态关联，可关联课程、课时、题目等\"\"\"\n    name = models.CharField(max_length=50, unique=True, verbose_name='标签名称', help_text='如 Python, 难度:高')\n    # 多态关联字段\n    content_type = models.ForeignKey(\n        ContentType, \n        on_delete=models.CASCADE,\n        verbose_name='内容类型'\n    )\n    object_id = models.PositiveIntegerField(verbose_name='对象ID')",
+        "detail": "apps.knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePoint",
+        "kind": 6,
+        "importPath": "apps.knowledge.models",
+        "description": "apps.knowledge.models",
+        "peekOfCode": "class KnowledgePoint(models.Model):\n    \"\"\"知识点 - 支持树状结构，为推荐算法和学情分析提供基础\"\"\"\n    parent = models.ForeignKey(\n        'self', \n        null=True, \n        blank=True, \n        on_delete=models.CASCADE,\n        related_name='children',\n        verbose_name='父知识点',\n        help_text='支持树状结构'",
+        "detail": "apps.knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.knowledge.urls",
+        "description": "apps.knowledge.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 知识图谱模块 (Knowledge) - 暂未在前端文档中体现，可扩展 =====\n    # TODO: 根据实际需求添加知识图谱相关接口\n    # 如：知识点查询、知识图谱可视化等\n]",
+        "detail": "apps.knowledge.urls",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.learning.migrations.0001_initial",
+        "description": "apps.learning.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Enrollment',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.learning.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.learning.migrations.0002_initial",
+        "description": "apps.learning.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('courses', '0002_initial'),\n        ('knowledge', '0001_initial'),\n        ('learning', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(",
+        "detail": "apps.learning.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "LearningConfig",
+        "kind": 6,
+        "importPath": "apps.learning.apps",
+        "description": "apps.learning.apps",
+        "peekOfCode": "class LearningConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'learning'\n    verbose_name = '学习记录'",
+        "detail": "apps.learning.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Enrollment",
+        "kind": 6,
+        "importPath": "apps.learning.models",
+        "description": "apps.learning.models",
+        "peekOfCode": "class Enrollment(models.Model):\n    \"\"\"选课记录\"\"\"\n    STATUS_CHOICES = [\n        ('active', '学习中'),\n        ('completed', '已完成'),\n        ('dropped', '已退课'),\n    ]\n    student = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,",
+        "detail": "apps.learning.models",
+        "documentation": {}
+    },
+    {
+        "label": "StudentKnowledgeMastery",
+        "kind": 6,
+        "importPath": "apps.learning.models",
+        "description": "apps.learning.models",
+        "peekOfCode": "class StudentKnowledgeMastery(models.Model):\n    \"\"\"学生知识掌握度 - 用于学情分析和BKT/IRT算法\"\"\"\n    student = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,\n        related_name='knowledge_masteries',\n        verbose_name='学生'\n    )\n    knowledge_point = models.ForeignKey(\n        KnowledgePoint,",
+        "detail": "apps.learning.models",
+        "documentation": {}
+    },
+    {
+        "label": "Certificate",
+        "kind": 6,
+        "importPath": "apps.learning.models",
+        "description": "apps.learning.models",
+        "peekOfCode": "class Certificate(models.Model):\n    \"\"\"证书\"\"\"\n    STATUS_CHOICES = [\n        ('active', '有效'),\n        ('revoked', '已撤销'),\n        ('expired', '已过期'),\n    ]\n    student = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,",
+        "detail": "apps.learning.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.learning.urls",
+        "description": "apps.learning.urls",
+        "peekOfCode": "urlpatterns = [\n    # 学习相关接口可在此扩展\n]",
+        "detail": "apps.learning.urls",
+        "documentation": {}
+    },
+    {
+        "label": "StudentEnrollmentListView",
+        "kind": 6,
+        "importPath": "apps.learning.views",
+        "description": "apps.learning.views",
+        "peekOfCode": "class StudentEnrollmentListView(APIView):\n    \"\"\"学生选课列表 - GET获取我的选课, POST选课/报名\"\"\"\n    pass\nclass StudentCertificateListView(APIView):\n    \"\"\"学生证书列表 - GET获取我的证书\"\"\"\n    pass",
+        "detail": "apps.learning.views",
+        "documentation": {}
+    },
+    {
+        "label": "StudentCertificateListView",
+        "kind": 6,
+        "importPath": "apps.learning.views",
+        "description": "apps.learning.views",
+        "peekOfCode": "class StudentCertificateListView(APIView):\n    \"\"\"学生证书列表 - GET获取我的证书\"\"\"\n    pass",
+        "detail": "apps.learning.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.operations.migrations.0001_initial",
+        "description": "apps.operations.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('contenttypes', '0002_remove_content_type_name'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Announcement',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.operations.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.operations.migrations.0002_initial",
+        "description": "apps.operations.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('operations', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='report',\n            name='handler',",
+        "detail": "apps.operations.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "OperationsConfig",
+        "kind": 6,
+        "importPath": "apps.operations.apps",
+        "description": "apps.operations.apps",
+        "peekOfCode": "class OperationsConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'operations'\n    verbose_name = '运营管理'",
+        "detail": "apps.operations.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Banner",
+        "kind": 6,
+        "importPath": "apps.operations.models",
+        "description": "apps.operations.models",
+        "peekOfCode": "class Banner(models.Model):\n    \"\"\"轮播图\"\"\"\n    POSITION_CHOICES = [\n        ('home_top', '首页顶部'),\n        ('course_list_top', '课程列表顶部'),\n    ]\n    title = models.CharField(max_length=200, verbose_name='标题')\n    image = models.ImageField(upload_to='banners/%Y/%m/', verbose_name='图片地址')\n    link_url = models.URLField(null=True, blank=True, verbose_name='跳转链接')\n    order = models.IntegerField(default=0, verbose_name='排序', help_text='数字越小越靠前')",
+        "detail": "apps.operations.models",
+        "documentation": {}
+    },
+    {
+        "label": "Announcement",
+        "kind": 6,
+        "importPath": "apps.operations.models",
+        "description": "apps.operations.models",
+        "peekOfCode": "class Announcement(models.Model):\n    \"\"\"系统公告\"\"\"\n    title = models.CharField(max_length=200, verbose_name='标题')\n    content = models.TextField(verbose_name='内容')\n    is_popup = models.BooleanField(default=False, verbose_name='是否弹窗强提醒')\n    start_time = models.DateTimeField(verbose_name='展示开始时间')\n    end_time = models.DateTimeField(verbose_name='展示结束时间')\n    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')\n    class Meta:\n        db_table = 'operations_announcements'",
+        "detail": "apps.operations.models",
+        "documentation": {}
+    },
+    {
+        "label": "DailyStat",
+        "kind": 6,
+        "importPath": "apps.operations.models",
+        "description": "apps.operations.models",
+        "peekOfCode": "class DailyStat(models.Model):\n    \"\"\"每日统计\"\"\"\n    date = models.DateField(unique=True, verbose_name='统计日期')\n    new_users = models.IntegerField(default=0, verbose_name='新增用户数')\n    active_users = models.IntegerField(default=0, verbose_name='活跃用户数')\n    new_courses = models.IntegerField(default=0, verbose_name='新增课程数')\n    total_enrollments = models.IntegerField(default=0, verbose_name='累计选课人次')\n    new_enrollments = models.IntegerField(default=0, verbose_name='当日选课人次')\n    certificates_issued = models.IntegerField(default=0, verbose_name='颁发证书数')\n    total_income = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, verbose_name='当日营收')",
+        "detail": "apps.operations.models",
+        "documentation": {}
+    },
+    {
+        "label": "Report",
+        "kind": 6,
+        "importPath": "apps.operations.models",
+        "description": "apps.operations.models",
+        "peekOfCode": "class Report(models.Model):\n    \"\"\"举报\"\"\"\n    STATUS_CHOICES = [\n        ('pending', '待处理'),\n        ('resolved', '已处理'),\n        ('rejected', '已驳回'),\n    ]\n    reporter = models.ForeignKey(\n        settings.AUTH_USER_MODEL,\n        on_delete=models.CASCADE,",
+        "detail": "apps.operations.models",
+        "documentation": {}
+    },
+    {
+        "label": "router",
+        "kind": 5,
+        "importPath": "apps.operations.urls",
+        "description": "apps.operations.urls",
+        "peekOfCode": "router = DefaultRouter()\nurlpatterns = [\n    # ===== 仪表板 =====\n    # GET    /api/admin/dashboard/stats/ - 获取平台统计数据\n    path('admin/dashboard/stats/', views.AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),\n    # GET    /api/admin/dashboard/pending-tasks/ - 获取待处理任务\n    path('admin/dashboard/pending-tasks/', views.AdminPendingTasksView.as_view(), name='admin-pending-tasks'),\n    # ===== 课程审核 =====\n    # GET    /api/admin/courses/pending/ - 获取待审核课程列表\n    path('admin/courses/pending/', views.AdminPendingCoursesView.as_view(), name='admin-pending-courses'),",
+        "detail": "apps.operations.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.operations.urls",
+        "description": "apps.operations.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 仪表板 =====\n    # GET    /api/admin/dashboard/stats/ - 获取平台统计数据\n    path('admin/dashboard/stats/', views.AdminDashboardStatsView.as_view(), name='admin-dashboard-stats'),\n    # GET    /api/admin/dashboard/pending-tasks/ - 获取待处理任务\n    path('admin/dashboard/pending-tasks/', views.AdminPendingTasksView.as_view(), name='admin-pending-tasks'),\n    # ===== 课程审核 =====\n    # GET    /api/admin/courses/pending/ - 获取待审核课程列表\n    path('admin/courses/pending/', views.AdminPendingCoursesView.as_view(), name='admin-pending-courses'),\n    # GET    /api/admin/courses/audit-list/ - 获取课程审核列表",
+        "detail": "apps.operations.urls",
+        "documentation": {}
+    },
+    {
+        "label": "AdminDashboardStatsView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminDashboardStatsView(APIView):\n    \"\"\"GET /api/admin/dashboard/stats/ - 获取平台统计数据\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass AdminPendingTasksView(APIView):\n    \"\"\"GET /api/admin/dashboard/pending-tasks/ - 获取待处理任务\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'tasks': []}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminPendingTasksView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminPendingTasksView(APIView):\n    \"\"\"GET /api/admin/dashboard/pending-tasks/ - 获取待处理任务\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'tasks': []}})\n# ==================== 课程审核 ====================\nclass AdminPendingCoursesView(APIView):\n    \"\"\"GET /api/admin/courses/pending/ - 获取待审核课程列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminPendingCoursesView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminPendingCoursesView(APIView):\n    \"\"\"GET /api/admin/courses/pending/ - 获取待审核课程列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'results': []}})\nclass AdminCourseAuditListView(APIView):\n    \"\"\"GET /api/admin/courses/audit-list/ - 获取课程审核列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'results': []}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminCourseAuditListView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminCourseAuditListView(APIView):\n    \"\"\"GET /api/admin/courses/audit-list/ - 获取课程审核列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'results': []}})\nclass AdminCourseAuditDetailView(APIView):\n    \"\"\"GET /api/admin/courses/{id}/audit-detail/ - 获取审核详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminCourseAuditDetailView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminCourseAuditDetailView(APIView):\n    \"\"\"GET /api/admin/courses/{id}/audit-detail/ - 获取审核详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass AdminCourseApproveView(APIView):\n    \"\"\"POST /api/admin/courses/{id}/approve/ - 审核通过\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '审核通过', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminCourseApproveView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminCourseApproveView(APIView):\n    \"\"\"POST /api/admin/courses/{id}/approve/ - 审核通过\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '审核通过', 'data': {}})\nclass AdminCourseRejectView(APIView):\n    \"\"\"POST /api/admin/courses/{id}/reject/ - 审核拒绝\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '审核拒绝', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminCourseRejectView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminCourseRejectView(APIView):\n    \"\"\"POST /api/admin/courses/{id}/reject/ - 审核拒绝\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '审核拒绝', 'data': {}})\n# ==================== 用户管理 ====================\nclass AdminUserListView(APIView):\n    \"\"\"GET /api/admin/users/ - 获取所有用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserListView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserListView(APIView):\n    \"\"\"GET /api/admin/users/ - 获取所有用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        return Response({'code': 200, 'message': '获取成功', 'data': {'results': []}})\nclass AdminUserDetailView(APIView):\n    \"\"\"GET /api/admin/users/{id}/ - 获取用户详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserDetailView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserDetailView(APIView):\n    \"\"\"GET /api/admin/users/{id}/ - 获取用户详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass AdminUserUpdateView(APIView):\n    \"\"\"PUT /api/admin/users/{id}/ - 更新用户信息\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserUpdateView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserUpdateView(APIView):\n    \"\"\"PUT /api/admin/users/{id}/ - 更新用户信息\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        return Response({'code': 200, 'message': '更新成功', 'data': {}})\nclass AdminUserDisableView(APIView):\n    \"\"\"POST /api/admin/users/{id}/disable/ - 禁用用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '禁用成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserDisableView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserDisableView(APIView):\n    \"\"\"POST /api/admin/users/{id}/disable/ - 禁用用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '禁用成功', 'data': {}})\nclass AdminUserEnableView(APIView):\n    \"\"\"POST /api/admin/users/{id}/enable/ - 启用用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '启用成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserEnableView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserEnableView(APIView):\n    \"\"\"POST /api/admin/users/{id}/enable/ - 启用用户\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        return Response({'code': 200, 'message': '启用成功', 'data': {}})\nclass AdminUserBatchDisableView(APIView):\n    \"\"\"POST /api/admin/users/batch-disable/ - 批量禁用\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '批量禁用成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserBatchDisableView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserBatchDisableView(APIView):\n    \"\"\"POST /api/admin/users/batch-disable/ - 批量禁用\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '批量禁用成功', 'data': {}})\nclass AdminUserBatchEnableView(APIView):\n    \"\"\"POST /api/admin/users/batch-enable/ - 批量启用\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '批量启用成功', 'data': {}})",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminUserBatchEnableView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminUserBatchEnableView(APIView):\n    \"\"\"POST /api/admin/users/batch-enable/ - 批量启用\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        return Response({'code': 200, 'message': '批量启用成功', 'data': {}})\n    pass\nclass AdminReportListView(APIView):\n    \"\"\"管理员内容审查(举报处理) - GET/POST\"\"\"\n    pass",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "AdminReportListView",
+        "kind": 6,
+        "importPath": "apps.operations.views",
+        "description": "apps.operations.views",
+        "peekOfCode": "class AdminReportListView(APIView):\n    \"\"\"管理员内容审查(举报处理) - GET/POST\"\"\"\n    pass",
+        "detail": "apps.operations.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.system.migrations.0001_initial",
+        "description": "apps.system.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Message',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('type', models.CharField(choices=[('system', '系统消息'), ('course', '课程消息'), ('interaction', '互动消息'), ('security', '安全消息')], default='system', max_length=20, verbose_name='消息类型')),",
+        "detail": "apps.system.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.system.migrations.0002_initial",
+        "description": "apps.system.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('system', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='message',\n            name='receiver',",
+        "detail": "apps.system.migrations.0002_initial",
+        "documentation": {}
+    },
+    {
+        "label": "SystemConfig",
+        "kind": 6,
+        "importPath": "apps.system.apps",
+        "description": "apps.system.apps",
+        "peekOfCode": "class SystemConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'system'\n    verbose_name = '系统配置与消息通知'",
+        "detail": "apps.system.apps",
+        "documentation": {}
+    },
+    {
+        "label": "Task",
+        "kind": 6,
+        "importPath": "apps.system.models",
+        "description": "apps.system.models",
+        "peekOfCode": "class Task(models.Model):\n    \"\"\"异步任务\"\"\"\n    STATUS_CHOICES = [\n        ('pending', '待处理'),\n        ('processing', '处理中'),\n        ('success', '成功'),\n        ('failure', '失败'),\n    ]\n    task_id = models.UUIDField(default=uuid.uuid4, unique=True, verbose_name='任务ID', help_text='Celery Task ID')\n    name = models.CharField(max_length=100, verbose_name='任务名称', help_text='如 generate_exam, transcode_video')",
+        "detail": "apps.system.models",
+        "documentation": {}
+    },
+    {
+        "label": "SystemConfig",
+        "kind": 6,
+        "importPath": "apps.system.models",
+        "description": "apps.system.models",
+        "peekOfCode": "class SystemConfig(models.Model):\n    \"\"\"系统配置\"\"\"\n    key = models.CharField(max_length=100, unique=True, verbose_name='配置键', help_text='如 site_name, allow_register')\n    value = models.JSONField(verbose_name='配置值', help_text='支持各种类型')\n    description = models.CharField(max_length=200, null=True, blank=True, verbose_name='描述')\n    is_public = models.BooleanField(default=False, verbose_name='是否公开', help_text='前端可见')\n    updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')\n    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')\n    class Meta:\n        db_table = 'system_configs'",
+        "detail": "apps.system.models",
+        "documentation": {}
+    },
+    {
+        "label": "Message",
+        "kind": 6,
+        "importPath": "apps.system.models",
+        "description": "apps.system.models",
+        "peekOfCode": "class Message(models.Model):\n    \"\"\"消息通知\"\"\"\n    TYPE_CHOICES = [\n        ('system', '系统消息'),\n        ('course', '课程消息'),\n        ('interaction', '互动消息'),\n        ('security', '安全消息'),\n    ]\n    sender = models.ForeignKey(\n        settings.AUTH_USER_MODEL,",
+        "detail": "apps.system.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.system.urls",
+        "description": "apps.system.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 系统模块 (System) - 暂未在前端文档中体现，可扩展 =====\n    # TODO: 根据实际需求添加系统相关接口\n    # 如：系统配置、任务管理、消息推送等\n]",
+        "detail": "apps.system.urls",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.users.migrations.0001_initial",
+        "description": "apps.users.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('auth', '0012_alter_user_first_name_max_length'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='User',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.users.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.users.migrations.0002_remove_teacherprofile_is_verified_and_more",
+        "description": "apps.users.migrations.0002_remove_teacherprofile_is_verified_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('users', '0001_initial'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='teacherprofile',\n            name='is_verified',\n        ),\n        migrations.RemoveField(",
+        "detail": "apps.users.migrations.0002_remove_teacherprofile_is_verified_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.users.migrations.0003_alter_user_email_alter_user_phone",
+        "description": "apps.users.migrations.0003_alter_user_email_alter_user_phone",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('users', '0002_remove_teacherprofile_is_verified_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='user',\n            name='email',\n            field=models.EmailField(error_messages={'unique': '该邮箱已被注册。'}, help_text='用于登录和找回密码', max_length=254, unique=True, verbose_name='邮箱地址'),\n        ),",
+        "detail": "apps.users.migrations.0003_alter_user_email_alter_user_phone",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.users.migrations.0004_remove_user_idx_user_phone_user_real_name_and_more",
+        "description": "apps.users.migrations.0004_remove_user_idx_user_phone_user_real_name_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('users', '0003_alter_user_email_alter_user_phone'),\n    ]\n    operations = [\n        migrations.RemoveIndex(\n            model_name='user',\n            name='idx_user_phone',\n        ),\n        migrations.AddField(",
+        "detail": "apps.users.migrations.0004_remove_user_idx_user_phone_user_real_name_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "UsersConfig",
+        "kind": 6,
+        "importPath": "apps.users.apps",
+        "description": "apps.users.apps",
+        "peekOfCode": "class UsersConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'users'\n    verbose_name = '用户与认证'",
+        "detail": "apps.users.apps",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 6,
+        "importPath": "apps.users.models",
+        "description": "apps.users.models",
+        "peekOfCode": "class User(AbstractUser):\n    \"\"\"自定义用户模型 - 继承Django的AbstractUser\"\"\"\n    # 基础字段 (username, password, email 继承自 AbstractUser)\n    real_name = models.CharField(max_length=50, verbose_name='真实姓名')\n    nickname = models.CharField(max_length=50, null=True, blank=True, verbose_name='昵称', help_text='显示用昵称')\n    avatar = models.ImageField(upload_to='avatars/%Y/%m/', null=True, blank=True, verbose_name='头像')\n    bio = models.TextField(null=True, blank=True, verbose_name='个人简介')\n    phone = models.CharField(max_length=11, unique=True, null=True, blank=True,verbose_name='手机号')\n    email = models.EmailField(\n        unique=True, ",
+        "detail": "apps.users.models",
+        "documentation": {}
+    },
+    {
+        "label": "StudentProfile",
+        "kind": 6,
+        "importPath": "apps.users.models",
+        "description": "apps.users.models",
+        "peekOfCode": "class StudentProfile(models.Model):\n    \"\"\"学生档案 - 与User一对一关联\"\"\"\n    user = models.OneToOneField(\n        User, \n        on_delete=models.CASCADE, \n        related_name='student_profile',\n        verbose_name='关联用户'\n    )\n    student_id = models.CharField(max_length=20, unique=True, verbose_name='学号')\n    class Meta:",
+        "detail": "apps.users.models",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherProfile",
+        "kind": 6,
+        "importPath": "apps.users.models",
+        "description": "apps.users.models",
+        "peekOfCode": "class TeacherProfile(models.Model):\n    \"\"\"教师档案 - 与User一对一关联\"\"\"\n    user = models.OneToOneField(\n        User, \n        on_delete=models.CASCADE, \n        related_name='teacher_profile',\n        verbose_name='关联用户'\n    )\n    teacher_id = models.CharField(max_length=20, unique=True, verbose_name='工号')\n    # is_verified = models.BooleanField(default=False, verbose_name='认证状态', help_text='是否通过平台认证')",
+        "detail": "apps.users.models",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "apps.users.urls",
+        "description": "apps.users.urls",
+        "peekOfCode": "urlpatterns = [\n    # ===== 认证模块 (Authentication) =====\n    # POST   /api/auth/login/\n    path('auth/login/', views.LoginView.as_view(), name='auth-login'),\n    # POST   /api/auth/register/\n    path('auth/register/', views.RegisterView.as_view(), name='auth-register'),\n    # POST   /api/auth/logout/\n    path('auth/logout/', views.LogoutView.as_view(), name='auth-logout'),\n    # POST   /api/auth/forget-password/  (发送验证码)\n    # PUT    /api/auth/forget-password/  (重置密码)",
+        "detail": "apps.users.urls",
+        "documentation": {}
+    },
+    {
+        "label": "LoginView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class LoginView(APIView):\n    \"\"\"用户登录 - JWT认证\"\"\"\n    permission_classes = [AllowAny]\n    def post(self, request):\n        \"\"\"\n        登录接口\n        参数: email, password\n        返回: access_token, refresh_token, user_info\n        \"\"\"\n        email = request.data.get('email', '').strip()",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "RegisterView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class RegisterView(APIView):\n    \"\"\"用户注册\"\"\"\n    permission_classes = [AllowAny]\n    authentication_classes = []\n    def post(self, request):\n        \"\"\"\n        注册接口\n        参数: real_name (真实姓名), email, password\n        \"\"\"\n        # 1. 获取数据并去空格",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "LogoutView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class LogoutView(APIView):\n    \"\"\"用户登出\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        \"\"\"\n        登出接口 - 将refresh_token加入黑名单\n        参数: refresh_token\n        \"\"\"\n        try:\n            refresh_token = request.data.get('refresh_token')",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "ForgetPasswordView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class ForgetPasswordView(APIView):\n    \"\"\"忘记密码\"\"\"\n    permission_classes = [AllowAny]\n    def post(self, request):\n        \"\"\"\n        忘记密码 - 发送验证码\n        参数: phone\n        \"\"\"\n        phone = request.data.get('phone')\n        if not phone:",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "ChangePasswordView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class ChangePasswordView(APIView):\n    \"\"\"修改密码 - 需要登录\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        \"\"\"\n        修改密码\n        参数: old_password, new_password\n        \"\"\"\n        user = request.user\n        old_password = request.data.get('old_password')",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "RefreshTokenView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class RefreshTokenView(APIView):\n    \"\"\"刷新Token - 需要登录\"\"\"\n    permission_classes = [AllowAny]\n    def post(self, request):\n        \"\"\"\n        刷新Token\n        参数: refresh_token\n        \"\"\"\n        refresh_token = request.data.get('refresh_token')\n        if not refresh_token:",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "ProfileView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class ProfileView(APIView):\n    \"\"\"获取/更新个人信息\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"获取个人信息\"\"\"\n        user = request.user\n        # 获取用户身份信息（每个用户都有学生和教师身份）\n        student_id = user.student_profile.student_id if hasattr(user, 'student_profile') else None\n        teacher_id = user.teacher_profile.teacher_id if hasattr(user, 'teacher_profile') else None\n        data = {",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "UserDetailView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class UserDetailView(APIView):\n    \"\"\"GET /api/users/{id}/ - 获取指定用户详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        try:\n            user = User.objects.get(id=pk)\n            # 获取用户身份信息（每个用户都有学生和教师身份）\n            student_id = user.student_profile.student_id if hasattr(user, 'student_profile') else None\n            teacher_id = user.teacher_profile.teacher_id if hasattr(user, 'teacher_profile') else None\n            data = {",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "AvatarUploadView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class AvatarUploadView(APIView):\n    \"\"\"POST /api/users/avatar/ - 上传头像\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):\n        user = request.user\n        if 'avatar' not in request.FILES:\n            return Response({\n                'code': 400,\n                'message': '请上传头像文件'\n            }, status=status.HTTP_400_BAD_REQUEST)",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "LearningStatsView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class LearningStatsView(APIView):\n    \"\"\"GET /api/users/stats/learning/ - 获取学习统计\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现学习统计逻辑\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {\n                'total_courses': 0,",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "GradeStatsView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class GradeStatsView(APIView):\n    \"\"\"GET /api/users/stats/grades/ - 获取成绩统计\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现成绩统计逻辑\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {\n                'average_grade': 0,",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "CertificateStatsView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class CertificateStatsView(APIView):\n    \"\"\"GET /api/users/stats/certificates/ - 获取证书统计\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现证书统计逻辑\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {\n                'total_certificates': 0,",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "CertificateListView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class CertificateListView(APIView):\n    \"\"\"GET /api/users/certificates/ - 获取证书列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现证书列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {\n                'results': [],",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "CertificateDetailView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class CertificateDetailView(APIView):\n    \"\"\"GET /api/users/certificates/{id}/ - 获取证书详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现证书详情查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "CertificateShareView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class CertificateShareView(APIView):\n    \"\"\"POST /api/users/certificates/{id}/share/ - 生成证书分享链接\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现证书分享链接生成\n        return Response({\n            'code': 200,\n            'message': '分享链接已生成',\n            'data': {\n                'share_url': '',",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "CertificateDownloadView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class CertificateDownloadView(APIView):\n    \"\"\"GET /api/users/certificates/{id}/download/ - 下载证书文件\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现证书下载\n        return Response({\n            'code': 200,\n            'message': '下载成功'\n        })\nclass GenerateCourseCertificateView(APIView):",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "GenerateCourseCertificateView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class GenerateCourseCertificateView(APIView):\n    \"\"\"POST /api/users/courses/{courseId}/certificate/ - 生成课程证书\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现课程证书生成\n        return Response({\n            'code': 200,\n            'message': '证书已生成',\n            'data': {\n                'certificate_id': None",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "MessageListView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class MessageListView(APIView):\n    \"\"\"GET /api/users/messages/ - 获取消息列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        # TODO: 实现消息列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {\n                'results': [],",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "MarkMessageReadView",
+        "kind": 6,
+        "importPath": "apps.users.views",
+        "description": "apps.users.views",
+        "peekOfCode": "class MarkMessageReadView(APIView):\n    \"\"\"POST /api/users/messages/{id}/read/ - 标记消息已读\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现消息标记已读\n        return Response({\n            'code': 200,\n            'message': '标记成功'\n        })",
+        "detail": "apps.users.views",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "config.asgi",
+        "description": "config.asgi",
+        "peekOfCode": "application = get_asgi_application()",
+        "detail": "config.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\n# 将 apps 目录添加到 Python 搜索路径\nsys.path.insert(0, os.path.join(BASE_DIR, 'apps'))\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = ['*']",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SECRET_KEY",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = ['*']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEBUG",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = ['*']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ALLOWED_HOSTS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "ALLOWED_HOSTS = ['*']\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    # 第三方应用",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "INSTALLED_APPS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    # 第三方应用\n    'rest_framework',\n    'corsheaders',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MIDDLEWARE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MIDDLEWARE = [\n    'corsheaders.middleware.CorsMiddleware',  # CORS中间件（必须在最顶端）\n    'django.middleware.security.SecurityMiddleware',\n    'django.contrib.sessions.middleware.SessionMiddleware',\n    'django.middleware.common.CommonMiddleware',\n    # 'django.middleware.csrf.CsrfViewMiddleware',\n    'django.contrib.auth.middleware.AuthenticationMiddleware',\n    'django.contrib.messages.middleware.MessageMiddleware',\n    'django.middleware.clickjacking.XFrameOptionsMiddleware',\n]",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ROOT_URLCONF",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "ROOT_URLCONF = 'config.urls'\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPLATES",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',\n                'django.contrib.auth.context_processors.auth',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WSGI_APPLICATION",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "WSGI_APPLICATION = 'config.wsgi.application'\n# Database\n# https://docs.djangoproject.com/en/5.1/ref/settings/#databases\nDATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.mysql',\n        'NAME': 'edu_django',\n        'USER': 'root',\n        'PASSWORD': '123456',\n        'HOST': 'localhost',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DATABASES",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.mysql',\n        'NAME': 'edu_django',\n        'USER': 'root',\n        'PASSWORD': '123456',\n        'HOST': 'localhost',\n        'PORT': '3306',\n        'OPTIONS': {\n            'charset': 'utf8mb4',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_PASSWORD_VALIDATORS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',\n    },\n    {\n        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',\n    },\n    {\n        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',\n    },",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LANGUAGE_CODE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "LANGUAGE_CODE = 'zh-hans'\nTIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TIME_ZONE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "TIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_I18N",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_TZ",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "USE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "STATIC_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "STATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "STATIC_ROOT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_ROOT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "MEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True\n# REST Framework配置",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_AUTO_FIELD",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True\n# REST Framework配置\nREST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': [\n        'rest_framework_simplejwt.authentication.JWTAuthentication',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_USER_MODEL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "AUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True\n# REST Framework配置\nREST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': [\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n    ],\n    'DEFAULT_PERMISSION_CLASSES': [",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CORS_ALLOW_ALL_ORIGINS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True\n# REST Framework配置\nREST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': [\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n    ],\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.IsAuthenticated',\n    ],",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CORS_ALLOW_CREDENTIALS",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CORS_ALLOW_CREDENTIALS = True\n# REST Framework配置\nREST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': [\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n    ],\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.IsAuthenticated',\n    ],\n    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "REST_FRAMEWORK",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "REST_FRAMEWORK = {\n    'DEFAULT_AUTHENTICATION_CLASSES': [\n        'rest_framework_simplejwt.authentication.JWTAuthentication',\n    ],\n    'DEFAULT_PERMISSION_CLASSES': [\n        'rest_framework.permissions.IsAuthenticated',\n    ],\n    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',\n    'PAGE_SIZE': 10,\n    'DEFAULT_FILTER_BACKENDS': [",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SIMPLE_JWT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "SIMPLE_JWT = {\n    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),\n    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),\n    'ROTATE_REFRESH_TOKENS': True,\n    'BLACKLIST_AFTER_ROTATION': True,\n    'ALGORITHM': 'HS256',\n    'SIGNING_KEY': SECRET_KEY,\n    'AUTH_HEADER_TYPES': ('Bearer',),\n}\n# Redis配置",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CACHES",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CACHES = {\n    'default': {\n        'BACKEND': 'django_redis.cache.RedisCache',\n        'LOCATION': 'redis://127.0.0.1:6379/1',\n        'OPTIONS': {\n            'CLIENT_CLASS': 'django_redis.client.DefaultClient',\n        }\n    }\n}\n# Celery配置",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_BROKER_URL",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'\nCELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'\nCELERY_ACCEPT_CONTENT = ['json']\nCELERY_TASK_SERIALIZER = 'json'\nCELERY_RESULT_SERIALIZER = 'json'\nCELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_RESULT_BACKEND",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'\nCELERY_ACCEPT_CONTENT = ['json']\nCELERY_TASK_SERIALIZER = 'json'\nCELERY_RESULT_SERIALIZER = 'json'\nCELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_ACCEPT_CONTENT",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_ACCEPT_CONTENT = ['json']\nCELERY_TASK_SERIALIZER = 'json'\nCELERY_RESULT_SERIALIZER = 'json'\nCELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_TASK_SERIALIZER",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_TASK_SERIALIZER = 'json'\nCELERY_RESULT_SERIALIZER = 'json'\nCELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_RESULT_SERIALIZER",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_RESULT_SERIALIZER = 'json'\nCELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "CELERY_TIMEZONE",
+        "kind": 5,
+        "importPath": "config.settings",
+        "description": "config.settings",
+        "peekOfCode": "CELERY_TIMEZONE = TIME_ZONE",
+        "detail": "config.settings",
+        "documentation": {}
+    },
+    {
+        "label": "schema_view",
+        "kind": 5,
+        "importPath": "config.urls",
+        "description": "config.urls",
+        "peekOfCode": "schema_view = get_schema_view(\n    openapi.Info(\n        title=\"EduMaster API\",\n        default_version='v1',\n        description=\"在线教育平台API文档 - 基于 Django 5.1\",\n        terms_of_service=\"https://www.example.com/terms/\",\n        contact=openapi.Contact(email=\"contact@example.com\"),\n        license=openapi.License(name=\"BSD License\"),\n    ),\n    public=True,",
+        "detail": "config.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "config.urls",
+        "description": "config.urls",
+        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    # API文档\n    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),\n    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),\n    # 业务应用路由 (统一使用 /api/ 前缀)\n    # 认证模块 (users app)\n    path('api/', include('users.urls')),  # 包含 /api/auth/* 路由\n    # 课程模块 (courses app) - 包含教师端、学生端、公共端\n    path('api/', include('courses.urls')),  #  courses/*",
+        "detail": "config.urls",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "config.wsgi",
+        "description": "config.wsgi",
+        "peekOfCode": "application = get_wsgi_application()",
+        "detail": "config.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "manage",
+        "description": "manage",
+        "peekOfCode": "def main():\n    \"\"\"Run administrative tasks.\"\"\"\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            \"Couldn't import Django. Are you sure it's installed and \"\n            \"available on your PYTHONPATH environment variable? Did you \"\n            \"forget to activate a virtual environment?\"",
+        "detail": "manage",
+        "documentation": {}
+    }
+]

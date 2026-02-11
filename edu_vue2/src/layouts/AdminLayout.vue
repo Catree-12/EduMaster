@@ -124,11 +124,13 @@ export default {
     
     async handleLogout() {
       try {
+        // 调用 Vuex action，将 token 加入后端黑名单并清理本地状态
         await this.$store.dispatch('user/logout')
         this.$message.success('已退出登录')
         this.$router.push('/login')
       } catch (error) {
-        this.$message.error('退出失败')
+        console.error('退出登录失败:', error)
+        this.$message.error('退出登录失败')
       }
     }
   }

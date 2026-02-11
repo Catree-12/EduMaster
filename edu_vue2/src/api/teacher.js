@@ -14,7 +14,7 @@ export const getTeacherCourse = (courseId) => {
 }
 
 export const createCourse = (data) => {
-  return http.post('/teacher/courses', data)
+  return http.post('/teacher/courses/create/', data)
 }
 
 export const updateCourse = (courseId, data) => {

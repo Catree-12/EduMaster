@@ -5,11 +5,11 @@
       
       <form @submit.prevent="handleRegister">
         <div class="form-group">
-          <label for="username">用户名</label>
+          <label for="real_name">用户名</label>
           <input 
-            v-model="form.username" 
+            v-model="form.real_name" 
             type="text" 
-            id="username"
+            id="real_name"
             placeholder="请输入用户名"
             required
           >
@@ -48,13 +48,6 @@
           >
         </div>
 
-        <div class="form-group checkbox">
-          <label>
-            <input type="checkbox" v-model="form.agreeTerms" required>
-            我同意<a href="#">用户协议</a>和<a href="#">隐私政策</a>
-          </label>
-        </div>
-
         <button type="submit" class="register-btn" :disabled="loading">
           {{ loading ? '注册中...' : '注册' }}
         </button>
@@ -68,22 +61,23 @@
 </template>
 
 <script>
+import { authAPI } from '@/api'
 export default {
   name: 'UserRegister',
   data() {
     return {
       form: {
-        username: '',
+        real_name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        agreeTerms: false
+        confirmPassword: ''
       },
       loading: false
     }
   },
   methods: {
     async handleRegister() {
+      // 1. 本地逻辑校验：密码一致性
       if (this.form.password !== this.form.confirmPassword) {
         this.$message.error('两次输入的密码不一致')
         return
@@ -91,12 +85,24 @@ export default {
 
       this.loading = true
       try {
-        // TODO: 调用注册 API
-        // const response = await this.$api.post('/auth/register', this.form)
+        // 2. 真正发送请求到后端
+        // 建议只发送后端需要的字段
+        const submitData = {
+          real_name: this.form.real_name,
+          email: this.form.email,
+          password: this.form.password
+        }
+
+        // 调用我们在 main.js 挂载的 $http (即 http.js 实例)
+        // await this.$http.post('/auth/register/', submitData)
+        await authAPI.register(submitData)
+
         this.$message.success('注册成功，请登录')
         this.$router.push('/login')
       } catch (error) {
-        this.$message.error('注册失败：' + error.message)
+        // 错误通常会被 http.js 的拦截器统一处理弹出消息
+        // 如果拦截器没处理，可以在这里补上：
+        // this.$message.error(error.response?.data?.message || '注册失败')
       } finally {
         this.loading = false
       }
@@ -158,25 +164,6 @@ export default {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-group.checkbox label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.form-group.checkbox input {
-  margin-right: 0.5rem;
-}
-
-.form-group.checkbox a {
-  color: #667eea;
-  text-decoration: none;
-}
-
-.form-group.checkbox a:hover {
-  text-decoration: underline;
-}
-
 .register-btn {
   width: 100%;
   padding: 0.75rem;
@@ -188,6 +175,7 @@ export default {
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.3s;
+  margin-top: 1rem;
 }
 
 .register-btn:hover:not(:disabled) {

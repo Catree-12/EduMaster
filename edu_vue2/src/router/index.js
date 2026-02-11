@@ -44,8 +44,7 @@ const routes = [
     path: '/',
     component: MainLayout,
     children: [
-      // 公共内容路由（首页、课程中心等）
-      ...publicContentRoutes,
+
       
       // 学生路由
       ...studentRoutes,
@@ -57,7 +56,10 @@ const routes = [
       ...userRoutes,
       
       // 共享路由（社区、消息等）
-      ...sharedRoutes
+      ...sharedRoutes,
+
+      // 公共内容路由（首页、课程中心等）
+      ...publicContentRoutes
     ]
   },
 
@@ -96,73 +98,45 @@ router.beforeEach((to, from, next) => {
   // 设置页面标题
   document.title = to.meta.title ? `${to.meta.title} - EduMaster` : 'EduMaster 在线教育平台'
   
-  // ========== 开发模式自动登录（仅开发环境）==========
-  const isDevelopment = process.env.NODE_ENV === 'development'
-  
-  if (isDevelopment) {
-    // 开发模式下，自动设置测试用户信息
-    if (!localStorage.getItem('token')) {
-      localStorage.setItem('token', 'dev-test-token')
-      localStorage.setItem('userRole', 'student')
-      localStorage.setItem('userId', '1')
-      localStorage.setItem('userName', '测试用户')
-    }
-    // 开发模式直接放行所有路由
-    return next()
-  }
-  // =====================================================
-  
   const token = localStorage.getItem('token')
-  const userRole = localStorage.getItem('userRole') || 'student'
   const isAuthenticated = !!token
   
-  // 1. 公共路由（无需认证）
-  if (to.meta.requiresAuth === false) {
-    // 已登录用户访问登录/注册页面，根据角色重定向
-    if ((to.path === '/login' || to.path === '/register') && isAuthenticated) {
-      if (userRole === 'admin') {
-        return next('/admin/dashboard')
-      } else if (userRole === 'teacher') {
-        return next('/teacher/courses')
-      } else {
-        return next('/student/courses')
-      }
+  // 获取用户信息
+  let userInfo = null
+  try {
+    const userInfoStr = localStorage.getItem('userInfo')
+    if (userInfoStr && userInfoStr !== 'undefined') {
+      userInfo = JSON.parse(userInfoStr)
     }
-    return next()
+  } catch (e) {
+    console.error('Failed to parse userInfo:', e)
   }
   
-  // 2. 需要认证但未登录
-  if (to.meta.requiresAuth && !isAuthenticated) {
+  const isAdmin = userInfo?.is_staff || userInfo?.is_superuser || false
+  
+  // 1. 定义无需登录即可访问的公共路由
+  const publicPaths = ['/login', '/register', '/forgot-password']
+  const isPublicPath = publicPaths.includes(to.path)
+  
+  // 2. 未登录用户只能访问公共路由
+  if (!isAuthenticated && !isPublicPath) {
     return next('/login')
   }
   
-  // 3. 角色权限检查（基于路径前缀）
-  if (to.path.startsWith('/student') && userRole !== 'student') {
-    Vue.prototype.$message?.error('您没有权限访问该页面')
-    return next('/')
+  // 3. 已登录用户访问登录/注册页面，根据身份重定向
+  if (isAuthenticated && isPublicPath) {
+    if (isAdmin) {
+      return next('/admin/dashboard')
+    } else {
+      return next('/')  // 普通用户去首页
+    }
   }
   
-  if (to.path.startsWith('/teacher') && userRole !== 'teacher') {
-    Vue.prototype.$message?.error('您没有权限访问该页面')
-    return next('/')
-  }
-  
-  if (to.path.startsWith('/admin') && userRole !== 'admin') {
-    Vue.prototype.$message?.error('您没有权限访问该页面')
-    return next('/')
-  }
-  
-  // 4. Meta字段中的角色检查（兼容方式）
-  if (to.meta.roles && to.meta.roles.length > 0) {
-    if (!to.meta.roles.includes(userRole)) {
-      Vue.prototype.$message?.error('您没有权限访问该页面')
-      if (userRole === 'admin') {
-        return next('/admin/dashboard')
-      } else if (userRole === 'teacher') {
-        return next('/teacher/courses')
-      } else {
-        return next('/student/courses')
-      }
+  // 4. 管理员权限检查
+  if (to.path.startsWith('/admin')) {
+    if (!isAdmin) {
+      Vue.prototype.$message?.error('您没有管理员权限')
+      return next('/')
     }
   }
   

@@ -59,6 +59,8 @@
 </template>
 
 <script>
+// import { userAPI } from '@/api'
+
 export default {
   name: 'CertificateDetail',
   props: {
@@ -76,9 +78,15 @@ export default {
     }
   },
   methods: {
-    download() {
-      window.location.href = `/api/certificate/${this.certificate.id}/download`
-      this.$message.success('下载开始...')
+    async download() {
+      try {
+        // 使用统一的 users 路由
+        window.location.href = `/api/users/certificates/${this.certificate.id}/download/`
+        this.$message.success('下载开始...')
+      } catch (error) {
+        this.$message.error('下载失败')
+        console.error(error)
+      }
     },
 
     print() {

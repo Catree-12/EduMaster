@@ -18,7 +18,7 @@
       <!-- 第一步：选择班期 -->
       <div v-if="step === 0" class="step-content">
         <h3>选择班期</h3>
-        <p class="tip">课程：<strong>{{ selectedCourseTitle || '加载中...' }}</strong></p>
+        <p class="tip">课程：<strong>{{ selectedCourseTitle }}</strong></p>
 
         <div v-if="availableTerms.length > 0" class="terms-grid">
           <div
@@ -30,15 +30,11 @@
           >
             <div class="term-header">
               <h4>{{ term.name }}</h4>
-              <el-tag :type="getStatusType(term.status)">
-                {{ getStatusText(term.status) }}
-              </el-tag>
             </div>
             <div class="term-details">
-              <p><strong>开始日期：</strong>{{ term.startDate }}</p>
-              <p><strong>结束日期：</strong>{{ term.endDate }}</p>
-              <p><strong>班级数：</strong>{{ term.classCount }}</p>
-              <p><strong>已报名：</strong>{{ term.studentCount }} 人</p>
+              <p><strong>开始日期：</strong>{{ term.start_date }}</p>
+              <p><strong>结束日期：</strong>{{ term.end_date }}</p>
+              <p><strong>已报名：</strong>{{ term.current_enrollment }} 人</p>
             </div>
             <div v-if="formData.termId === term.id" class="check-mark">
               ✓
@@ -59,7 +55,7 @@
             :disabled="!formData.termId"
             @click="step = 1"
           >
-            下一步：选择班级 <i class="el-icon-arrow-right"></i>
+            下一步 <i class="el-icon-arrow-right"></i>
           </el-button>
         </div>
       </div>
@@ -74,23 +70,15 @@
             v-for="classItem in availableClasses"
             :key="classItem.id"
             class="class-item"
-            :class="{ selected: formData.classId === classItem.id }"
+            :class="{ selected: formData.classId === classItem.id, disabled: isClassFull }"
             @click="selectClass(classItem)"
           >
             <div class="class-header">
               <h4>{{ classItem.name }}</h4>
-              <span class="class-code">{{ classItem.code }}</span>
             </div>
             <div class="class-details">
-              <p><strong>教师：</strong>{{ classItem.teacherName }}</p>
-              <p><strong>已报名：</strong>{{ classItem.studentCount }}/{{ classItem.capacity }}</p>
-              <el-progress
-                :percentage="Math.round((classItem.studentCount / classItem.capacity) * 100)"
-                :format="() => `${classItem.studentCount}/${classItem.capacity}`"
-              />
-            </div>
-            <div v-if="classItem.studentCount >= classItem.capacity" class="full-mark">
-              已满
+              <p><strong>教师：</strong>{{ classItem.head_teacher?.name || '未分配' }}</p>
+              <p><strong>已报名：</strong>{{ classItem.current_count }} 人</p>
             </div>
             <div v-if="formData.classId === classItem.id" class="check-mark">
               ✓
@@ -111,10 +99,10 @@
           <el-button
             type="primary"
             size="large"
-            :disabled="!formData.classId || isClassFull"
+            :disabled="!formData.classId"
             @click="step = 2"
           >
-            下一步：确认报名 <i class="el-icon-arrow-right"></i>
+            下一步<i class="el-icon-arrow-right"></i>
           </el-button>
         </div>
       </div>
@@ -127,15 +115,14 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="info-box">
-                <h4>课程信息</h4>
+                <h4>📚 课程信息</h4>
                 <p><span class="label">课程名称：</span>{{ selectedCourseTitle }}</p>
-                <p><span class="label">价格：</span>¥{{ selectedCoursePrice }}</p>
-                <p><span class="label">分类：</span>{{ getCategoryText(selectedCourseCategory) }}</p>
+                <p><span class="label">课程价格：</span>{{ isFree ? '免费' : `¥${selectedCoursePrice}` }}</p>
               </div>
             </el-col>
             <el-col :span="12">
               <div class="info-box">
-                <h4>班期信息</h4>
+                <h4>📅 班期信息</h4>
                 <p><span class="label">班期名称：</span>{{ selectedTermName }}</p>
                 <p><span class="label">开始日期：</span>{{ selectedTermStartDate }}</p>
                 <p><span class="label">结束日期：</span>{{ selectedTermEndDate }}</p>
@@ -146,11 +133,10 @@
           <el-row :gutter="20" style="margin-top: 20px">
             <el-col :span="24">
               <div class="info-box">
-                <h4>班级信息</h4>
+                <h4>👥 班级信息</h4>
                 <p><span class="label">班级名称：</span>{{ selectedClassName }}</p>
-                <p><span class="label">班级代码：</span>{{ selectedClassCode }}</p>
-                <p><span class="label">教师：</span>{{ selectedClassTeacher }}</p>
-                <p><span class="label">班级人数：</span>{{ selectedClassStudentCount }}/{{ selectedClassCapacity }}</p>
+                <p><span class="label">班主任：</span>{{ selectedClassTeacher }}</p>
+                <p><span class="label">已报名：</span>{{ selectedClassStudentCount }} 人</p>
               </div>
             </el-col>
           </el-row>
@@ -158,10 +144,7 @@
 
         <div class="agreement">
           <el-checkbox v-model="agreeTerms">
-            我已阅读并同意
-            <a href="#">《课程学习协议》</a>
-            和
-            <a href="#">《隐私政策》</a>
+            我已阅读并同意 <a href="javascript:void(0)">《课程学习协议》</a> 和 <a href="javascript:void(0)">《隐私政策》</a>
           </el-checkbox>
         </div>
 
@@ -185,6 +168,8 @@
 </template>
 
 <script>
+import { courseAPI } from '@/api'
+
 export default {
   name: 'StudentEnrollment',
   filters: {
@@ -198,189 +183,45 @@ export default {
   data() {
     return {
       step: 0,
-      courseSearch: '',
-      selectedCategory: '',
       submitting: false,
       agreeTerms: false,
+      loading: false,
       formData: {
         courseId: '',
         termId: '',
         classId: ''
       },
-      courses: [
-        {
-          id: '1',
-          title: 'Vue.js 全栈开发',
-          description: '掌握 Vue.js 框架，学习现代前端开发技术',
-          category: 'web',
-          price: 0,
-          rating: 4.8,
-          studentCount: 1200,
-          coverImage: 'https://via.placeholder.com/300x200?text=Vue.js',
-          terms: [
-            {
-              id: 't1',
-              name: '2024年秋季班',
-              startDate: '2024-09-01',
-              endDate: '2024-12-31',
-              classCount: 3,
-              studentCount: 85,
-              status: 'active'
-            },
-            {
-              id: 't2',
-              name: '2025年春季班',
-              startDate: '2025-03-01',
-              endDate: '2025-06-30',
-              classCount: 2,
-              studentCount: 0,
-              status: 'upcoming'
-            }
-          ]
-        },
-        {
-          id: '2',
-          title: 'Python 数据科学',
-          description: '学习 Python 进行数据分析和机器学习',
-          category: 'data',
-          price: 799,
-          rating: 4.9,
-          studentCount: 980,
-          coverImage: 'https://via.placeholder.com/300x200?text=Python',
-          terms: [
-            {
-              id: 't3',
-              name: '2024年秋季班',
-              startDate: '2024-09-15',
-              endDate: '2024-12-15',
-              classCount: 2,
-              studentCount: 65,
-              status: 'active'
-            }
-          ]
-        },
-        {
-          id: '3',
-          title: 'React 开发实战',
-          description: '深入学习 React，打造高性能前端应用',
-          category: 'web',
-          price: 699,
-          rating: 4.7,
-          studentCount: 850,
-          coverImage: 'https://via.placeholder.com/300x200?text=React',
-          terms: [
-            {
-              id: 't4',
-              name: '2024年秋季班',
-              startDate: '2024-09-10',
-              endDate: '2024-12-20',
-              classCount: 2,
-              studentCount: 50,
-              status: 'active'
-            },
-            {
-              id: 't5',
-              name: '2025年春季班',
-              startDate: '2025-03-15',
-              endDate: '2025-06-15',
-              classCount: 1,
-              studentCount: 0,
-              status: 'upcoming'
-            }
-          ]
-        }
-      ],
-      classes: [
-        {
-          id: 'c1',
-          name: '班级A',
-          code: 'CLASS001',
-          teacherName: '张老师',
-          studentCount: 25,
-          capacity: 30,
-          status: 'active',
-          termId: 't1'
-        },
-        {
-          id: 'c2',
-          name: '班级B',
-          code: 'CLASS002',
-          teacherName: '李老师',
-          studentCount: 28,
-          capacity: 30,
-          status: 'active',
-          termId: 't1'
-        },
-        {
-          id: 'c3',
-          name: '班级C',
-          code: 'CLASS003',
-          teacherName: '王老师',
-          studentCount: 32,
-          capacity: 30,
-          status: 'active',
-          termId: 't1'
-        },
-        {
-          id: 'c4',
-          name: '班级D',
-          code: 'CLASS004',
-          teacherName: '周老师',
-          studentCount: 0,
-          capacity: 30,
-          status: 'active',
-          termId: 't2'
-        },
-        {
-          id: 'c5',
-          name: '班级A',
-          code: 'CLASS005',
-          teacherName: '陈老师',
-          studentCount: 20,
-          capacity: 30,
-          status: 'active',
-          termId: 't3'
-        }
-      ]
+      // 后端返回的数据
+      courseInfo: null,
+      availableTerms: [],
+      availableClasses: []
     }
   },
 
-  created() {
+  async created() {
     // 从路由参数获取课程ID
     const courseId = this.$route.query.courseId
     if (courseId) {
-      // 确保from路由获取的courseId与courses数据中的id类型一致
       this.formData.courseId = String(courseId)
+      // 加载课程班期班级信息
+      await this.loadEnrollmentInfo()
+    } else {
+      this.$message.error('未指定课程')
+      this.$router.push('/courses')
     }
   },
 
   computed: {
-    filteredCourses() {
-      return this.courses.filter(course => {
-        const matchSearch = course.title.includes(this.courseSearch)
-        const matchCategory = !this.selectedCategory || course.category === this.selectedCategory
-        return matchSearch && matchCategory
-      })
-    },
-
     selectedCourseTitle() {
-      const course = this.courses.find(c => c.id === this.formData.courseId)
-      return course ? course.title : ''
+      return this.courseInfo?.course_title || '加载中...'
     },
 
     selectedCoursePrice() {
-      const course = this.courses.find(c => c.id === this.formData.courseId)
-      return course ? course.price : 0
+      return this.courseInfo?.price || 0
     },
 
-    selectedCourseCategory() {
-      const course = this.courses.find(c => c.id === this.formData.courseId)
-      return course ? course.category : ''
-    },
-
-    availableTerms() {
-      const course = this.courses.find(c => c.id === this.formData.courseId)
-      return course ? course.terms : []
+    isFree() {
+      return this.courseInfo?.is_free || false
     },
 
     selectedTermName() {
@@ -390,107 +231,97 @@ export default {
 
     selectedTermStartDate() {
       const term = this.availableTerms.find(t => t.id === this.formData.termId)
-      return term ? term.startDate : ''
+      return term ? term.start_date : ''
     },
 
     selectedTermEndDate() {
       const term = this.availableTerms.find(t => t.id === this.formData.termId)
-      return term ? term.endDate : ''
-    },
-
-    availableClasses() {
-      return this.classes.filter(c => c.termId === this.formData.termId)
+      return term ? term.end_date : ''
     },
 
     selectedClassName() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
+      const classItem = this.availableClasses.find(c => c.id === this.formData.classId)
       return classItem ? classItem.name : ''
     },
 
-    selectedClassCode() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
-      return classItem ? classItem.code : ''
-    },
-
     selectedClassTeacher() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
-      return classItem ? classItem.teacherName : ''
+      const classItem = this.availableClasses.find(c => c.id === this.formData.classId)
+      return classItem?.head_teacher?.name || '未分配'
     },
 
     selectedClassStudentCount() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
-      return classItem ? classItem.studentCount : 0
-    },
-
-    selectedClassCapacity() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
-      return classItem ? classItem.capacity : 0
+      const classItem = this.availableClasses.find(c => c.id === this.formData.classId)
+      return classItem ? classItem.current_count : 0
     },
 
     isClassFull() {
-      const classItem = this.classes.find(c => c.id === this.formData.classId)
-      return classItem && classItem.studentCount >= classItem.capacity
+      // 后端没有返回 capacity，暂时不做满员判断
+      return false
     }
   },
 
   methods: {
-    goBack() {
-    if (this.formData.courseId) {
-      this.$router.push(`/courses/${this.formData.courseId}`);
-        } else {
-          // 如果没有课程ID，回退到上一页
-          this.$router.go(-1);
+    async loadEnrollmentInfo() {
+      this.loading = true
+      try {
+        const response = await courseAPI.getEnrollmentInfo(this.formData.courseId)
+        const data = response.data || response
+        
+        this.courseInfo = {
+          course_id: data.course_id,
+          course_title: data.course_title,
+          price: data.price,
+          is_free: data.is_free
         }
+        
+        // 映射班期数据
+        this.availableTerms = (data.terms || []).map(term => ({
+          id: term.id,
+          name: term.name,
+          start_date: term.start_date,
+          end_date: term.end_date,
+          enrollment_limit: term.enrollment_limit,
+          current_enrollment: term.current_enrollment,
+          is_full: term.is_full,
+          classes: term.classes || []
+        }))
+        
+      } catch (error) {
+        console.error('加载课程信息失败:', error)
+        this.$message.error('加载课程信息失败')
+        this.$router.push('/courses')
+      } finally {
+        this.loading = false
+      }
     },
-    selectCourse(course) {
-      this.formData.courseId = course.id
+
+    goBack() {
+      if (this.formData.courseId) {
+        this.$router.push(`/courses/${this.formData.courseId}`)
+      } else {
+        this.$router.go(-1)
+      }
     },
 
     selectTerm(term) {
       this.formData.termId = term.id
+      // 加载该班期下的班级
+      this.availableClasses = term.classes.map(cls => ({
+        id: cls.id,
+        name: cls.name,
+        head_teacher: cls.head_teacher,
+        current_count: cls.current_count || 0
+      }))
+      // 重置班级选择
+      this.formData.classId = ''
     },
 
     selectClass(classItem) {
-      if (classItem.studentCount < classItem.capacity) {
-        this.formData.classId = classItem.id
-      } else {
-        this.$message.warning('此班级已满，请选择其他班级')
-      }
+      // 直接选择，不做满员判断
+      this.formData.classId = classItem.id
     },
 
-    getCategoryText(category) {
-      const texts = {
-        'web': 'Web 前端',
-        'backend': '后端开发',
-        'mobile': '移动开发',
-        'data': '数据科学',
-        'devops': 'DevOps',
-        'other': '其他'
-      }
-      return texts[category] || category
-    },
-
-    getStatusType(status) {
-      const types = {
-        'active': 'success',
-        'upcoming': 'info',
-        'finished': 'warning',
-        'canceled': 'danger'
-      }
-      return types[status] || 'info'
-    },
-
-    getStatusText(status) {
-      const texts = {
-        'active': '进行中',
-        'upcoming': '即将开始',
-        'finished': '已结束',
-        'canceled': '已取消'
-      }
-      return texts[status] || status
-    },
-
-    confirmEnroll() {
+    async confirmEnroll() {
       if (!this.agreeTerms) {
         this.$message.warning('请先阅读并同意相关协议')
         return
@@ -498,36 +329,43 @@ export default {
 
       this.submitting = true
 
-      // 调用API提交报名
-      setTimeout(() => {
-        const selectedCourse = this.courses.find(c => c.id === this.formData.courseId)
-        const isFree = selectedCourse && selectedCourse.price === 0
+      try {
+        const enrollData = {
+          term_id: this.formData.termId,
+          class_id: this.formData.classId
+        }
+        
+        const response = await courseAPI.enrollCourse(this.formData.courseId, enrollData)
+        const data = response.data || response
 
-        this.$message.success('报名成功！')
-        this.submitting = false
-
-        if (isFree) {
+        this.$message.success('选课成功！')
+        
+        if (data.is_free || !data.need_payment) {
           // 免费课程直接进入课程页面
-          this.$message.success('免费课程，正在进入课程...')
+          this.$message.success('正在进入课程...')
           setTimeout(() => {
-            this.$router.push(`/student/courses/${this.formData.courseId}?tab=sections`)
+            this.$router.push(`/student/courses/${this.formData.courseId}`)
           }, 1000)
         } else {
           // 付费课程显示缴费等待状态
           this.$alert(
-            '请完成缴费后再开始学习。缴费后课程将自动解锁。',
-            '缴费提示',
+            `选课成功！请完成支付（￥${data.price}）后方可学习课程。`,
+            '等待支付',
             {
-              confirmButtonText: '去我的课程',
-              type: 'info',
+              confirmButtonText: '确定',
+              type: 'warning',
               callback: () => {
-                // 跳转到学生课程列表页
-                this.$router.push('/student/courses')
+                this.$router.push('/courses/mycourses')
               }
             }
           )
         }
-      }, 1000)
+      } catch (error) {
+        console.error('选课失败:', error)
+        this.$message.error(error.response?.data?.message || '选课失败，请稍后重试')
+      } finally {
+        this.submitting = false
+      }
     }
   }
 }

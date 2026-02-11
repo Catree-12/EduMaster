@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push('/student/courses')
+      this.$router.push('/courses/mycourses')
     },
     getStatusIcon(status) {
       const icons = {

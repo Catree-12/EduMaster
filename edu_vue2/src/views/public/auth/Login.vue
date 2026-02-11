@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { authAPI } from '@/api'
+
 export default {
   name: 'UserLogin',
   data() {
@@ -61,49 +63,60 @@ export default {
   },
   methods: {
     async handleLogin() {
-      this.loading = true
-      try {
-        // TODO: 调用登录 API
-        // const response = await this.$api.post('/auth/login', this.form)
-        
-        // 临时演示数据 - 根据邮箱判断角色
-        let role = 'user'
-        if (this.form.email === 'admin@platform.com' || this.form.email.includes('admin')) {
-          role = 'admin'
-        }
-        
-        const mockResponse = {
-          token: 'mock-token-' + Date.now(),
-          user: {
-            id: role === 'admin' ? 'admin_001' : Date.now(),
-            name: this.form.email.split('@')[0],
-            email: this.form.email,
-            avatar: ''
-          },
-          role: role // 后端返回：'user' 或 'admin'
-        }
-        
-        // 同步更新 Vuex 状态和 localStorage
-        await this.$store.dispatch('user/login', {
-          token: mockResponse.token,
-          userInfo: mockResponse.user,
-          role: mockResponse.role
-        })
-        
-        this.$message.success('登录成功')
-        
-        // 根据角色跳转到不同页面
-        if (mockResponse.role === 'admin') {
-          this.$router.push('/admin/dashboard')
-        } else {
-          this.$router.push('/')
-        }
-      } catch (error) {
-        this.$message.error('登录失败：' + error.message)
-      } finally {
-        this.loading = false
-      }
+  // 1. 基本前端校验
+  if (!this.form.email || !this.form.password) {
+    this.$message.warning('请输入邮箱和密码')
+    return
+  }
+
+  this.loading = true
+  
+  // 【关键一步】登录前先彻底清理旧 Token
+  // 防止 http.js 拦截器自动带上之前过期的 Token 导致后端报 401
+  localStorage.removeItem('token')
+  localStorage.clear()
+
+  try {
+    // 2. 调用登录 API
+    // 假设返回结构：{ access: '...', refresh: '...', user: { is_staff: true, username: '...' } }
+    const response = await authAPI.login({
+      email: this.form.email,
+      password: this.form.password
+    })
+
+    // 3. 更新 Vuex 状态 (保存 Token 和用户信息)
+    await this.$store.dispatch('user/login', response)
+
+  this.$message({
+    message: '登录成功！',
+    type: 'success',
+    duration: 500  // 设置为 1.5 秒后自动关闭
+  });
+
+    // 4. 根据是否是管理员进行跳转
+    // 使用 getter 判断是否是管理员
+    if (this.$store.getters['user/isAdmin']) {
+      // 管理员进入管理后台
+      this.$router.push('/admin/dashboard')
+    } else {
+      // 普通用户跳转到首页
+      this.$router.push('/')
     }
+
+  } catch (error) {
+    console.error('登录逻辑异常:', error)
+    
+    // 获取后端返回的错误详情
+    const serverMessage = error.response?.data?.detail || error.response?.data?.message
+    if (serverMessage) {
+      this.$message.error(serverMessage)
+    } else {
+      this.$message.error('登录失败，请检查网络或账号密码')
+    }
+  } finally {
+    this.loading = false
+  }
+}
   }
 }
 </script>

@@ -1,9 +1,25 @@
-// ================================================
-// 统一的 API 导出文件
-// 建议使用命名导出，例如:
-// import { courseAPI, teacherAPI, studentAPI } from '@/api'
-// ================================================
+/**
+ * ================================================
+ * 统一的 API 导出文件
+ * ================================================
+ * 
+ * 使用方式 1 - 命名导出（推荐）:
+ * import { authAPI, userAPI, courseAPI } from '@/api'
+ * authAPI.login(data)
+ * userAPI.updateUserInfo(data)
+ * 
+ * 使用方式 2 - 默认导出:
+ * import api from '@/api'
+ * api.auth.login(data)
+ * api.user.updateUserInfo(data)
+ * 
+ * 使用方式 3 - 导入具体方法（学生/教师模块）:
+ * import { getStudentCourses, getTeacherCourses } from '@/api'
+ * 
+ * ================================================
+ */
 
+// ==================== 核心模块 ====================
 // 认证相关
 export { authAPI } from './auth'
 
@@ -12,12 +28,6 @@ export { userAPI } from './user'
 
 // 课程相关
 export { courseAPI } from './course'
-
-// 学生功能
-export * from './student'
-
-// 教师功能
-export * from './teacher'
 
 // 作业相关
 export { assignmentAPI } from './assignment'
@@ -31,7 +41,20 @@ export { communityAPI } from './community'
 // 管理员相关
 export { adminAPI } from './admin'
 
-// 默认导出 (简化，不使用 services.js)
+// ==================== 学生模块 ====================
+// 导出所有学生相关方法
+import * as studentAPIs from './student'
+export const studentAPI = studentAPIs
+export * from './student'
+
+// ==================== 教师模块 ====================
+// 导出所有教师相关方法
+import * as teacherAPIs from './teacher'
+export const teacherAPI = teacherAPIs
+export * from './teacher'
+
+// ==================== 默认导出 ====================
+// 方便使用 api.xxx.method() 的方式调用
 import { authAPI } from './auth'
 import { userAPI } from './user'
 import { courseAPI } from './course'
@@ -41,11 +64,17 @@ import { examAPI } from './exam'
 import { assignmentAPI } from './assignment'
 
 export default {
+  // 核心模块
   auth: authAPI,
   user: userAPI,
   course: courseAPI,
   community: communityAPI,
   admin: adminAPI,
   exam: examAPI,
-  homework: assignmentAPI
+  assignment: assignmentAPI,
+  homework: assignmentAPI, // 别名
+  
+  // 角色模块
+  student: studentAPIs,
+  teacher: teacherAPIs
 }

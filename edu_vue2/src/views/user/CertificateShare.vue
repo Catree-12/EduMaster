@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import { userAPI } from '@/api'
+
 export default {
   name: 'CertificateShare',
   props: {
@@ -131,18 +133,19 @@ export default {
   },
   methods: {
     // 生成分享链接
-    generateShareLink() {
-      this.$api.post(`/certificate/${this.certificate.id}/generate-share-link`, {
-        password: this.enablePassword ? this.password : undefined,
-        expiryDays: this.enableExpiry ? this.calculateDays() : undefined
-      })
-        .then(res => {
-          this.shareLink = res.data.shareLink
-          this.qrCode = res.data.qrCode
+    async generateShareLink() {
+      try {
+        // 使用统一的 users 路由
+        const res = await userAPI.generateCertificateShareLink(this.certificate.id, {
+          password: this.enablePassword ? this.password : undefined,
+          expiryDays: this.enableExpiry ? this.calculateDays() : undefined
         })
-        .catch(() => {
-          this.$message.error('生成分享链接失败')
-        })
+        this.shareLink = res.data.shareLink
+        this.qrCode = res.data.qrCode
+      } catch (error) {
+        this.$message.error('生成分享链接失败')
+        console.error(error)
+      }
     },
 
     // 复制链接

@@ -193,6 +193,7 @@
 </template>
 
 <script>
+import { userAPI } from '@/api'
 import CertificateDetail from './CertificateDetail.vue'
 import CertificateShare from './CertificateShare.vue'
 
@@ -224,6 +225,9 @@ export default {
   },
   created() {
     // 使用模拟数据代替 API 调用
+    // 实际使用时,取消注释下面的代码:
+    // this.fetchCertificates()
+    // this.fetchStats()
     this.loadMockData()
   },
   methods: {
@@ -299,13 +303,34 @@ export default {
     },
     
     // 获取证书列表
-    fetchCertificates() {
-      this.loadMockData()
+    async fetchCertificates() {
+      this.loading = true
+      try {
+        const params = {
+          page: this.page,
+          pageSize: this.pageSize,
+          search: this.searchKey,
+          status: this.filterStatus
+        }
+        const res = await userAPI.getCertificates(params)
+        this.certificates = res.data.results || []
+        this.total = res.data.count || 0
+      } catch (error) {
+        this.$message.error('获取证书列表失败')
+        console.error(error)
+      } finally {
+        this.loading = false
+      }
     },
 
     // 获取统计信息
-    fetchStats() {
-      // 已在 loadMockData 中处理
+    async fetchStats() {
+      try {
+        const res = await userAPI.getCertificateStats()
+        this.stats = res.data
+      } catch (error) {
+        console.error('获取统计信息失败', error)
+      }
     },
 
     // 搜索
@@ -349,9 +374,20 @@ export default {
     },
 
     // 下载证书
-    downloadCertificate(certificate) {
-      window.location.href = `/api/certificate/${certificate.id}/download`
-      this.$message.success('下载开始...')
+    async downloadCertificate(certificate) {
+      try {
+        // 方式1: 直接跳转下载链接
+        window.location.href = `/api/users/certificates/${certificate.id}/download/`
+        
+        // 方式2: 使用 API 调用(如果后端返回文件流)
+        // const res = await userAPI.downloadCertificate(certificate.id)
+        // 处理文件下载...
+        
+        this.$message.success('下载开始...')
+      } catch (error) {
+        this.$message.error('下载失败')
+        console.error(error)
+      }
     },
 
     // 分享证书

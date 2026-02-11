@@ -139,6 +139,8 @@
 </template>
 
 <script>
+import { courseAPI } from '@/api'
+
 export default {
   name: 'HomePage',
   data() {
@@ -171,76 +173,50 @@ export default {
         students: 85000,
         satisfaction: 98
       },
-      // 热门课程
-      popularCourses: [
-        {
-          id: 5,
-          name: 'Java 微服务架构实战',
-          teacher: '孙七',
-          rating: 4.9,
-          price: 399,
-          enrollments: 12580,
-          cover: 'https://via.placeholder.com/300x200/fa709a/ffffff?text=Java'
-        },
-        {
-          id: 6,
-          name: 'Flutter 跨平台开发',
-          teacher: '周八',
-          rating: 4.8,
-          price: 0,
-          enrollments: 8920,
-          cover: 'https://via.placeholder.com/300x200/30cfd0/ffffff?text=Flutter'
-        },
-        {
-          id: 7,
-          name: '机器学习算法精讲',
-          teacher: '吴九',
-          rating: 4.9,
-          price: 499,
-          enrollments: 15630,
-          cover: 'https://via.placeholder.com/300x200/a8edea/ffffff?text=ML'
-        },
-        {
-          id: 8,
-          name: 'Go 语言高并发编程',
-          teacher: '郑十',
-          rating: 4.7,
-          price: 299,
-          enrollments: 6750,
-          cover: 'https://via.placeholder.com/300x200/fed6e3/ffffff?text=Go'
-        },
-        {
-          id: 9,
-          name: 'Docker 容器化部署',
-          teacher: '陈一',
-          rating: 4.8,
-          price: 199,
-          enrollments: 9840,
-          cover: 'https://via.placeholder.com/300x200/c471f5/ffffff?text=Docker'
-        },
-        {
-          id: 10,
-          name: 'MySQL 数据库优化',
-          teacher: '刘二',
-          rating: 4.6,
-          price: 0,
-          enrollments: 11200,
-          cover: 'https://via.placeholder.com/300x200/38f9d7/ffffff?text=MySQL'
-        }
-      ]
+      // 热门课程(从后端加载)
+      popularCourses: [],
+      loading: false
     }
   },
+  created() {
+    this.loadPopularCourses()
+  },
   methods: {
+    // 加载热门课程
+    async loadPopularCourses() {
+      this.loading = true
+      try {
+        const response = await courseAPI.getCourseList({
+          page: 1,
+          pageSize: 6
+        })
+        
+        // 处理后端返回数据
+        this.popularCourses = response.results.map(course => ({
+          id: course.id,
+          name: course.title,
+          teacher: course.teacher.name,
+          rating: 4.8, // 后端暂时没有评分字段,默认值
+          price: course.price,
+          enrollments: course.enrollment_count || 0,
+          cover: course.cover || 'https://via.placeholder.com/300x200/667eea/ffffff?text=Course'
+        }))
+      } catch (error) {
+        console.error('加载热门课程失败:', error)
+        this.$message.error('加载课程失败')
+      } finally {
+        this.loading = false
+      }
+    },
+    
     goToCourseCenter() {
       if (this.$route.path !== '/courses') {
         this.$router.push('/courses')
       }
     },
     goToMyCourses() {
-      const userRole = localStorage.getItem('userRole') || 'student'
-      const target = userRole === 'teacher' ? '/teacher/courses' : '/student/courses'
-      if (this.$route.path !== target) {
-        this.$router.push(target)
+      if (this.$route.path !== '/courses/mycourses') {
+        this.$router.push('/courses/mycourses')
       }
     },
     viewCourse(id) {

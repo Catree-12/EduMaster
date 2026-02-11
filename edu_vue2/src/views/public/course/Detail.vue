@@ -128,7 +128,10 @@ export default {
       }
     },
     async joinCourse() {
-      this.$router.push(`/enrollment?courseId=${this.courseId}`)
+      this.$router.push({
+        path: '/courses/enrollment',
+        query: { courseId: this.courseId }
+      })
     }
   }
 }

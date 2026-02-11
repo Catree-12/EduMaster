@@ -6,17 +6,11 @@ export default [
   // ==================== 教师主页重定向 ====================
   {
     path: '/teacher',
-    redirect: '/teacher/courses',
+    redirect: '/courses/mycourses',
     meta: { requiresAuth: true, roles: ['teacher'] }
   },
 
   // ==================== 课程管理 ====================
-  {
-    path: '/teacher/courses',
-    name: 'TeacherCourseList',
-    component: () => import('@/views/teacher/course/List.vue'),
-    meta: { requiresAuth: true, roles: ['teacher'], title: '我教的课程' }
-  },
   {
     path: '/teacher/courses/create',
     name: 'TeacherCourseCreate',

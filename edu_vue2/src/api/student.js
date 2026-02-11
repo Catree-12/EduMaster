@@ -4,18 +4,8 @@ import http from './http'
  * 学生相关API
  */
 
-// ==================== 选课管理 ====================
-export const getStudentEnrollments = (params) => {
-  return http.get('/student/enrollments', { params })
-}
-
-export const enrollCourse = (courseId) => {
-  return http.post('/student/enrollments', { courseId })
-}
-
-export const unenrollCourse = (enrollmentId) => {
-  return http.delete(`/student/enrollments/${enrollmentId}`)
-}
+// 注意：选课相关API已迁移到 course.js
+// 请使用 courseAPI.getEnrollmentInfo(), courseAPI.enrollCourse(), courseAPI.unenrollCourse()
 
 // ==================== 课程学习 ====================
 export const getStudentCourse = (courseId) => {
@@ -95,17 +85,4 @@ export const deleteStudentThread = (courseId, threadId) => {
 
 export const createStudentThreadComment = (courseId, threadId, data) => {
   return http.post(`/student/courses/${courseId}/threads/${threadId}/comments`, data)
-}
-
-// ==================== 证书 ====================
-export const getStudentCertificates = () => {
-  return http.get('/student/certificates')
-}
-
-export const getCertificateDetail = (certificateId) => {
-  return http.get(`/student/certificates/${certificateId}`)
-}
-
-export const generateCertificate = (courseId) => {
-  return http.post(`/student/courses/${courseId}/certificate`)
 }

@@ -41,18 +41,19 @@ export const publicContentRoutes = [
     component: () => import('@/views/public/course/Center.vue'),
     meta: { requiresAuth: false, title: '课程中心' }
   },
+  // ==================== 课程报名（必须在 :id 之前）====================
+  {
+    path: '/courses/enrollment',
+    name: 'CourseEnrollment',
+    component: () => import('@/views/public/course/ClassEnrollment.vue'),
+    meta: { requiresAuth: true, title: '课程报名' }
+  },
   {
     path: '/courses/:id',
     name: 'CourseDetail',
     component: () => import('@/views/public/course/Detail.vue'),
     meta: { requiresAuth: false, title: '课程详情' }
   },
-  {
-    path: '/enrollment',
-    name: 'CourseEnrollment',
-    component: () => import('@/views/public/course/ClassEnrollment.vue'),
-    meta: { requiresAuth: true, title: '课程报名' }
-  }
 ]
 
 // 默认导出认证路由（向后兼容）

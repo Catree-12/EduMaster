@@ -57,16 +57,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'MainLayout',
+  computed: {
+    ...mapGetters('user', ['hasTeacherProfile', 'hasStudentProfile'])
+  },
   methods: {
     goToMyCourses() {
-      const userRole = localStorage.getItem('userRole') || 'student'
-      if (userRole === 'teacher') {
-        this.$router.push('/teacher/courses')
-      } else {
-        this.$router.push('/student/courses')
-      }
+      // 统一进入我的课程页面
+      this.$router.push('/courses/mycourses')
     },
     goToProfile() {
       this.$router.push('/user/profile')
@@ -74,12 +75,16 @@ export default {
     goToCertificates() {
       this.$router.push('/user/certificates')
     },
-    logout() {
-      // 清理 Vuex 状态
-      this.$store.dispatch('user/logout')
-      // localStorage 在 Vuex mutation 中已清理
-      this.$message.success('已退出登录')
-      this.$router.push('/login')
+    async logout() {
+      try {
+        // 调用 Vuex action，将 token 加入后端黑名单并清理本地状态
+        await this.$store.dispatch('user/logout')
+        this.$message.success('已退出登录')
+        this.$router.push('/login')
+      } catch (error) {
+        console.error('退出登录失败:', error)
+        this.$message.error('退出登录失败')
+      }
     }
   }
 }

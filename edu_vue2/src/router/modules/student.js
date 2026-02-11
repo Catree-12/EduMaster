@@ -6,17 +6,11 @@ export default [
   // ==================== 学生主页重定向 ====================
   {
     path: '/student',
-    redirect: '/student/courses',
+    redirect: '/courses/mycourses',
     meta: { requiresAuth: true, roles: ['student'] }
   },
-
+  
   // ==================== 课程学习 ====================
-  {
-    path: '/student/courses',
-    name: 'StudentCourseList',
-    component: () => import('@/views/student/course/List.vue'),
-    meta: { requiresAuth: true, roles: ['student'], title: '我学的课程' }
-  },
   {
     path: '/student/courses/:courseId',
     name: 'StudentCourseDetail',
