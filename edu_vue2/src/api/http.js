@@ -117,13 +117,11 @@ instance.interceptors.response.use(
           try {
             // 使用独立的axios实例调用刷新接口,避免触发拦截器
             const refreshResponse = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
-              refresh: refreshToken
+              refresh_token: refreshToken
             })
             
             // 刷新成功,更新 access token
-            const newAccessToken = refreshResponse.data?.data?.access_token || 
-                                   refreshResponse.data?.access_token ||
-                                   refreshResponse.data?.access
+            const newAccessToken = refreshResponse.data?.data?.access_token
             
             if (newAccessToken) {
               store.commit('user/SET_TOKEN', newAccessToken)

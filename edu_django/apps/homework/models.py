@@ -14,7 +14,7 @@ class HomeworkTemplate(models.Model):
         verbose_name='所属课程'
     )
     title = models.CharField(max_length=200, verbose_name='作业标题')
-    content = models.TextField(null=True, blank=True, verbose_name='作业内容/要求')
+    content = models.TextField(blank=True, verbose_name='作业内容/要求')
     # 使用字符串引用避免循环导入
     questions = models.ManyToManyField(
         'exams.QuestionBank',
@@ -33,6 +33,7 @@ class HomeworkTemplate(models.Model):
         verbose_name = '作业模板'
         verbose_name_plural = verbose_name
     
+
     def __str__(self):
         return self.title
 
@@ -41,7 +42,9 @@ class HomeworkAssignment(models.Model):
     """作业发布/任务"""
     template = models.ForeignKey(
         HomeworkTemplate,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,  # 模板删除时，此字段设为 NULL，不会删除作业实例
+        null=True,                  # 数据库层面允许为空
+        blank=True,                 # 表单验证层面允许为空
         related_name='assignments',
         verbose_name='关联作业模板'
     )
@@ -54,12 +57,9 @@ class HomeworkAssignment(models.Model):
     )
     class_group = models.ForeignKey(
         ClassGroup,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE, 
         related_name='homework_assignments',
-        verbose_name='指定班级',
-        help_text='为空则发给全班期'
+        verbose_name='指定班级'
     )
     specific_students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -92,7 +92,7 @@ class HomeworkAssignment(models.Model):
 class HomeworkSubmission(models.Model):
     """学生作业提交"""
     STATUS_CHOICES = [
-        ('draft', '草稿'),
+        ('pending', '未提交'),
         ('submitted', '已提交'),
         ('graded', '已批改'),
     ]
@@ -116,14 +116,15 @@ class HomeworkSubmission(models.Model):
         help_text='仅存答案，不含题目'
     )
     files = models.JSONField(
+        default=list,
         null=True,
         blank=True,
         verbose_name='附件',
         help_text='存储文件URL列表'
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft', verbose_name='状态')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='状态')
     score = models.IntegerField(null=True, blank=True, verbose_name='得分')
-    feedback = models.TextField(null=True, blank=True, verbose_name='评语')
+    feedback = models.TextField(blank=True, verbose_name='评语')
     
     submitted_at = models.DateTimeField(null=True, blank=True, verbose_name='提交时间')
     graded_at = models.DateTimeField(null=True, blank=True, verbose_name='批改时间')

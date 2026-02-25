@@ -108,7 +108,6 @@ class Chapter(models.Model):
         help_text='支持多级子章节'
     )
     title = models.CharField(max_length=200, verbose_name='章节标题')
-    # description = models.TextField(null=True, blank=True, verbose_name='章节简介')
     order = models.IntegerField(default=0, verbose_name='排序号')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')

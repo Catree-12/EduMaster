@@ -2,9 +2,10 @@
   <div class="teacher-course-detail">
     <!-- 左侧固定导航栏 -->
     <aside class="sidebar-fixed">
-      <!-- 课程名称 -->
+      <!-- 课程名称和讲师 -->
       <div class="sidebar-logo">
-        <h1>{{ courseInfo.name }}</h1>
+        <h1>{{ courseInfo.title }}</h1>
+        <p class="teacher-name">讲师：{{ courseInfo.teacher_name }}</p>
       </div>
       
       <!-- 导航菜单 -->
@@ -738,7 +739,7 @@
                 <option value="1.0">最难 (1.0)</option>
               </select>
 
-              <el-select 
+              <!-- <el-select 
                 v-model="questionFilter.knowledgePoints" 
                 multiple 
                 collapse-tags
@@ -746,11 +747,40 @@
                 class="compact-select-multi"
                 style="width: 180px;"
               >
-                <el-option label="JavaScript基础" value="JavaScript基础"></el-option>
-                <el-option label="原型链" value="原型链"></el-option>
-                <el-option label="异步编程" value="异步编程"></el-option>
-                <el-option label="闭包" value="闭包"></el-option>
-              </el-select>
+                <el-option 
+                  v-for="kp in allKnowledgePointOptions" 
+                  :key="kp" 
+                  :label="kp" 
+                  :value="kp"
+                ></el-option>
+              </el-select> -->
+              <el-cascader
+  v-model="questionFilter.knowledgePoints"
+  :options="normalizedKnowledgeTree"
+  :props="{ 
+    multiple: true, 
+    emitPath: false, 
+    value: 'id',     /* 【关键修改】这里必须用唯一标识 id，不能用 name */
+    label: 'name',   /* 显示出来的文本依然是名字 */
+    children: 'children',
+    checkStrictly: true /* 如果想要父子关联全选保持 false；如果想独立选改成 true */
+  }"
+  collapse-tags
+  clearable
+  filterable
+  placeholder="全部知识点"
+  class="compact-select-multi"
+  style="width: 200px;"
+  @change="loadQuestions" 
+>
+  <!-- 这里去掉了 node，只保留 data，解决了报错 -->
+  <template slot-scope="{ data }">
+    <span>{{ data.name }}</span>
+    <span v-if="data.count !== undefined" style="color: #8492a6; font-size: 12px; margin-left: 5px;">
+      ({{ data.count }})
+    </span>
+  </template>
+              </el-cascader>
 
               <el-select 
                 v-model="questionFilter.tags" 
@@ -760,10 +790,12 @@
                 class="compact-select-multi"
                 style="width: 180px;"
               >
-                <el-option label="重点" value="重点"></el-option>
-                <el-option label="易错" value="易错"></el-option>
-                <el-option label="常考" value="常考"></el-option>
-                <el-option label="综合" value="综合"></el-option>
+                <el-option 
+                  v-for="tag in allTagOptions" 
+                  :key="tag" 
+                  :label="tag" 
+                  :value="tag"
+                ></el-option>
               </el-select>
 
               <select v-model="questionFilter.sortBy" class="compact-select" style="width: 150px;">
@@ -799,20 +831,13 @@
                 </div>
                 
                 <!-- 文件夹列表 -->
-                <draggable 
-                  v-model="questionFolders" 
-                  @end="onFolderDragEnd"
-                  handle=".drag-handle"
-                  animation="200"
-                  class="folder-draggable-area"
-                >
+                <div class="folder-list-container">
                   <div 
                     v-for="folder in filteredFolders" 
                     :key="folder.id"
                     :class="['folder-item', { active: selectedFolderId === folder.id, pinned: folder.pinned }]"
                     @click="selectFolder(folder.id)"
                   >
-                    <span class="drag-handle" title="拖拽调整顺序">☰</span>
                     <span class="folder-icon">{{ folder.pinned ? '📌' : '📁' }}</span>
                     <span class="folder-name">{{ folder.name }}</span>
                     <span class="folder-count">({{ folder.questionCount }})</span>
@@ -824,11 +849,10 @@
                         </button>
                         <button @click="renameFolder(folder)" class="menu-item">重命名</button>
                         <button @click="deleteFolder(folder.id)" class="menu-item danger">删除</button>
-                        <button @click="copyFolder(folder)" class="menu-item">复制</button>
                       </div>
                     </div>
                   </div>
-                </draggable>
+                </div>
               </div>
 
               <button @click="showFolderModal = true" class="new-folder-btn">
@@ -850,11 +874,17 @@
                         {{ getQuestionTypeLabel(question.type) }}
                       </span>
                       <span class="difficulty-value">
-                        难度: {{ question.difficultyValue }} ({{ getDifficultyText(question.difficultyValue) }})
+                        难度: {{ question.difficultyValue }}
                       </span>
-                      <span v-if="question.knowledgePoint" class="knowledge-tag">
-                        {{ question.knowledgePoint }}
-                      </span>
+                      <template v-for="kp in question.knowledgePoints">
+                        <span 
+                          v-if="getKnowledgePointNameById(kp)"
+                          :key="kp" 
+                          class="knowledge-tag"
+                        >
+                          {{ getKnowledgePointNameById(kp) }}
+                        </span>
+                      </template>
                       <span v-for="tag in question.tags" :key="tag" class="tag-badge">
                         {{ tag }}
                       </span>
@@ -901,7 +931,7 @@
                       <div class="card-stats">
                         <span class="stat-item">创建人: {{ question.creator || '未知' }}</span>
                         <span class="stat-separator">·</span>
-                        <span class="stat-item">使用: {{ question.usageCount }}次</span>
+                        <!-- <span class="stat-item">使用: {{ question.usageCount }}次</span> -->
                         <span class="stat-separator">·</span>
                         <span class="stat-item">{{ question.createTime }}</span>
                       </div>
@@ -1740,23 +1770,22 @@
             <!-- 知识点挂载 -->
             <div class="config-item">
               <label class="config-label">知识点</label>
-              <el-select 
-                v-model="newQuestion.knowledgePoints" 
-                multiple 
-                filterable
-                collapse-tags
-                placeholder="选择知识点"
-                class="full-width-select"
-              >
-                <el-option 
-                  v-for="item in knowledgePointOptions" 
-                  :key="item" 
-                  :label="item" 
-                  :value="item"
-                ></el-option>
-              </el-select>
-              <button @click="showCreateKnowledgeDialog" class="create-new-btn">
-                ➕ 创建新知识点
+              <div class="selected-items-container">
+                <template v-for="(kp, index) in newQuestion.knowledgePoints">
+                  <span 
+                    v-if="getKnowledgePointNameById(kp)"
+                    :key="index"
+                    class="selected-tag"
+                  >
+                    {{ getKnowledgePointNameById(kp) }}
+                    <i class="el-icon-close" @click="removeKnowledgePoint(index)"></i>
+                  </span>
+                </template>
+                <span v-if="newQuestion.knowledgePoints.length > 0 && knowledgeTreeData.length === 0" class="empty-hint" style="color: #909399;">加载中...</span>
+                <span v-if="newQuestion.knowledgePoints.length === 0" class="empty-hint">未选择</span>
+              </div>
+              <button @click="showKnowledgeSelectDialog" class="create-new-btn">
+                ➕ 添加知识点
               </button>
               <div class="hint-text">关联知识点，用于错题推送相关资源</div>
             </div>
@@ -1764,23 +1793,19 @@
             <!-- 标签管理 -->
             <div class="config-item">
               <label class="config-label">标签</label>
-              <el-select 
-                v-model="newQuestion.tags" 
-                multiple 
-                filterable
-                collapse-tags
-                placeholder="选择标签"
-                class="full-width-select"
-              >
-                <el-option 
-                  v-for="item in tagOptions" 
-                  :key="item" 
-                  :label="item" 
-                  :value="item"
-                ></el-option>
-              </el-select>
-              <button @click="showCreateTagDialog" class="create-new-btn">
-                ➕ 创建新标签
+              <div class="selected-items-container">
+                <span 
+                  v-for="(tag, index) in newQuestion.tags" 
+                  :key="index" 
+                  class="selected-tag"
+                >
+                  {{ tag }}
+                  <i class="el-icon-close" @click="removeTag(index)"></i>
+                </span>
+                <span v-if="newQuestion.tags.length === 0" class="empty-hint">未选择</span>
+              </div>
+              <button @click="showTagSelectDialog" class="create-new-btn">
+                ➕ 添加标签
               </button>
               <div class="hint-text">辅助筛选和分类</div>
             </div>
@@ -1795,6 +1820,29 @@
         </div>
       </div>
     </div>
+
+    <!-- 知识点选择弹窗 -->
+    <knowledge-point-selector
+      :visible.sync="showKnowledgeDialog"
+      v-model="newQuestion.knowledgePoints"
+      :knowledge-tree="knowledgeTreeData"
+      @confirm="handleKnowledgeConfirm"
+      @add-root="handleAddRootKnowledge"
+      @add-child="handleAddChildKnowledge"
+      @edit-node="handleEditKnowledge"
+      @delete-node="handleDeleteKnowledge"
+    />
+
+    <!-- 标签选择器组件 -->
+    <tag-selector
+      :visible.sync="showTagDialog"
+      v-model="newQuestion.tags"
+      :tag-data="tagListData"
+      @confirm="handleTagConfirm"
+      @add="handleTagAdd"
+      @edit="handleTagEdit"
+      @delete="handleTagDelete"
+    />
 
     <!-- 班期详情模态框 -->
     <div v-if="showTermDetailModal" class="modal-overlay" @click="showTermDetailModal = false">
@@ -2092,20 +2140,57 @@
 
 <script>
 import draggable from 'vuedraggable'
+import {
+  // 教师API
+  getTeacherCourse,
+  getCourseChapters,
+  getQuestionCategories,
+  createQuestionCategory,
+  updateQuestionCategory,
+  deleteQuestionCategory,
+  getQuestionBank,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+  // 知识点API
+  getKnowledgePoints,
+  createKnowledgePoint,
+  updateKnowledgePoint,
+  deleteKnowledgePoint,
+  attachKnowledgePoints,
+  detachKnowledgePoints,
+  getObjectKnowledgePoints,
+  // 标签API
+  getTags,
+  createTag,
+  updateTag,
+  deleteTag,
+  attachTags,
+  detachTags,
+  getObjectTags
+} from '@/api'
+import KnowledgePointSelector from '@/components/common/KnowledgePointSelector.vue'
+import TagSelector from '@/components/common/TagSelector.vue'
 
 export default {
-  name: 'TeacherCourseDetail',
+  name: 'CourseDetail',
   components: {
-    draggable
+    draggable,
+    KnowledgePointSelector,
+    TagSelector
   },
   data() {
     return {
+      actionLoading: false, // 新增：操作加载状态
+      pendingAction: null,   // 新增：暂存待执行的操作类型 ('add', 'edit', 'delete')
       activeModule: 'sections',
       managementTab: 'academic', // 管理模块的子标签页
+      loading: false,
       courseInfo: {
-        id: 101,
-        name: '高级JavaScript开发',
-        description: '深入学习JavaScript的高级特性和最佳实践'
+        id: null,
+        title: '',
+        teacher_name: '',
+        description: ''
       },
       navItems: [
         { id: 'sections', label: '章节', icon: '📑' },
@@ -2240,28 +2325,7 @@ export default {
         isPublished: false
       },
 
-      sections: [
-        {
-          id: 1,
-          title: 'Vue基础入门',
-          description: '学习Vue.js的基础概念和核心特性',
-          lessons: [
-            { id: 101, name: '认识Vue.js', type: 'video', duration: '15分钟' },
-            { id: 102, name: '环境搭建指南', type: 'video', duration: '12分钟' },
-            { id: 103, name: '第一个Vue应用', type: 'video', duration: '20分钟' }
-          ]
-        },
-        {
-          id: 2,
-          title: '数据绑定和指令',
-          description: '深入理解数据绑定机制和各类指令',
-          lessons: [
-            { id: 201, name: '数据绑定原理', type: 'video', duration: '18分钟' },
-            { id: 202, name: '常用指令详解', type: 'document', duration: '阅读' },
-            { id: 203, name: '事件处理', type: 'video', duration: '20分钟' }
-          ]
-        }
-      ],
+      sections: [],
       showSectionModal: false,
       chapterSearch: '',
       expandedSections: [1, 2], // 默认展开所有章节
@@ -2494,7 +2558,13 @@ export default {
       showTagDialog: false,
       newKnowledgeName: '',
       newTagName: '',
-      // 知识点和标签选项列表
+      // 知识点树形数据
+      knowledgeTreeData: [],
+      knowledgeIdCounter: 100,
+      // 标签列表数据
+      tagListData: [],
+      tagIdCounter: 100,
+      // 知识点和标签选项列表（保留兼容）
       knowledgePointOptions: [
         'JavaScript基础',
         '闭包',
@@ -2520,12 +2590,8 @@ export default {
         { label: '填空题', value: 'fill' },
         { label: '简答题', value: 'essay' }
       ],
-      // 文件夹列表（移除全部题目）
-      questionFolders: [
-        { id: 2, name: 'JavaScript基础', questionCount: 5, pinned: false },
-        { id: 3, name: '原型链与继承', questionCount: 3, pinned: false },
-        { id: 4, name: '异步编程', questionCount: 4, pinned: false }
-      ],
+      // 文件夹列表
+      questionFolders: [],
       newFolder: {
         name: ''
       },
@@ -2543,110 +2609,7 @@ export default {
         essayAnswer: '', // 简答题答案
         explanation: '' // 答案解析
       },
-      questions: [
-        {
-          id: 1,
-          folderId: 2,
-          type: 'single',
-          content: '下列哪个是 JavaScript 的原始数据类型？',
-          options: ['Object', 'Array', 'String', 'Function'],
-          answer: 2,
-          difficultyValue: 0.2,
-          knowledgePoint: 'JavaScript基础',
-          tags: ['重点', '常考'],
-          points: 2,
-          usageCount: 15,
-          createTime: '2024-01-10',
-          creator: '张老师'
-        },
-        {
-          id: 2,
-          folderId: 2,
-          type: 'fill',
-          content: '在 JavaScript 中，___ 是最常用的输出方式。',
-          answer: 'console.log',
-          difficultyValue: 0.1,
-          knowledgePoint: 'JavaScript基础',
-          tags: ['重点'],
-          points: 2,
-          usageCount: 20,
-          createTime: '2024-01-11',
-          creator: '张老师'
-        },
-        {
-          id: 3,
-          folderId: 3,
-          type: 'single',
-          content: '以下关于闭包的说法正确的是？',
-          options: ['闭包是一个函数', '闭包会造成内存泄漏', '闭包可以访问外层函数的变量', '闭包只能在全局作用域中创建'],
-          answer: 2,
-          difficultyValue: 0.5,
-          knowledgePoint: '闭包',
-          tags: ['易错', '常考'],
-          points: 3,
-          usageCount: 8,
-          createTime: '2024-01-12',
-          creator: '李老师'
-        },
-        {
-          id: 4,
-          folderId: 4,
-          type: 'essay',
-          content: '请简述 Promise 的三个状态及其转换关系',
-          answer: 'pending、fulfilled、rejected。pending 可转换为 fulfilled 或 rejected，状态确定后不再改变。',
-          difficultyValue: 0.7,
-          knowledgePoint: '异步编程',
-          tags: ['重点', '综合'],
-          points: 5,
-          usageCount: 5,
-          createTime: '2024-01-13',
-          creator: '王老师'
-        },
-        {
-          id: 5,
-          folderId: 3,
-          type: 'multiple',
-          content: '以下哪些是原型链的特点？（多选）',
-          options: ['每个对象都有__proto__属性', '原型链用于实现继承', '原型链的顶端是null', '原型链可以被修改'],
-          answer: [0, 1, 2, 3],
-          difficultyValue: 0.8,
-          knowledgePoint: '原型链',
-          tags: ['综合', '易错'],
-          points: 4,
-          usageCount: 3,
-          createTime: '2024-01-14',
-          creator: '李老师'
-        },
-        {
-          id: 6,
-          folderId: 2,
-          type: 'judge',
-          content: 'JavaScript 是一种强类型语言。',
-          answer: false,
-          difficultyValue: 0.1,
-          knowledgePoint: 'JavaScript基础',
-          tags: ['易错'],
-          points: 1,
-          usageCount: 25,
-          createTime: '2024-01-09',
-          creator: '张老师'
-        },
-        {
-          id: 7,
-          folderId: null,
-          type: 'single',
-          content: '什么是事件循环（Event Loop）？',
-          options: ['一种循环结构', 'JavaScript的执行机制', '一个函数', '一个变量'],
-          answer: 1,
-          difficultyValue: 0.6,
-          knowledgePoint: '异步编程',
-          tags: ['重点', '常考'],
-          points: 3,
-          usageCount: 2,
-          createTime: '2024-01-15',
-          creator: '王老师'
-        }
-      ],
+      questions: [],
 
       // 班期管理数据
       showTermModal: false,
@@ -2853,6 +2816,39 @@ export default {
     }
   },
   computed: {
+
+    normalizedKnowledgeTree() {
+    // 递归函数：处理空 children 并添加统计数字(如果需要)
+    const normalize = (nodes) => {
+      if (!nodes || !nodes.length) return undefined;
+      
+      return nodes.map(node => {
+        const newNode = {
+          ...node,
+          // 假设你的数据里没有 count，这里暂时用 placeholder
+          // 如果后端返回了关联题目数，可以直接用 node.questionCount
+          name: node.name, 
+        };
+
+        if (newNode.children && newNode.children.length > 0) {
+          newNode.children = normalize(newNode.children);
+        } else {
+          // 关键：如果没有子节点，必须删除 children 字段或设为 undefined
+          delete newNode.children;
+        }
+        return newNode;
+      });
+    };
+
+    // 可以在这里手动添加一个 "未关联知识点" 的选项，模仿截图
+    const tree = normalize(JSON.parse(JSON.stringify(this.knowledgeTreeData))); // 深拷贝防止修改原数据
+    
+    // 如果需要显示"未关联知识点"
+    // tree.unshift({ name: '未关联知识点', id: -1 }); 
+
+    return tree || [];
+  },
+
     filteredSections() {
       if (!this.chapterSearch) {
         return this.sections
@@ -3023,12 +3019,27 @@ export default {
         return termMatch && classMatch && typeMatch
       })
     },
+
+    knowledgeIdToNameMap() {
+    const map = {};
+    // 递归遍历树
+    const traverse = (nodes) => {
+      if (!nodes || !nodes.length) return;
+      nodes.forEach(node => {
+        map[node.id] = node.name;
+        if (node.children) traverse(node.children);
+      });
+    };
+    traverse(this.knowledgeTreeData); // 使用原始树数据
+    return map;
+  },
+
     filteredQuestions() {
       let questions = this.questions
 
-      // 文件夹筛选：null表示根目录（只显示folderId为null的未分类题目），否则按folderId筛选
-      if (this.selectedFolderId === null) {
-        questions = questions.filter(q => q.folderId === null)
+      // 文件夹筛选：空字符串表示根目录（只显示folderId为null的未分类题目），否则按folderId筛选
+      if (this.selectedFolderId === '') {
+        questions = questions.filter(q => q.folderId === '')
       } else {
         questions = questions.filter(q => q.folderId === this.selectedFolderId)
       }
@@ -3045,10 +3056,18 @@ export default {
 
       // 知识点筛选（多选，只要包含任一选中的知识点即可）
       if (this.questionFilter.knowledgePoints && this.questionFilter.knowledgePoints.length > 0) {
-        questions = questions.filter(q => 
-          this.questionFilter.knowledgePoints.includes(q.knowledgePoint)
+      // 第一步：把用户选中的 ID 列表，转换成 Name 列表
+      // 例如：选中了 ID [101, 205]，转换成 ['循环', '循环'] (即使名字一样也没关系)
+      const selectedNames = this.questionFilter.knowledgePoints.map(id => this.knowledgeIdToNameMap[id]);
+      
+      // 第二步：筛选题目
+      questions = questions.filter(q => 
+        q.knowledgePoints && q.knowledgePoints.some(kpName => 
+          // 只要题目包含的知识点名字，在用户选中的名字列表中，就显示
+          selectedNames.includes(kpName)
         )
-      }
+      );
+    }
 
       // 标签筛选（多选，只要包含任一选中的标签即可）
       if (this.questionFilter.tags && this.questionFilter.tags.length > 0) {
@@ -3088,6 +3107,53 @@ export default {
         f.name.toLowerCase().includes(this.folderSearch.toLowerCase())
       )
     },
+    // 从知识点树中提取所有知识点选项
+    allKnowledgePointOptions() {
+      const options = []
+      const extractKnowledgePoints = (nodes) => {
+        if (!nodes || !Array.isArray(nodes)) return
+        nodes.forEach(node => {
+          if (node.name) {
+            options.push(node.name)
+          }
+          if (node.children && node.children.length > 0) {
+            extractKnowledgePoints(node.children)
+          }
+        })
+      }
+      extractKnowledgePoints(this.knowledgeTreeData)
+      return [...new Set(options)] // 去重
+    },
+    // 从题目数据中提取所有标签选项
+    // allTagOptions() {
+    //   const tags = new Set()
+    //   this.questions.forEach(q => {
+    //     if (q.tags && Array.isArray(q.tags)) {
+    //       q.tags.forEach(tag => tags.add(tag))
+    //     }
+    //   })
+    //   return Array.from(tags).sort()
+    // },
+    allTagOptions() {
+    const tags = new Set()
+    
+    // 1. 先添加“标签管理”里定义的预设标签 (tagListData)
+    // 这样即使没有题目，下拉框里也有预设的标签可选
+    if (this.tagListData && Array.isArray(this.tagListData)) {
+      this.tagListData.forEach(tag => tags.add(tag.name))
+    }
+
+    // 2. 再从当前题目列表中提取已使用的标签 (防止遗漏历史数据的标签)
+    if (this.questions && Array.isArray(this.questions)) {
+      this.questions.forEach(q => {
+        if (q.tags && Array.isArray(q.tags)) {
+          q.tags.forEach(tag => tags.add(tag))
+        }
+      })
+    }
+    
+    return Array.from(tags).sort()
+  },
     averageGrade() {
       if (this.gradeRecords.length === 0) return 0
       const sum = this.gradeRecords.reduce((acc, r) => acc + r.totalGrade, 0)
@@ -3119,9 +3185,32 @@ export default {
         
         return matchClass && matchSearch
       })
+    },
+    // 过滤后的标签列表
+    filteredTagList() {
+      if (!this.tagSearchText.trim()) {
+        return this.tagListData
+      }
+      const searchText = this.tagSearchText.toLowerCase()
+      return this.tagListData.filter(tag => 
+        tag.name.toLowerCase().includes(searchText)
+      )
     }
   },
-  created() {
+  async created() {
+    // 获取课程ID
+    const courseId = this.$route.params.courseId
+    if (!courseId) {
+      this.$message.error('课程ID不存在')
+      this.$router.push('/teacher/courses')
+      return
+    }
+
+    this.courseInfo.id = courseId
+
+    // 首先加载课程基本信息
+    await this.loadCourseInfo()
+
     // 根据路由参数初始化activeModule和managementTab
     const tab = this.$route.query.tab
     if (tab) {
@@ -3138,19 +3227,93 @@ export default {
       }
     }
 
-    // 初始化课程管理数据
-    this.courseManagementData.courseName = this.courseInfo.name
-    this.courseManagementData.description = this.courseInfo.description || ''
-    this.courseManagementData.coverImage = this.courseInfo.cover || ''    // 初始化课程内容统计
-    this.courseManagementData.sectionCount = this.sections.length
-    this.courseManagementData.lessonCount = this.sections.reduce((total, section) => total + section.lessons.length, 0)
+    // 如果默认显示章节板块,加载章节数据
+    if (this.activeModule === 'sections') {
+      await this.loadChapters()
+    }
+    
+    // 如果默认显示题库板块，加载题库数据
+    if (this.activeModule === 'questionBank') {
+      await this.loadQuestionCategories()
+      await this.loadQuestions()
+      await this.loadKnowledgeTree()
+    }
   },
   methods: {
+    // 加载课程基本信息
+    async loadCourseInfo() {
+      if (!this.courseInfo.id) return
+      
+      try {
+        const response = await getTeacherCourse(this.courseInfo.id)
+        const courseData = response.data || response
+        
+        // 更新课程基本信息
+        this.courseInfo.title = courseData.title || ''
+        this.courseInfo.teacher_name = this.$store.state.user.userInfo?.username || '讲师'
+        this.courseInfo.description = courseData.description || ''
+        this.courseInfo.cover = courseData.cover || ''
+        this.courseInfo.status = courseData.status || ''
+        this.courseInfo.difficulty = courseData.difficulty || ''
+        this.courseInfo.category = courseData.category || ''
+        this.courseInfo.chapter_count = courseData.chapter_count || 0
+        this.courseInfo.lesson_count = courseData.lesson_count || 0
+        this.courseInfo.student_count = courseData.student_count || 0
+        
+        console.log('课程基本信息加载成功:', this.courseInfo)
+      } catch (error) {
+        console.error('加载课程信息失败:', error)
+        this.$message.error('加载课程信息失败')
+      }
+    },
+
+    // 加载章节目录结构
+    async loadChapters() {
+      if (!this.courseInfo.id) return
+      
+      this.loading = true
+      try {
+        const response = await getCourseChapters(this.courseInfo.id)
+        
+        // 更新章节数据(只包含目录结构)
+        this.sections = (response.chapters || []).map(chapter => ({
+          id: chapter.id,
+          title: chapter.title,
+          order: chapter.order,
+          lessons: (chapter.lessons || []).map(lesson => ({
+            id: lesson.id,
+            name: lesson.title,
+            order: lesson.order
+          }))
+        }))
+        
+      } catch (error) {
+        console.error('加载章节失败:', error)
+        this.$message.error('加载章节失败')
+      } finally {
+        this.loading = false
+      }
+    },
+
     // 选择模块
-    selectModule(moduleId) {
+    async selectModule(moduleId) {
       console.log('点击了模块:', moduleId)
       this.activeModule = moduleId
       console.log('当前模块:', this.activeModule)
+      
+      // 如果切换到章节模块且章节数据为空,加载章节数据
+      if (moduleId === 'sections' && this.sections.length === 0) {
+        await this.loadChapters()
+      }
+      
+      // 如果切换到题库模块，加载题库数据
+      if (moduleId === 'questionBank') {
+        if (this.questionFolders.length === 0) {
+          await this.loadQuestionCategories()
+        }
+        await this.loadQuestions()
+        this.loadKnowledgeTree()
+      }
       
       // 更新URL参数
       this.$router.replace({
@@ -3174,11 +3337,11 @@ export default {
       }
     },
     selectLesson(lesson, section) {
-      // 跳转到课程播放页面
+      // 教师点击课时跳转到课时播放器页面
       this.$router.push({
         path: `/teacher/courses/${this.courseInfo.id}/lessons/${lesson.id}`,
         query: {
-          sectionId: section.id
+          chapterId: section.id
         }
       })
     },
@@ -3194,18 +3357,18 @@ export default {
         }
       }
     },
-    addLesson(section) {
-      this.$message.info(`向章节 "${section.title}" 添加新课程`)
-    },
-    editSection(section) {
-      this.$message.info(`编辑章节: ${section.title}`)
-    },
-    deleteSection(id) {
-      if (confirm('确定删除该章节吗？')) {
-        this.sections = this.sections.filter(s => s.id !== id)
-        this.$message.success('章节已删除')
-      }
-    },
+    // addLesson(section) {
+    //   this.$message.info(`向章节 "${section.title}" 添加新课程`)
+    // },
+    // editSection(section) {
+    //   this.$message.info(`编辑章节: ${section.title}`)
+    // },
+    // deleteSection(id) {
+    //   if (confirm('确定删除该章节吗？')) {
+    //     this.sections = this.sections.filter(s => s.id !== id)
+    //     this.$message.success('章节已删除')
+    //   }
+    // },
 
     // 作业方法
     editHomework(hw) {
@@ -3607,8 +3770,123 @@ export default {
     },
 
     // 题库方法
+    // 加载题目文件夹树
+    async loadQuestionCategories() {
+      try {
+        const response = await getQuestionCategories(this.courseInfo.id)
+        const categories = response.data?.categories || response.categories || []
+        
+        // 将树状结构扁平化为列表（保持原有数据结构兼容性）
+        this.questionFolders = this.flattenCategories(categories)
+        console.log('加载文件夹成功:', this.questionFolders)
+      } catch (error) {
+        console.error('加载题目文件夹失败:', error)
+        this.$message.error('加载题目文件夹失败')
+      }
+    },
+    
+    // 将树状结构扁平化
+    flattenCategories(categories, result = []) {
+      categories.forEach(cat => {
+        result.push({
+          id: cat.id,
+          name: cat.name,
+          questionCount: cat.question_count || 0,
+          pinned: false,
+          order: cat.order || 0
+        })
+        if (cat.children && cat.children.length > 0) {
+          this.flattenCategories(cat.children, result)
+        }
+      })
+      return result
+    },
+    
+    // 加载题目列表
+    async loadQuestions() {
+      try {
+        const params = {
+          page: 1,
+          pageSize: 100,
+          category_id: this.selectedFolderId
+        }
+        
+        // 添加筛选条件
+        if (this.questionFilter.type) {
+          params.type = this.questionFilter.type
+        }
+        if (this.questionFilter.keyword) {
+          params.keyword = this.questionFilter.keyword
+        }
+        
+        const response = await getQuestionBank(this.courseInfo.id, params)
+        const questionsData = response.data?.questions || response.questions || []
+        
+        // 映射后端数据到前端格式
+        this.questions = questionsData.map(q => {
+          // 解析 content JSON 字段
+          const contentJSON = typeof q.content === 'string' ? JSON.parse(q.content) : q.content
+          
+          let options = []
+          let answer = null
+          let multipleAnswers = []
+          
+          // 根据题型解析数据
+          if (q.type === 'single' || q.type === 'single_choice') {
+            // 单选题
+            options = contentJSON.options?.map(opt => opt.text) || []
+            // 将答案key（A, B, C...）转换为索引（0, 1, 2...）
+            const answerKey = contentJSON.answer
+            answer = answerKey ? answerKey.charCodeAt(0) - 65 : 0
+          } else if (q.type === 'multiple' || q.type === 'multiple_choice') {
+            // 多选题
+            options = contentJSON.options?.map(opt => opt.text) || []
+            // 将答案key数组 ["A", "B"] 转换为索引数组 [0, 1]
+            const answerKeys = contentJSON.answer || []
+            multipleAnswers = answerKeys.map(key => key.charCodeAt(0) - 65)
+            answer = multipleAnswers
+          } else if (q.type === 'judge' || q.type === 'true_false') {
+            // 判断题
+            answer = contentJSON.answer
+          } else if (q.type === 'fill' || q.type === 'fill_blank') {
+            // 填空题
+            answer = Array.isArray(contentJSON.answer) ? contentJSON.answer[0] : contentJSON.answer
+          } else if (q.type === 'essay' || q.type === 'short_answer') {
+            // 简答题
+            answer = contentJSON.answer
+          }
+          
+          return {
+            id: q.id,
+            folderId: this.selectedFolderId,
+            type: q.type,
+            content: contentJSON.stem || q.title || '',
+            options: options,
+            answer: answer,
+            multipleAnswers: multipleAnswers,
+            difficultyValue: q.difficulty || 0.5,
+            knowledgePoint: q.knowledge_points?.[0]?.name || '',
+            knowledgePoints: q.knowledge_points?.map(kp => kp.id) || [],
+            tags: q.tags?.map(t => t.name) || [],
+            points: q.points || 2,
+            // usageCount: q.usage_count || 0,/
+            createTime: q.created_at?.split(' ')[0] || '',
+            creator: q.creator || '未知',
+            explanation: contentJSON.analysis || ''
+          }
+        })
+        
+        console.log('加载题目成功:', this.questions.length, '道')
+      } catch (error) {
+        console.error('加载题目失败:', error)
+        this.$message.error('加载题目失败')
+      }
+    },
+    
     selectFolder(folderId) {
       this.selectedFolderId = folderId
+      // 切换文件夹时重新加载题目
+      this.loadQuestions()
     },
     
     // 切换文件夹菜单
@@ -3657,44 +3935,61 @@ export default {
     },
     
     // 重命名文件夹
-    renameFolder(folder) {
+    async renameFolder(folder) {
       this.$prompt('请输入新的文件夹名称', '重命名文件夹', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputValue: folder.name,
         inputPattern: /\S+/,
         inputErrorMessage: '文件夹名称不能为空'
-      }).then(({ value }) => {
-        folder.name = value.trim()
-        this.$message.success('文件夹已重命名')
+      }).then(async ({ value }) => {
+        try {
+          await updateQuestionCategory(this.courseInfo.id, folder.id, {
+            name: value.trim()
+          })
+          folder.name = value.trim()
+          this.$message.success('文件夹已重命名')
+        } catch (error) {
+          console.error('重命名文件夹失败:', error)
+          this.$message.error('重命名失败')
+        }
       }).catch(() => {})
       this.activeFolderMenu = null
     },
     
     // 提交文件夹表单
-    submitFolder() {
+    async submitFolder() {
       if (!this.newFolder.name.trim()) {
         this.$message.error('请输入文件夹名称')
         return
       }
       
-      if (this.editingFolder) {
-        // 编辑模式
-        this.editingFolder.name = this.newFolder.name.trim()
-        this.$message.success('文件夹已更新')
-      } else {
-        // 新建模式
-        const newFolder = {
-          id: Math.max(0, ...this.questionFolders.map(f => f.id)) + 1,
-          name: this.newFolder.name.trim(),
-          questionCount: 0,
-          pinned: false
+      try {
+        if (this.editingFolder) {
+          // 编辑模式
+          await updateQuestionCategory(this.courseInfo.id, this.editingFolder.id, {
+            name: this.newFolder.name.trim()
+          })
+          this.editingFolder.name = this.newFolder.name.trim()
+          this.$message.success('文件夹已更新')
+        } else {
+          // 新建模式
+          await createQuestionCategory(this.courseInfo.id, {
+            name: this.newFolder.name.trim(),
+            parent_id: null,
+            order: 0
+          })
+          
+          this.$message.success('文件夹已创建')
+          // 重新加载文件夹列表
+          await this.loadQuestionCategories()
         }
-        this.questionFolders.push(newFolder)
-        this.$message.success('文件夹已创建')
+        
+        this.closeFolderModal()
+      } catch (error) {
+        console.error('保存文件夹失败:', error)
+        this.$message.error('保存失败')
       }
-      
-      this.closeFolderModal()
     },
     
     // 关闭文件夹模态框
@@ -3707,19 +4002,29 @@ export default {
     },
     
     // 删除文件夹
-    deleteFolder(folderId) {
+    async deleteFolder(folderId) {
       this.$confirm('删除文件夹将一并删除其中所有题目，确认删除？', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // 删除文件夹和其中的题目
-        this.questions = this.questions.filter(q => q.folderId !== folderId)
-        this.questionFolders = this.questionFolders.filter(f => f.id !== folderId)
-        if (this.selectedFolderId === folderId) {
-          this.selectedFolderId = null
+      }).then(async () => {
+        try {
+          await deleteQuestionCategory(this.courseInfo.id, folderId)
+          
+          // 如果删除的是当前选中的文件夹，切换到根目录
+          if (this.selectedFolderId === folderId) {
+            this.selectedFolderId = null
+          }
+          
+          // 重新加载文件夹树和题目
+          await this.loadQuestionCategories()
+          await this.loadQuestions()
+          
+          this.$message.success('删除成功')
+        } catch (error) {
+          console.error('删除文件夹失败:', error)
+          this.$message.error('删除失败')
         }
-        this.$message.success('删除成功')
       }).catch(() => {})
       this.activeFolderMenu = null
     },
@@ -3781,42 +4086,126 @@ export default {
     },
     
     // 确认移动题目
-    confirmMoveQuestion() {
+    async confirmMoveQuestion() {
       if (this.movingQuestion) {
-        this.movingQuestion.folderId = this.moveToFolderId
-        
-        const targetFolder = this.moveToFolderId === null 
-          ? { name: '根目录' } 
-          : this.questionFolders.find(f => f.id === this.moveToFolderId)
-        
-        this.updateFolderCounts()
-        this.$message.success(`已移动至 ${targetFolder.name}`)
-        this.showMoveQuestionModal = false
-        this.movingQuestion = null
-        this.moveToFolderId = null
+        try {
+          // 调用后端API更新题目所属文件夹
+          await updateQuestion(this.courseInfo.id, this.movingQuestion.id, {
+            category_id: this.moveToFolderId
+          })
+          
+          const targetFolder = this.moveToFolderId === null 
+            ? { name: '根目录' } 
+            : this.questionFolders.find(f => f.id === this.moveToFolderId)
+          
+          this.$message.success(`已移动至 ${targetFolder.name}`)
+          
+          // 重新加载题目列表和文件夹计数
+          await this.loadQuestions()
+          await this.loadQuestionCategories()
+          
+          this.showMoveQuestionModal = false
+          this.movingQuestion = null
+          this.moveToFolderId = null
+        } catch (error) {
+          console.error('移动题目失败:', error)
+          this.$message.error('移动失败')
+        }
       }
     },
     
     // 复制题目
-    copyQuestion(question) {
-      const newQuestion = { 
-        ...question, 
-        id: Date.now(),
-        content: question.content + ' (副本)',
-        usageCount: 0,
-        createTime: new Date().toISOString().split('T')[0]
+    async copyQuestion(question) {
+      try {
+        // 准备复制的题目数据
+        const questionData = {
+          title: question.content + ' (副本)',
+          type: question.type,
+          difficulty: question.difficultyValue,
+          points: question.points || 2,
+          category_id: question.folderId
+        }
+        
+        // 构建 content JSON
+        const contentJSON = {
+          stem: question.content + ' (副本)',
+          analysis: question.explanation || ''
+        }
+        
+        // 根据题型添加答案和选项
+        if (question.type === 'single' || question.type === 'single_choice') {
+          contentJSON.options = question.options.map((text, index) => ({
+            key: String.fromCharCode(65 + index),
+            text: text
+          }))
+          contentJSON.answer = String.fromCharCode(65 + question.answer)
+        } else if (question.type === 'multiple' || question.type === 'multiple_choice') {
+          contentJSON.options = question.options.map((text, index) => ({
+            key: String.fromCharCode(65 + index),
+            text: text
+          }))
+          contentJSON.answer = question.answer.map(idx => String.fromCharCode(65 + idx))
+        } else if (question.type === 'judge' || question.type === 'true_false') {
+          contentJSON.answer = question.answer
+        } else if (question.type === 'fill' || question.type === 'fill_blank') {
+          contentJSON.answer = Array.isArray(question.answer) ? question.answer : [question.answer]
+        } else if (question.type === 'essay' || question.type === 'short_answer') {
+          contentJSON.answer = question.answer
+        }
+        
+        questionData.content = contentJSON
+        
+        // 调用后端API创建复制题目
+        await createQuestion(this.courseInfo.id, questionData)
+        
+        this.$message.success('题目已复制')
+        
+        // 重新加载题目列表
+        await this.loadQuestions()
+        await this.loadQuestionCategories()
+        
+        this.activeQuestionMenu = null
+      } catch (error) {
+        console.error('复制题目失败:', error)
+        this.$message.error('复制失败')
       }
-      this.questions.push(newQuestion)
-      this.updateFolderCounts()
-      this.$message.success('题目已复制')
-      this.activeQuestionMenu = null
     },
     
     // 查看题目详情（点击标题）
     viewQuestionDetail(question) {
-      // 显示题目详情对话框或跳转到详情页
+      // 显示题目详情对话框
       this.editingQuestion = { ...question }
-      this.newQuestion = { ...question }
+      
+      // 完整重建 newQuestion 对象，确保所有字段都有值
+      this.newQuestion = {
+        type: question.type,
+        content: question.content || '',
+        difficultyValue: question.difficultyValue || 0.5,
+        knowledgePoints: question.knowledgePoints || [],
+        tags: question.tags || [],
+        explanation: question.explanation || '',
+        // 选择题选项（确保是数组）
+        options: question.options ? [...question.options] : ['', '', '', ''],
+        // 单选题答案
+        answer: question.type === 'single' ? (question.answer || 0) : 0,
+        // 多选题答案（确保是数组）
+        multipleAnswers: question.type === 'multiple' && Array.isArray(question.answer) 
+          ? [...question.answer] 
+          : [],
+        // 判断题答案：answer(boolean) -> judgeAnswer(string)
+        judgeAnswer: question.type === 'judge' 
+          ? String(question.answer) 
+          : 'true',
+        // 填空题答案
+        fillAnswer: question.type === 'fill' 
+          ? (typeof question.answer === 'string' ? question.answer : (question.answer || ''))
+          : '',
+        // 简答题答案
+        essayAnswer: question.type === 'essay' 
+          ? (typeof question.answer === 'string' ? question.answer : (question.answer || ''))
+          : ''
+      }
+      
       this.showQuestionModal = true
     },
     
@@ -3869,19 +4258,58 @@ export default {
     },
     editQuestion(question) {
       this.editingQuestion = question
-      this.newQuestion = { ...question }
+      
+      // 完整重建 newQuestion 对象，确保所有字段都有值
+      this.newQuestion = {
+        type: question.type,
+        content: question.content || '',
+        difficultyValue: question.difficultyValue || 0.5,
+        knowledgePoints: question.knowledgePoints || [],
+        tags: question.tags || [],
+        explanation: question.explanation || '',
+        // 选择题选项（确保是数组）
+        options: question.options ? [...question.options] : ['', '', '', ''],
+        // 单选题答案
+        answer: question.type === 'single' ? (question.answer !== undefined ? question.answer : 0) : 0,
+        // 多选题答案（确保是数组）
+        multipleAnswers: question.type === 'multiple' && Array.isArray(question.answer) 
+          ? [...question.answer] 
+          : [],
+        // 判断题答案：answer(boolean) -> judgeAnswer(string)
+        judgeAnswer: question.type === 'judge' 
+          ? String(question.answer) 
+          : 'true',
+        // 填空题答案
+        fillAnswer: question.type === 'fill' 
+          ? (typeof question.answer === 'string' ? question.answer : (question.answer || ''))
+          : '',
+        // 简答题答案
+        essayAnswer: question.type === 'essay' 
+          ? (typeof question.answer === 'string' ? question.answer : (question.answer || ''))
+          : ''
+      }
+      
       this.showQuestionModal = true
     },
     previewQuestion(question) {
       this.$message.info(`预览题目: ${question.content}`)
     },
-    deleteQuestion(questionId) {
-      if (confirm('确定删除该题目吗？')) {
-        this.questions = this.questions.filter(q => q.id !== questionId)
-        // 更新文件夹计数
-        this.updateFolderCounts()
-        this.$message.success('题目已删除')
-      }
+    async deleteQuestion(questionId) {
+      this.$confirm('确定删除该题目吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          await deleteQuestion(this.courseInfo.id, questionId)
+          await this.loadQuestions()
+          await this.loadQuestionCategories() // 更新文件夹计数
+          this.$message.success('题目已删除')
+        } catch (error) {
+          console.error('删除题目失败:', error)
+          this.$message.error('删除失败')
+        }
+      }).catch(() => {})
     },
     updateFolderCounts() {
       // 更新每个文件夹的题目计数
@@ -3896,20 +4324,44 @@ export default {
     // 题型切换
     changeQuestionType(type) {
       this.newQuestion.type = type
-      // 根据题型初始化默认值
-      if (type === 'single' || type === 'multiple') {
-        if (this.newQuestion.options.length === 0) {
+      
+      // 根据题型重置答案相关字段
+      if (type === 'single') {
+        if (!this.newQuestion.options || this.newQuestion.options.length === 0) {
           this.newQuestion.options = ['', '', '', '']
         }
-      }
-      if (type === 'single') {
         this.newQuestion.answer = 0
-      }
-      if (type === 'multiple') {
         this.newQuestion.multipleAnswers = []
-      }
-      if (type === 'judge') {
         this.newQuestion.judgeAnswer = 'true'
+        this.newQuestion.fillAnswer = ''
+        this.newQuestion.essayAnswer = ''
+      } else if (type === 'multiple') {
+        if (!this.newQuestion.options || this.newQuestion.options.length === 0) {
+          this.newQuestion.options = ['', '', '', '']
+        }
+        this.newQuestion.answer = 0
+        this.newQuestion.multipleAnswers = []
+        this.newQuestion.judgeAnswer = 'true'
+        this.newQuestion.fillAnswer = ''
+        this.newQuestion.essayAnswer = ''
+      } else if (type === 'judge') {
+        this.newQuestion.judgeAnswer = 'true'
+        this.newQuestion.answer = 0
+        this.newQuestion.multipleAnswers = []
+        this.newQuestion.fillAnswer = ''
+        this.newQuestion.essayAnswer = ''
+      } else if (type === 'fill') {
+        this.newQuestion.fillAnswer = ''
+        this.newQuestion.answer = 0
+        this.newQuestion.multipleAnswers = []
+        this.newQuestion.judgeAnswer = 'true'
+        this.newQuestion.essayAnswer = ''
+      } else if (type === 'essay') {
+        this.newQuestion.essayAnswer = ''
+        this.newQuestion.answer = 0
+        this.newQuestion.multipleAnswers = []
+        this.newQuestion.judgeAnswer = 'true'
+        this.newQuestion.fillAnswer = ''
       }
     },
     // 添加选项
@@ -3943,57 +4395,82 @@ export default {
       this.resetQuestionForm()
     },
     // 保存题目
-    saveQuestion() {
+    async saveQuestion() {
       if (!this.validateQuestion()) {
         return
       }
       
-      const questionData = this.formatQuestionData()
+      const questionData = this.formatQuestionDataForAPI()
       
-      if (this.editingQuestion) {
-        const idx = this.questions.findIndex(q => q.id === this.editingQuestion.id)
-        if (idx > -1) {
-          this.questions.splice(idx, 1, { ...questionData, id: this.editingQuestion.id })
+      try {
+        let questionId
+        if (this.editingQuestion) {
+          // 更新题目
+          await updateQuestion(this.courseInfo.id, this.editingQuestion.id, questionData)
+          questionId = this.editingQuestion.id
           this.$message.success('题目已更新')
+        } else {
+          // 创建新题目
+          const response = await createQuestion(this.courseInfo.id, questionData)
+          questionId = response.data?.id || response.id
+          this.$message.success('题目已创建')
         }
-      } else {
-        this.questions.push({
-          ...questionData,
-          id: Math.max(0, ...this.questions.map(q => q.id)) + 1,
-          usageCount: 0,
-          createTime: new Date().toISOString().split('T')[0],
-          creator: '当前用户' // 实际应从登录信息获取
-        })
-        this.$message.success('题目已创建')
-      }
 
-      this.updateFolderCounts()
-      this.closeQuestionModal()
+        // 关联知识点(无论是否为空,都需要同步,以便删除旧关联)
+        if (questionId) {
+          await this.attachKnowledgePointsToQuestion(questionId, this.newQuestion.knowledgePoints || [])
+        }
+
+        // 关联标签(无论是否为空,都需要同步,以便删除旧关联)
+        if (questionId) {
+          await this.attachTagsToQuestion(questionId, this.newQuestion.tags || [])
+        }
+
+        // 重新加载题目列表
+        await this.loadQuestions()
+        await this.loadQuestionCategories() // 更新文件夹计数
+        this.closeQuestionModal()
+      } catch (error) {
+        console.error('保存题目失败:', error)
+        this.$message.error('保存题目失败')
+      }
     },
     // 保存并继续创建
-    saveAndContinue() {
+    async saveAndContinue() {
       if (!this.validateQuestion()) {
         return
       }
       
-      const questionData = this.formatQuestionData()
+      const questionData = this.formatQuestionDataForAPI()
       
-      this.questions.push({
-        ...questionData,
-        id: Math.max(0, ...this.questions.map(q => q.id)) + 1,
-        usageCount: 0,
-        createTime: new Date().toISOString().split('T')[0],
-        creator: '当前用户'
-      })
+      try {
+        const response = await createQuestion(this.courseInfo.id, questionData)
+        const questionId = response.data?.id || response.id
 
-      this.$message.success('题目已保存，继续创建下一题')
-      this.updateFolderCounts()
-      
-      // 只重置内容，保留题型
-      const keepType = this.newQuestion.type
-      this.resetQuestionForm()
-      this.newQuestion.type = keepType
-      this.changeQuestionType(keepType)
+        // 关联知识点(无论是否为空,都需要同步,以便删除旧关联)
+        if (questionId) {
+          await this.attachKnowledgePointsToQuestion(questionId, this.newQuestion.knowledgePoints || [])
+        }
+
+        // 关联标签(无论是否为空,都需要同步,以便删除旧关联)
+        if (questionId) {
+          await this.attachTagsToQuestion(questionId, this.newQuestion.tags || [])
+        }
+
+        await this.loadQuestions()
+        await this.loadQuestionCategories()
+        
+        this.$message.success('题目已保存，继续创建下一题')
+        
+        // 只重置内容，保留题型
+        const keepType = this.newQuestion.type
+        this.resetQuestionForm()
+        this.newQuestion.type = keepType
+        this.changeQuestionType(keepType)
+      } catch (error) {
+        console.error('保存题目失败:', error)
+        this.$message.error('保存题目失败')
+      }
     },
     // 验证题目
     validateQuestion() {
@@ -4001,26 +4478,70 @@ export default {
         this.$message.error('请选择题型')
         return false
       }
-      if (!this.newQuestion.content.trim()) {
+      if (!this.newQuestion.content || !this.newQuestion.content.trim()) {
         this.$message.error('请输入题干内容')
         return false
       }
       
       // 验证答案
-      if (this.newQuestion.type === 'single' || this.newQuestion.type === 'multiple') {
-        const hasEmptyOption = this.newQuestion.options.some(opt => !opt.trim())
+      if (this.newQuestion.type === 'single') {
+        // 单选题：检查选项
+        if (!this.newQuestion.options || this.newQuestion.options.length === 0) {
+          this.$message.error('请添加选项')
+          return false
+        }
+        const hasEmptyOption = this.newQuestion.options.some(opt => !opt || !opt.trim())
         if (hasEmptyOption) {
           this.$message.error('请填写所有选项内容')
           return false
         }
+        // 检查答案是否有效
+        if (this.newQuestion.answer === undefined || this.newQuestion.answer === null) {
+          this.$message.error('请选择正确答案')
+          return false
+        }
       }
-      if (this.newQuestion.type === 'multiple' && this.newQuestion.multipleAnswers.length === 0) {
-        this.$message.error('请至少选择一个正确答案')
-        return false
+      
+      if (this.newQuestion.type === 'multiple') {
+        // 多选题：检查选项
+        if (!this.newQuestion.options || this.newQuestion.options.length === 0) {
+          this.$message.error('请添加选项')
+          return false
+        }
+        const hasEmptyOption = this.newQuestion.options.some(opt => !opt || !opt.trim())
+        if (hasEmptyOption) {
+          this.$message.error('请填写所有选项内容')
+          return false
+        }
+        // 检查答案
+        if (!this.newQuestion.multipleAnswers || this.newQuestion.multipleAnswers.length === 0) {
+          this.$message.error('请至少选择一个正确答案')
+          return false
+        }
       }
-      if (this.newQuestion.type === 'fill' && !this.newQuestion.fillAnswer.trim()) {
-        this.$message.error('请输入填空题答案')
-        return false
+      
+      if (this.newQuestion.type === 'judge') {
+        // 判断题：检查答案
+        if (!this.newQuestion.judgeAnswer) {
+          this.$message.error('请选择判断题答案')
+          return false
+        }
+      }
+      
+      if (this.newQuestion.type === 'fill') {
+        // 填空题：检查答案
+        if (!this.newQuestion.fillAnswer || !this.newQuestion.fillAnswer.trim()) {
+          this.$message.error('请输入填空题答案')
+          return false
+        }
+      }
+      
+      if (this.newQuestion.type === 'essay') {
+        // 简答题：检查答案
+        if (!this.newQuestion.essayAnswer || !this.newQuestion.essayAnswer.trim()) {
+          this.$message.error('请输入简答题参考答案')
+          return false
+        }
       }
       
       return true
@@ -4054,6 +4575,64 @@ export default {
       }
 
       return base
+    },
+    // 格式化题目数据用于API提交
+    formatQuestionDataForAPI() {
+      const data = {
+        title: this.newQuestion.content.trim(),
+        type: this.newQuestion.type,
+        difficulty: this.newQuestion.difficultyValue,
+        tags: this.newQuestion.tags.map(t => ({ name: t })),
+        knowledge_points: this.newQuestion.knowledgePoints.map(kp => ({ name: kp })),
+        category_id: this.selectedFolderId
+      }
+
+      // 构建 content JSON 字段（根据题型）
+      const contentJSON = {
+        stem: this.newQuestion.content.trim(),
+        analysis: this.newQuestion.explanation || ''
+      }
+
+      // 根据题型添加特定字段到 content JSON
+      if (this.newQuestion.type === 'single' || this.newQuestion.type === 'single_choice') {
+        // 单选题
+        contentJSON.options = (this.newQuestion.options || []).map((text, index) => ({
+          key: String.fromCharCode(65 + index), // A, B, C, D...
+          text: (text || '').trim()
+        }))
+        // 答案是选项的key（A, B, C...）
+        const answerIndex = this.newQuestion.answer !== undefined ? this.newQuestion.answer : 0
+        contentJSON.answer = String.fromCharCode(65 + answerIndex)
+      } else if (this.newQuestion.type === 'multiple' || this.newQuestion.type === 'multiple_choice') {
+        // 多选题
+        contentJSON.options = (this.newQuestion.options || []).map((text, index) => ({
+          key: String.fromCharCode(65 + index),
+          text: (text || '').trim()
+        }))
+        // 答案是选项key的数组 ["A", "B", "C"]
+        const answers = this.newQuestion.multipleAnswers || []
+        contentJSON.answer = answers.map(idx => String.fromCharCode(65 + idx))
+      } else if (this.newQuestion.type === 'judge' || this.newQuestion.type === 'true_false') {
+        // 判断题
+        const judgeAnswer = this.newQuestion.judgeAnswer || 'true'
+        contentJSON.answer = judgeAnswer === 'true'
+      } else if (this.newQuestion.type === 'fill' || this.newQuestion.type === 'fill_blank') {
+        // 填空题 - 答案是数组形式
+        const fillAnswer = this.newQuestion.fillAnswer || ''
+        const answers = typeof fillAnswer === 'string' 
+          ? [fillAnswer.trim()]
+          : fillAnswer
+        contentJSON.answer = answers
+      } else if (this.newQuestion.type === 'essay' || this.newQuestion.type === 'short_answer') {
+        // 简答题
+        const essayAnswer = this.newQuestion.essayAnswer || ''
+        contentJSON.answer = essayAnswer.trim()
+      }
+
+      // 将 content 设置为 JSON 对象
+      data.content = contentJSON
+
+      return data
     },
     submitQuestion() {
       // 保留旧方法名，调用新方法
@@ -4119,6 +4698,507 @@ export default {
       }).catch(() => {
         // 取消操作
       })
+    },
+
+    // ========== 知识点管理方法 ==========
+    // 显示知识点选择对话框
+    async showKnowledgeSelectDialog() {
+      this.showKnowledgeDialog = true
+      await this.loadKnowledgeTree()
+    },
+    
+    // 关闭知识点对话框
+    closeKnowledgeDialog() {
+      this.showKnowledgeDialog = false
+    },
+    
+    // 处理知识点选择器的确认事件
+    handleKnowledgeConfirm() {
+      this.showKnowledgeDialog = false
+    },
+
+    // 处理添加根级知识点
+    async handleAddRootKnowledge({ name }) {
+      try {
+        await createKnowledgePoint({
+          name,
+          parent_id: null,
+          course_id: this.courseInfo.id
+        })
+        this.$message.success('添加成功')
+        await this.loadKnowledgeTree()
+      } catch (error) {
+        console.error('添加知识点失败:', error)
+        this.$message.error('添加知识点失败')
+      }
+    },
+
+    // 处理添加子级知识点
+    async handleAddChildKnowledge({ name, parentId }) {
+      try {
+        await createKnowledgePoint({
+          name,
+          parent_id: parentId,
+          course_id: this.courseInfo.id
+        })
+        this.$message.success('添加成功')
+        await this.loadKnowledgeTree()
+      } catch (error) {
+        console.error('添加知识点失败:', error)
+        this.$message.error('添加知识点失败')
+      }
+    },
+
+    // 处理编辑知识点
+    async handleEditKnowledge({ id, name }) {
+      try {
+        await updateKnowledgePoint(id, { name })
+        this.$message.success('修改成功')
+        await this.loadKnowledgeTree()
+      } catch (error) {
+        console.error('修改知识点失败:', error)
+        this.$message.error('修改知识点失败')
+      }
+    },
+
+    // 处理删除知识点
+    async handleDeleteKnowledge({ id }) {
+      try {
+        await deleteKnowledgePoint(id)
+        this.$message.success('删除成功')
+        await this.loadKnowledgeTree()
+      } catch (error) {
+        console.error('删除知识点失败:', error)
+        this.$message.error('删除知识点失败')
+      }
+    },
+
+    // 加载知识点树
+    async loadKnowledgeTree() {
+      try {
+        const response = await getKnowledgePoints({
+          course_id: this.courseInfo.id
+        })
+        const knowledgePoints = response.data?.knowledge_points || response.knowledge_points || []
+        // 为树节点添加组件需要的属性
+        this.knowledgeTreeData = this.addCheckedProperty(knowledgePoints)
+      } catch (error) {
+        console.error('加载知识点失败:', error)
+        this.$message.error('加载知识点失败')
+      }
+    },
+
+    // 为树节点添加编辑状态属性
+    addCheckedProperty(nodes) {
+      return nodes.map(node => ({
+        ...node,
+        isEditing: false,
+        editName: node.name,
+        showChildInput: false,
+        newChildName: '',
+        children: node.children ? this.addCheckedProperty(node.children) : []
+      }))
+    },
+
+    // 关联知识点到题目
+    async attachKnowledgePointsToQuestion(questionId, knowledgePointIds) {
+      // 处理空数组的情况:需要删除所有已有的知识点
+      if (!knowledgePointIds) {
+        knowledgePointIds = []
+      }
+      
+      console.log('[关联知识点] 题目ID:', questionId, '知识点IDs:', knowledgePointIds)
+
+      // 获取当前题目已有的知识点
+      let existingKnowledgePointIds = []
+      try {
+        const response = await getObjectKnowledgePoints({
+          content_type: 'questionbank',
+          object_id: questionId
+        })
+        const responseData = response.data || response
+        existingKnowledgePointIds = (responseData.knowledge_points || []).map(kp => kp.id)
+        console.log('[关联知识点] 题目已有知识点IDs:', existingKnowledgePointIds)
+      } catch (error) {
+        console.error('[关联知识点] 获取已有知识点失败:', error)
+      }
+
+      // 计算需要添加和移除的知识点(使用ID比较)
+      const idsToAdd = knowledgePointIds.filter(id => !existingKnowledgePointIds.includes(id))
+      const idsToRemove = existingKnowledgePointIds.filter(id => !knowledgePointIds.includes(id))
+
+      console.log('[关联知识点] 需要添加的IDs:', idsToAdd)
+      console.log('[关联知识点] 需要移除的IDs:', idsToRemove)
+
+      // 添加新知识点关联
+      for (const pointId of idsToAdd) {
+        try {
+          await attachKnowledgePoints({
+            point_id: pointId,
+            content_type: 'questionbank',
+            object_id: questionId
+          })
+          console.log(`[关联知识点] 成功添加知识点ID: ${pointId}`)
+        } catch (error) {
+          console.error(`[关联知识点] 添加知识点失败 ID ${pointId}:`, error)
+        }
+      }
+
+      // 移除旧知识点关联
+      for (const pointId of idsToRemove) {
+        try {
+          await detachKnowledgePoints({
+            point_id: pointId,
+            content_type: 'questionbank',
+            object_id: questionId
+          })
+          console.log(`[关联知识点] 成功移除知识点ID: ${pointId}`)
+        } catch (error) {
+          console.error(`[关联知识点] 移除知识点失败 ID ${pointId}:`, error)
+        }
+      }
+    },
+
+    // 根据名称获取知识点ID
+    getKnowledgePointIdByName(name) {
+      const findInTree = (nodes, targetName) => {
+        for (const node of nodes) {
+          if (node.name === targetName) {
+            return node.id
+          }
+          if (node.children && node.children.length > 0) {
+            const found = findInTree(node.children, targetName)
+            if (found) return found
+          }
+        }
+        return null
+      }
+      return findInTree(this.knowledgeTreeData, name)
+    },
+
+    // 根据知识点ID查找名称(用于显示)
+    getKnowledgePointNameById(id) {
+      if (!this.knowledgeTreeData || this.knowledgeTreeData.length === 0) {
+        return '' // 树未加载时返回空字符串
+      }
+      const findInTree = (nodes, targetId) => {
+        for (const node of nodes) {
+          if (node.id === targetId) return node.name
+          if (node.children && node.children.length > 0) {
+            const found = findInTree(node.children, targetId)
+            if (found) return found
+          }
+        }
+        return null
+      }
+      return findInTree(this.knowledgeTreeData, id) || ''
+    },
+
+    // 关联标签到题目
+    async attachTagsToQuestion(questionId, tagNames) {
+      // 处理空数组的情况:需要删除所有已有的标签
+      if (!tagNames) {
+        tagNames = []
+      }
+
+      console.log('[关联标签] 题目ID:', questionId, '标签:', tagNames)
+
+      // 获取当前题目已有的标签
+      let existingTags = []
+      try {
+        const response = await getObjectTags({
+          content_type: 'questionbank',
+          object_id: questionId
+        })
+        const responseData = response.data || response
+        existingTags = (responseData.tags || []).map(t => t.name)
+        console.log('[关联标签] 题目已有标签:', existingTags)
+      } catch (error) {
+        console.error('[关联标签] 获取已有标签失败:', error)
+      }
+
+      // 计算需要添加和移除的标签
+      const tagsToAdd = tagNames.filter(tag => !existingTags.includes(tag))
+      const tagsToRemove = existingTags.filter(tag => !tagNames.includes(tag))
+
+      console.log('[关联标签] 需要添加:', tagsToAdd)
+      console.log('[关联标签] 需要移除:', tagsToRemove)
+
+      // 添加新标签关联
+      for (const tagName of tagsToAdd) {
+        const tagObj = this.tagListData.find(t => t.name === tagName)
+        if (!tagObj) {
+          console.warn(`[关联标签] 找不到标签: ${tagName}`)
+          continue
+        }
+
+        try {
+          await attachTags({
+            tag_id: tagObj.id,
+            content_type: 'questionbank',
+            object_id: questionId
+          })
+          console.log(`[关联标签] 成功添加标签: ${tagName}`)
+        } catch (error) {
+          console.error(`[关联标签] 添加标签失败 ${tagName}:`, error)
+        }
+      }
+
+      // 移除旧标签关联
+      for (const tagName of tagsToRemove) {
+        const tagObj = this.tagListData.find(t => t.name === tagName)
+        if (!tagObj) {
+          console.warn(`[关联标签] 找不到标签: ${tagName}`)
+          continue
+        }
+
+        try {
+          await detachTags({
+            tag_id: tagObj.id,
+            content_type: 'questionbank',
+            object_id: questionId
+          })
+          console.log(`[关联标签] 成功移除标签: ${tagName}`)
+        } catch (error) {
+          console.error(`[关联标签] 移除标签失败 ${tagName}:`, error)
+        }
+      }
+    },
+
+    // ========== 标签管理方法 ==========
+    // 显示标签选择对话框
+    async showTagSelectDialog() {
+        this.showTagDialog = true;
+        // 备份当前已选标签，用于后续对比差异
+        // 假设你的已选标签存在 this.newQuestion.tags 里，且是字符串数组
+        this.originalTags = [...(this.newQuestion.tags || [])]; 
+        
+        if (this.tagListData.length === 0) {
+          await this.loadTags();
+        }
+      },
+    
+    // 从后端加载标签列表
+    async loadTags() {
+      if (!this.courseInfo.id) {
+        console.warn('课程ID不存在，无法加载标签')
+        this.loadTagsFromQuestions()
+        return
+      }
+      
+      try {
+        const response = await getTags({ 
+          course_id: this.courseInfo.id,
+          page: 1,
+          pageSize: 100
+        })
+        
+        // 后端返回格式: {code: 200, message: '', data: {tags: [...], total, page, pageSize}}
+        const responseData = response.data || response
+        const tags = responseData.tags || []
+        
+        this.tagListData = tags.map(tag => ({
+          id: tag.id,
+          name: tag.name,
+          usage_count: tag.usage_count || 0
+        }))
+        
+        // 更新ID计数器
+        if (this.tagListData.length > 0) {
+          this.tagIdCounter = Math.max(...this.tagListData.map(t => t.id)) + 1
+        }
+        
+        console.log('加载标签成功:', this.tagListData.length, '个')
+      } catch (error) {
+        console.error('加载标签失败:', error)
+        this.$message.warning('加载标签失败，使用本地标签')
+        // 降级：从题目中提取标签
+        this.loadTagsFromQuestions()
+      }
+    },
+    
+    // 从题目中加载标签（降级方案）
+    loadTagsFromQuestions() {
+      const tagsSet = new Set()
+      this.questions.forEach(q => {
+        if (q.tags && Array.isArray(q.tags)) {
+          q.tags.forEach(tag => {
+            if (typeof tag === 'string') {
+              tagsSet.add(tag)
+            } else if (tag.name) {
+              tagsSet.add(tag.name)
+            }
+          })
+        }
+      })
+      
+      this.tagListData = Array.from(tagsSet).map((tagName, index) => ({
+        id: index + 1,
+        name: tagName
+      }))
+      
+      this.tagIdCounter = this.tagListData.length + 1
+    },
+    
+    // 处理标签确认
+    async handleTagConfirm(selectedTags) {
+      console.log('[标签确认] 用户选择的标签:', selectedTags);
+      
+      // 只更新本地状态,不发送后端请求
+      // 后端请求会在点击"保存"按钮时统一处理
+      this.newQuestion.tags = selectedTags;
+      this.originalTags = [...selectedTags];
+      
+      // 如果是编辑模式,也更新编辑题目的标签
+      if (this.editingQuestion) {
+        this.editingQuestion.tags = selectedTags;
+      }
+      
+      this.showTagDialog = false;
+      console.log('[标签确认] 本地状态已更新,等待保存时同步到后端');
+    },
+    
+// 处理添加标签
+async handleTagAdd(payload) {
+  const { name, callback } = payload
+  
+  // 防御性编程：确保 callback 存在
+  if (!callback) {
+    console.error('Parent: Missing callback in payload')
+    return
+  }
+
+  if (!this.courseInfo.id) {
+    const error = '课程ID不存在'
+    this.$message.error(error)
+    callback(error, null) // 【关键】必须调用
+    return
+  }
+  
+  try {
+    const response = await createTag({ name, course_id: this.courseInfo.id })
+    
+    // 兼容不同的返回结构
+    const responseData = response.data || response
+    // 后端返回可能是 { code: 200, data: { id, name } } 或者直接 { id, name }
+    const newTag = responseData.data || responseData 
+    
+    if (!newTag || !newTag.id) {
+      throw new Error('后端返回数据格式错误：缺少 ID')
+    }
+
+    // 更新父组件本地列表
+    const existsIndex = this.tagListData.findIndex(t => t.name === name)
+    if (existsIndex === -1) {
+       this.tagListData.push({ id: newTag.id, name: newTag.name, usage_count: 0 })
+    } else {
+       // 如果本地有临时的，替换它
+       this.tagListData[existsIndex] = { id: newTag.id, name: newTag.name, usage_count: 0 }
+    }
+
+    // 【关键】成功回调
+    callback(null, { id: newTag.id, name: newTag.name })
+    
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || error.message || '创建标签失败'
+    this.$message.error(errorMsg)
+    // 【关键】失败回调，无论什么错误都要调
+    callback(errorMsg, null)
+  }
+},
+
+// 处理编辑标签
+async handleTagEdit(payload) {
+  const { id, oldName, newName, callback } = payload
+  if (!callback) return
+
+  try {
+    await updateTag(id, { name: newName })
+    
+    const tag = this.tagListData.find(t => t.id === id)
+    if (tag) tag.name = newName
+    this.updateQuestionsTagName(oldName, newName)
+    
+    callback(null, { id, name: newName })
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || error.message
+    this.$message.error(errorMsg)
+    callback(errorMsg, null)
+  }
+},
+
+// 处理删除标签
+async handleTagDelete(payload) {
+  const { id, callback } = payload
+  if (!callback) return
+  
+  const tag = this.tagListData.find(t => t.id === id)
+  
+  try {
+    await deleteTag(id)
+    
+    this.tagListData = this.tagListData.filter(t => t.id !== id)
+    this.removeTagFromQuestions(id, tag?.name)
+    
+    callback(null, { success: true })
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || error.message
+    this.$message.error(errorMsg)
+    callback(errorMsg, null)
+  }
+},
+
+// ... 辅助方法 updateQuestionsTagName, removeTagFromQuestions 保持不变
+    
+    // 旧的删除标签方法（保留向下兼容）
+    deleteTag(tagId) {
+      this.$confirm('确定要删除这个标签吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const index = this.tagListData.findIndex(tag => tag.id === tagId)
+        if (index > -1) {
+          this.tagListData.splice(index, 1)
+          this.$message.success('标签已删除')
+        }
+      }).catch(() => {})
+    },
+
+      // 辅助：更新题目中的标签名
+  updateQuestionsTagName(oldName, newName) {
+     this.questions.forEach(q => {
+        if (q.tags && Array.isArray(q.tags)) {
+          q.tags = q.tags.map(tag => {
+            if (typeof tag === 'string') return tag === oldName ? newName : tag
+            if (tag.name === oldName) return { ...tag, name: newName }
+            return tag
+          })
+        }
+     })
+  },
+  
+  // 辅助：从题目移除标签
+  removeTagFromQuestions(id, name) {
+     this.questions.forEach(q => {
+        if (q.tags && Array.isArray(q.tags)) {
+          q.tags = q.tags.filter(t => {
+             if (typeof t === 'string') return t !== name
+             if (t.id) return t.id !== id
+             return true
+          })
+        }
+     })
+  },
+
+    // 移除已选择的知识点
+    removeKnowledgePoint(index) {
+      this.newQuestion.knowledgePoints.splice(index, 1)
+    },
+
+    // 移除已选择的标签
+    removeTag(index) {
+      this.newQuestion.tags.splice(index, 1)
     },
 
     // 班期管理方法
@@ -4514,6 +5594,17 @@ export default {
 </script>
 
 <style scoped>
+
+/* 在 style 标签中添加 */
+.compact-select-multi .el-cascader__tags {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.compact-select-multi .el-input__inner {
+  height: 32px !important; /* 根据你顶部栏的高度调整 */
+  line-height: 32px !important;
+}
+
 .teacher-course-detail {
   display: flex;
   min-height: 100vh;
@@ -4545,13 +5636,20 @@ export default {
 }
 
 .sidebar-logo h1 {
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.teacher-name {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .nav-menu {
@@ -7368,10 +8466,12 @@ export default {
   background: linear-gradient(to right, #10b981, #f59e0b, #ef4444);
   outline: none;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .difficulty-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -9449,5 +10549,207 @@ export default {
   font-size: 0.8125rem;
 }
 /* ========== 三级导航样式结束 ========== */
+
+/* ========== 知识点和标签选择样式 ========== */
+/* 已选择的项目容器 */
+.selected-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 36px;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #f9fafb;
+  align-items: center;
+}
+
+.selected-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.selected-tag .el-icon-close {
+  cursor: pointer;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.selected-tag .el-icon-close:hover {
+  opacity: 1;
+}
+
+.empty-hint {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* 标签选择模态框 */
+.tag-select-modal {
+  max-width: 600px;
+  max-height: 70vh;
+}
+
+.tag-select-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.tag-actions {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tag-list-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.tag-list-container {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 0.75rem;
+}
+
+.empty-list {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+}
+
+.empty-list p {
+  margin: 0.5rem 0;
+}
+
+.empty-list .hint {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.tag-item:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.tag-item.selected {
+  background: #ede9fe;
+  border-color: #a78bfa;
+}
+
+.tag-item.editing {
+  background: #fef3c7;
+  border-color: #fbbf24;
+}
+
+.tag-name {
+  flex: 1;
+  font-size: 0.9375rem;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag-name i {
+  color: #667eea;
+  font-size: 1.125rem;
+}
+
+.tag-edit-input {
+  flex: 1;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #fbbf24;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+}
+
+.tag-edit-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+}
+
+.tag-actions-inline {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag-btn {
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag-btn.edit {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.tag-btn.edit:hover {
+  background: #c7d2fe;
+}
+
+.tag-btn.delete {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tag-btn.delete:hover {
+  background: #fecaca;
+}
+
+.tag-btn.save {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.tag-btn.save:hover {
+  background: #a7f3d0;
+}
+
+.tag-btn.cancel {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.tag-btn.cancel:hover {
+  background: #fecaca;
+}
+/* ========== 知识点和标签选择样式结束 ========== */
 </style>
 

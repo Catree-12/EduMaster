@@ -36,6 +36,12 @@ export default [
     meta: { requiresAuth: true, roles: ['teacher'], title: '章节编辑' }
   },
   {
+    path: '/teacher/courses/:courseId/chapters/edit',
+    name: 'TeacherCourseChapterEditAlt',
+    component: () => import('@/views/teacher/course/ChapterEdit.vue'),
+    meta: { requiresAuth: true, roles: ['teacher'], title: '章节编辑' }
+  },
+  {
     path: '/teacher/courses/:courseId/preview',
     name: 'TeacherCoursePreview',
     component: () => import('@/views/teacher/course/Preview.vue'),

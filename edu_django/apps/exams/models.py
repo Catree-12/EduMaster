@@ -2,8 +2,8 @@
 from django.db import models
 from django.conf import settings
 from courses.models import Course, CourseTerm, ClassGroup
-from knowledge.models import KnowledgePoint
-
+from django.contrib.contenttypes.fields import GenericRelation
+from knowledge.models import QuestionCategory
 # Create your models here.
 
 class QuestionBank(models.Model):
@@ -16,31 +16,46 @@ class QuestionBank(models.Model):
         ('essay', '简答题'),
     ]
     
-    title = models.CharField(max_length=200, verbose_name='题目名称', help_text='后台管理检索用')
+    title = models.CharField(max_length=200, verbose_name='题目名称', help_text='后台管理检索用，不展示给学生')
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, verbose_name='题目类型')
     content = models.JSONField(
         verbose_name='题目完整内容',
         help_text='题干、选项、答案、解析'
     )
-    grading_rule = models.JSONField(
-        null=True,
-        blank=True,
-        verbose_name='自动批改规则',
-        help_text='{"fuzzy_match": true, "ignore_case": true}'
-    )
+
     difficulty = models.FloatField(
         default=0.5,
         verbose_name='难度系数',
         help_text='0.1-1.0，用于贪心算法适配度参数'
     )
-    score = models.IntegerField(default=5, verbose_name='题目分值')
-    is_active = models.BooleanField(default=True, verbose_name='是否启用', help_text='软删除')
+    is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='软删除')
     
-    knowledge_points = models.ManyToManyField(
-        KnowledgePoint,
-        blank=True,
+    # knowledge_points = models.ManyToManyField(
+    #     KnowledgePoint,
+    #     blank=True,
+    #     related_name='questions',
+    #     verbose_name='关联知识点'
+    # )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
         related_name='questions',
-        verbose_name='关联知识点'
+        verbose_name='所属课程'
+    )
+
+    category = models.ForeignKey(
+        QuestionCategory,
+        on_delete=models.CASCADE, # 建议：如果文件夹删了，题目别删，只是变成“未分类”
+        blank=True,
+        null=True,
+        related_name='questions',
+        verbose_name='所属文件夹'
+    )
+
+    knowledge_rels = GenericRelation(
+        'knowledge.KnowledgePointRelation',
+        related_query_name='question_kp_rels', # 允许在 KnowledgePointRelation 查询中反向过滤
+        verbose_name='关联的知识点记录'
     )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -58,7 +73,7 @@ class QuestionBank(models.Model):
         verbose_name = '题库'
         verbose_name_plural = verbose_name
         indexes = [
-            models.Index(fields=['type', 'is_active'], name='idx_question_type'),
+            models.Index(fields=['type', 'is_deleted'], name='idx_question_type'),
             models.Index(fields=['difficulty'], name='idx_question_diff'),
         ]
     
@@ -118,9 +133,7 @@ class ExamSession(models.Model):
     )
     class_group = models.ForeignKey(
         ClassGroup,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name='exam_sessions',
         verbose_name='关联班级'
     )
@@ -182,7 +195,7 @@ class ExamSubmission(models.Model):
         related_name='reviewed_exams',
         verbose_name='阅卷人'
     )
-    feedback = models.TextField(null=True, blank=True, verbose_name='评语')
+    feedback = models.TextField(blank=True, verbose_name='评语')
     
     started_at = models.DateTimeField(auto_now_add=True, verbose_name='开始时间')
     submit_time = models.DateTimeField(null=True, blank=True, verbose_name='提交时间')

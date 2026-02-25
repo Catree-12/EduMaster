@@ -152,6 +152,94 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -225,6 +313,86 @@
     },
     {
         "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
@@ -609,6 +777,14 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
         "label": "admin",
         "importPath": "django.contrib",
         "description": "django.contrib",
@@ -809,6 +985,14 @@
         "documentation": {}
     },
     {
+        "label": "Course",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
         "label": "CourseTerm",
         "importPath": "courses.models",
         "description": "courses.models",
@@ -834,6 +1018,14 @@
     },
     {
         "label": "ClassGroup",
+        "importPath": "courses.models",
+        "description": "courses.models",
+        "isExtraImport": true,
+        "detail": "courses.models",
+        "documentation": {}
+    },
+    {
+        "label": "Course",
         "importPath": "courses.models",
         "description": "courses.models",
         "isExtraImport": true,
@@ -954,6 +1146,14 @@
     },
     {
         "label": "viewsets",
+        "importPath": "rest_framework",
+        "description": "rest_framework",
+        "isExtraImport": true,
+        "detail": "rest_framework",
+        "documentation": {}
+    },
+    {
+        "label": "status",
         "importPath": "rest_framework",
         "description": "rest_framework",
         "isExtraImport": true,
@@ -1281,6 +1481,22 @@
         "documentation": {}
     },
     {
+        "label": "APIView",
+        "importPath": "rest_framework.views",
+        "description": "rest_framework.views",
+        "isExtraImport": true,
+        "detail": "rest_framework.views",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "rest_framework.response",
+        "description": "rest_framework.response",
+        "isExtraImport": true,
+        "detail": "rest_framework.response",
+        "documentation": {}
+    },
+    {
         "label": "Response",
         "importPath": "rest_framework.response",
         "description": "rest_framework.response",
@@ -1378,6 +1594,22 @@
     },
     {
         "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthenticated",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -1441,6 +1673,22 @@
         "documentation": {}
     },
     {
+        "label": "Q",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
+        "label": "Count",
+        "importPath": "django.db.models",
+        "description": "django.db.models",
+        "isExtraImport": true,
+        "detail": "django.db.models",
+        "documentation": {}
+    },
+    {
         "label": "timedelta",
         "importPath": "datetime",
         "description": "datetime",
@@ -1465,7 +1713,39 @@
         "documentation": {}
     },
     {
-        "label": "KnowledgePoint",
+        "label": "GenericRelation",
+        "importPath": "django.contrib.contenttypes.fields",
+        "description": "django.contrib.contenttypes.fields",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.fields",
+        "documentation": {}
+    },
+    {
+        "label": "GenericForeignKey",
+        "importPath": "django.contrib.contenttypes.fields",
+        "description": "django.contrib.contenttypes.fields",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.fields",
+        "documentation": {}
+    },
+    {
+        "label": "GenericForeignKey",
+        "importPath": "django.contrib.contenttypes.fields",
+        "description": "django.contrib.contenttypes.fields",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.fields",
+        "documentation": {}
+    },
+    {
+        "label": "QuestionCategory",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
+        "isExtraImport": true,
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "Tag",
         "importPath": "knowledge.models",
         "description": "knowledge.models",
         "isExtraImport": true,
@@ -1481,19 +1761,51 @@
         "documentation": {}
     },
     {
-        "label": "GenericForeignKey",
-        "importPath": "django.contrib.contenttypes.fields",
-        "description": "django.contrib.contenttypes.fields",
+        "label": "KnowledgePointRelation",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
         "isExtraImport": true,
-        "detail": "django.contrib.contenttypes.fields",
+        "detail": "knowledge.models",
         "documentation": {}
     },
     {
-        "label": "GenericForeignKey",
-        "importPath": "django.contrib.contenttypes.fields",
-        "description": "django.contrib.contenttypes.fields",
+        "label": "TagRelation",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
         "isExtraImport": true,
-        "detail": "django.contrib.contenttypes.fields",
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "QuestionCategory",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
+        "isExtraImport": true,
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePoint",
+        "importPath": "knowledge.models",
+        "description": "knowledge.models",
+        "isExtraImport": true,
+        "detail": "knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "ContentType",
+        "importPath": "django.contrib.contenttypes.models",
+        "description": "django.contrib.contenttypes.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.models",
+        "documentation": {}
+    },
+    {
+        "label": "ContentType",
+        "importPath": "django.contrib.contenttypes.models",
+        "description": "django.contrib.contenttypes.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.contenttypes.models",
         "documentation": {}
     },
     {
@@ -2108,7 +2420,7 @@
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class PublicCourseDetailView(APIView):\n    \"\"\"GET /api/courses/{id}/ - 获取课程详情\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request, pk):\n        # TODO: 实现课程详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\n# class CourseResourcesView(APIView):\n#     \"\"\"GET /api/courses/{id}/resources/ - 获取课程资源\"\"\"\n#     permission_classes = [AllowAny]\n#     def get(self, request, pk):",
+        "peekOfCode": "class PublicCourseDetailView(APIView):\n    \"\"\"GET /api/courses/{id}/ - 获取课程详情\"\"\"\n    permission_classes = [AllowAny]\n    def get(self, request, pk):\n        \"\"\"获取课程详情，包含章节目录结构\"\"\"\n        try:\n            course = Course.objects.select_related(\n                'category', 'teacher'\n            ).annotate(\n                enrollment_total=Count('terms__enrollments', distinct=True)",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2167,11 +2479,11 @@
         "documentation": {}
     },
     {
-        "label": "TeacherCourseDetailView",
+        "label": "TeacherCourseManageView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherCourseDetailView(APIView):\n    \"\"\"GET /api/teacher/courses/{id}/ - 获取课程管理详情\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        # TODO: 实现课程管理详情查询\n        return Response({'code': 200, 'message': '获取成功', 'data': {}})\nclass TeacherCourseCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/create - 创建课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request):",
+        "peekOfCode": "class TeacherCourseManageView(APIView):\n    \"\"\"\n    GET    /api/teacher/courses/{id}/ - 获取课程管理详情\n    PUT    /api/teacher/courses/{id}/ - 更新课程\n    DELETE /api/teacher/courses/{id}/ - 删除课程\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, pk):\n        \"\"\"获取课程管理详情\"\"\"\n        user = request.user",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2185,29 +2497,11 @@
         "documentation": {}
     },
     {
-        "label": "TeacherCourseUpdateView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherCourseUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{id}/ - 更新课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, pk):\n        # TODO: 实现课程更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherCourseDeleteView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherCourseDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{id}/ - 删除课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, pk):\n        # TODO: 实现课程删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherCoursePublishView(APIView):",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
         "label": "TeacherCoursePublishView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherCoursePublishView(APIView):\n    \"\"\"POST /api/teacher/courses/{id}/publish/ - 发布课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        # TODO: 实现课程发布\n        return Response({\n            'code': 200,\n            'message': '发布成功',\n            'data': {}\n        })",
+        "peekOfCode": "class TeacherCoursePublishView(APIView):\n    \"\"\"POST /api/teacher/courses/{id}/publish/ - 发布课程\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, pk):\n        \"\"\"发布课程（需检查课程完整性）\"\"\"\n        user = request.user\n        try:\n            course = Course.objects.get(id=pk, teacher=user)\n        except Course.DoesNotExist:\n            return Response({",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2221,38 +2515,20 @@
         "documentation": {}
     },
     {
-        "label": "TeacherChapterListView",
+        "label": "TeacherChapterManageView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherChapterListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/chapters/ - 获取章节列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现章节列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'chapters': []}\n        })",
+        "peekOfCode": "class TeacherChapterManageView(APIView):\n    \"\"\"\n    RESTful 章节管理接口：\n    GET    /api/teacher/courses/{course_id}/chapters/ - 获取章节目录结构（懒加载，不含课时内容）\n    POST   /api/teacher/courses/{course_id}/chapters/ - 创建章节\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        \"\"\"\n        获取课程章节目录结构（懒加载）",
         "detail": "apps.courses.views",
         "documentation": {}
     },
     {
-        "label": "TeacherChapterCreateView",
+        "label": "TeacherChapterDetailView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherChapterCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/chapters/ - 创建章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现章节创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'chapter_id': None}\n        }, status=status.HTTP_201_CREATED)",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherChapterUpdateView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherChapterUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/chapters/{id}/ - 更新章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, chapter_id):\n        # TODO: 实现章节更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherChapterDeleteView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherChapterDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/chapters/{id}/ - 删除章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, chapter_id):\n        # TODO: 实现章节删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherChapterSortView(APIView):",
+        "peekOfCode": "class TeacherChapterDetailView(APIView):\n    \"\"\"\n    RESTful 章节详情接口：\n    GET    /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 获取章节详情\n    PUT    /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 更新章节\n    DELETE /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 删除章节\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, chapter_id):\n        \"\"\"获取单个章节详情\"\"\"",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2261,7 +2537,52 @@
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherChapterSortView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/chapters/sort/ - 排序章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现章节排序\n        return Response({\n            'code': 200,\n            'message': '排序成功',\n            'data': {}\n        })",
+        "peekOfCode": "class TeacherChapterSortView(APIView):\n    \"\"\"POST /api/teacher/courses/{course_id}/chapters/sort/ - 批量排序章节\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        \"\"\"\n        批量更新章节排序\n        参数: chapters: [{ id: 1, order: 0 }, { id: 2, order: 1 }]\n        \"\"\"\n        user = request.user\n        data = request.data",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherChapterLessonManageView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherChapterLessonManageView(APIView):\n    \"\"\"\n    章节下的课时管理：\n    GET    /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/ - 获取章节下的课时列表\n    POST   /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/ - 创建课时\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, chapter_id):\n        \"\"\"获取指定章节下的课时列表\"\"\"\n        user = request.user",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherLessonDetailView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherLessonDetailView(APIView):\n    \"\"\"\n    课时详情管理：\n    GET    /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 获取课时详情（含内容块）\n    PUT    /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 更新课时信息\n    DELETE /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 删除课时\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, lesson_id):\n        \"\"\"",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherLessonSortView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherLessonSortView(APIView):\n    \"\"\"POST /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/sort/ - 批量排序课时\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, chapter_id):\n        \"\"\"\n        批量更新课时排序\n        参数: lessons: [{ id: 1, order: 0 }, { id: 2, order: 1 }]\n        \"\"\"\n        user = request.user\n        data = request.data",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherContentBlockManageView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherContentBlockManageView(APIView):\n    \"\"\"\n    POST /api/teacher/courses/{course_id}/lessons/{lesson_id}/content-blocks/ - 批量保存内容块\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, lesson_id):\n        \"\"\"\n        批量保存课时的内容块（全量保存）\n        前端点击\"全量保存\"按钮时调用\n        采用覆盖式保存：删除旧的内容块，创建新的内容块",
+        "detail": "apps.courses.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherContentBlockFileUploadView",
+        "kind": 6,
+        "importPath": "apps.courses.views",
+        "description": "apps.courses.views",
+        "peekOfCode": "class TeacherContentBlockFileUploadView(APIView):\n    \"\"\"\n    POST /api/teacher/courses/{course_id}/lessons/{lesson_id}/content-blocks/upload/ - 上传内容块文件\n    支持上传视频、图片、附件等文件资源\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, lesson_id):\n        \"\"\"\n        上传内容块文件（视频、图片、文档等）\n        返回文件URL供前端使用",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2284,74 +2605,38 @@
         "documentation": {}
     },
     {
-        "label": "TeacherTermListView",
+        "label": "TeacherTermManageView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherTermListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/terms/ - 获取学期列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现学期列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'terms': []}\n        })",
+        "peekOfCode": "class TeacherTermManageView(APIView):\n    \"\"\"\n    GET  /api/teacher/courses/{courseId}/terms/ - 获取学期列表\n    POST /api/teacher/courses/{courseId}/terms/ - 创建学期\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现学期列表查询\n        return Response({\n            'code': 200,",
         "detail": "apps.courses.views",
         "documentation": {}
     },
     {
-        "label": "TeacherTermCreateView",
+        "label": "TeacherTermDetailView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherTermCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/terms/ - 创建学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现学期创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'term_id': None}\n        }, status=status.HTTP_201_CREATED)",
+        "peekOfCode": "class TeacherTermDetailView(APIView):\n    \"\"\"\n    PUT    /api/teacher/courses/{courseId}/terms/{id}/ - 更新学期\n    DELETE /api/teacher/courses/{courseId}/terms/{id}/ - 删除学期\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, term_id):\n        # TODO: 实现学期更新\n        return Response({\n            'code': 200,",
         "detail": "apps.courses.views",
         "documentation": {}
     },
     {
-        "label": "TeacherTermUpdateView",
+        "label": "TeacherClassManageView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherTermUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/terms/{id}/ - 更新学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, term_id):\n        # TODO: 实现学期更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
+        "peekOfCode": "class TeacherClassManageView(APIView):\n    \"\"\"\n    GET  /api/teacher/courses/{courseId}/classes/ - 获取班级列表\n    POST /api/teacher/courses/{courseId}/classes/ - 创建班级\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现班级列表查询\n        return Response({\n            'code': 200,",
         "detail": "apps.courses.views",
         "documentation": {}
     },
     {
-        "label": "TeacherTermDeleteView",
+        "label": "TeacherClassDetailView",
         "kind": 6,
         "importPath": "apps.courses.views",
         "description": "apps.courses.views",
-        "peekOfCode": "class TeacherTermDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/terms/{id}/ - 删除学期\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, term_id):\n        # TODO: 实现学期删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\nclass TeacherClassListView(APIView):",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherClassListView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherClassListView(APIView):\n    \"\"\"GET /api/teacher/courses/{courseId}/classes/ - 获取班级列表\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        # TODO: 实现班级列表查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {'classes': []}\n        })",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherClassCreateView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherClassCreateView(APIView):\n    \"\"\"POST /api/teacher/courses/{courseId}/classes/ - 创建班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id):\n        # TODO: 实现班级创建\n        return Response({\n            'code': 200,\n            'message': '创建成功',\n            'data': {'class_id': None}\n        }, status=status.HTTP_201_CREATED)",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherClassUpdateView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherClassUpdateView(APIView):\n    \"\"\"PUT /api/teacher/courses/{courseId}/classes/{id}/ - 更新班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, class_id):\n        # TODO: 实现班级更新\n        return Response({\n            'code': 200,\n            'message': '更新成功',\n            'data': {}\n        })",
-        "detail": "apps.courses.views",
-        "documentation": {}
-    },
-    {
-        "label": "TeacherClassDeleteView",
-        "kind": 6,
-        "importPath": "apps.courses.views",
-        "description": "apps.courses.views",
-        "peekOfCode": "class TeacherClassDeleteView(APIView):\n    \"\"\"DELETE /api/teacher/courses/{courseId}/classes/{id}/ - 删除班级\"\"\"\n    permission_classes = [IsAuthenticated]\n    def delete(self, request, course_id, class_id):\n        # TODO: 实现班级删除\n        return Response({\n            'code': 200,\n            'message': '删除成功'\n        })\n# ==================== 数据统计 ====================",
+        "peekOfCode": "class TeacherClassDetailView(APIView):\n    \"\"\"\n    PUT    /api/teacher/courses/{courseId}/classes/{id}/ - 更新班级\n    DELETE /api/teacher/courses/{courseId}/classes/{id}/ - 删除班级\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def put(self, request, course_id, class_id):\n        # TODO: 实现班级更新\n        return Response({\n            'code': 200,",
         "detail": "apps.courses.views",
         "documentation": {}
     },
@@ -2392,6 +2677,60 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0003_alter_examsession_class_group_and_more",
+        "description": "apps.exams.migrations.0003_alter_examsession_class_group_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('exams', '0002_initial'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='examsession',\n            name='class_group',\n            field=models.ForeignKey(default=4, on_delete=django.db.models.deletion.CASCADE, related_name='exam_sessions', to='courses.classgroup', verbose_name='关联班级'),",
+        "detail": "apps.exams.migrations.0003_alter_examsession_class_group_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0004_remove_questionbank_grading_rule_and_more",
+        "description": "apps.exams.migrations.0004_remove_questionbank_grading_rule_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('exams', '0003_alter_examsession_class_group_and_more'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='questionbank',\n            name='grading_rule',\n        ),",
+        "detail": "apps.exams.migrations.0004_remove_questionbank_grading_rule_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0005_remove_questionbank_idx_question_type_and_more",
+        "description": "apps.exams.migrations.0005_remove_questionbank_idx_question_type_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('exams', '0004_remove_questionbank_grading_rule_and_more'),\n    ]\n    operations = [\n        migrations.RemoveIndex(\n            model_name='questionbank',\n            name='idx_question_type',\n        ),\n        migrations.RemoveField(",
+        "detail": "apps.exams.migrations.0005_remove_questionbank_idx_question_type_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0006_questionbank_category_questionbank_is_deleted_and_more",
+        "description": "apps.exams.migrations.0006_questionbank_category_questionbank_is_deleted_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('exams', '0005_remove_questionbank_idx_question_type_and_more'),\n        ('knowledge', '0004_questioncategory'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='questionbank',",
+        "detail": "apps.exams.migrations.0006_questionbank_category_questionbank_is_deleted_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0007_alter_questionbank_is_deleted",
+        "description": "apps.exams.migrations.0007_alter_questionbank_is_deleted",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('exams', '0006_questionbank_category_questionbank_is_deleted_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='questionbank',\n            name='is_deleted',\n            field=models.BooleanField(default=False, help_text='软删除', verbose_name='是否已删除'),\n        ),",
+        "detail": "apps.exams.migrations.0007_alter_questionbank_is_deleted",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.exams.migrations.0008_alter_questionbank_category",
+        "description": "apps.exams.migrations.0008_alter_questionbank_category",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('exams', '0007_alter_questionbank_is_deleted'),\n        ('knowledge', '0004_questioncategory'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='questionbank',\n            name='category',\n            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='knowledge.questioncategory', verbose_name='所属文件夹'),",
+        "detail": "apps.exams.migrations.0008_alter_questionbank_category",
+        "documentation": {}
+    },
+    {
         "label": "ExamsConfig",
         "kind": 6,
         "importPath": "apps.exams.apps",
@@ -2405,7 +2744,7 @@
         "kind": 6,
         "importPath": "apps.exams.models",
         "description": "apps.exams.models",
-        "peekOfCode": "class QuestionBank(models.Model):\n    \"\"\"题库 - 智能组卷数据源\"\"\"\n    TYPE_CHOICES = [\n        ('single', '单选题'),\n        ('multiple', '多选题'),\n        ('true_false', '判断题'),\n        ('fill', '填空题'),\n        ('essay', '简答题'),\n    ]\n    title = models.CharField(max_length=200, verbose_name='题目名称', help_text='后台管理检索用')",
+        "peekOfCode": "class QuestionBank(models.Model):\n    \"\"\"题库 - 智能组卷数据源\"\"\"\n    TYPE_CHOICES = [\n        ('single', '单选题'),\n        ('multiple', '多选题'),\n        ('true_false', '判断题'),\n        ('fill', '填空题'),\n        ('essay', '简答题'),\n    ]\n    title = models.CharField(max_length=200, verbose_name='题目名称', help_text='后台管理检索用，不展示给学生')",
         "detail": "apps.exams.models",
         "documentation": {}
     },
@@ -2450,8 +2789,44 @@
         "kind": 5,
         "importPath": "apps.exams.urls",
         "description": "apps.exams.urls",
-        "peekOfCode": "urlpatterns = [\n    # ===== 学生考试 =====\n    # GET    /api/student/exams/ - 获取考试列表\n    path('student/exams/', views.StudentExamListView.as_view(), name='student-exam-list'),\n    # GET    /api/student/courses/{courseId}/exams/{examId}/ - 获取考试详情\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/', views.StudentExamDetailView.as_view(), name='student-exam-detail'),\n    # POST   /api/student/courses/{courseId}/exams/{examId}/start/ - 开始考试\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/start/', views.StudentExamStartView.as_view(), name='student-exam-start'),\n    # POST   /api/student/courses/{courseId}/exams/{examId}/submit/ - 提交答卷\n    path('student/courses/<int:course_id>/exams/<int:exam_id>/submit/', views.StudentExamSubmitView.as_view(), name='student-exam-submit'),",
+        "peekOfCode": "urlpatterns = [\n    # ===== 教师题目文件夹管理 =====\n    # GET  /api/teacher/courses/{course_id}/question-categories/ - 获取文件夹树\n    # POST /api/teacher/courses/{course_id}/question-categories/ - 创建文件夹\n    path('teacher/courses/<int:course_id>/question-categories/', views.TeacherQuestionCategoryManageView.as_view(), name='teacher-question-categories'),\n    # GET    /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 获取文件夹详情\n    # PUT    /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 更新文件夹\n    # DELETE /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 删除文件夹（软删除）\n    path('teacher/courses/<int:course_id>/question-categories/<int:category_id>/', views.TeacherQuestionCategoryDetailView.as_view(), name='teacher-question-category-detail'),\n    # ===== 教师题库管理 =====",
         "detail": "apps.exams.urls",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherQuestionCategoryManageView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherQuestionCategoryManageView(APIView):\n    \"\"\"\n    GET  /api/teacher/courses/{course_id}/question-categories/ - 获取文件夹树\n    POST /api/teacher/courses/{course_id}/question-categories/ - 创建文件夹\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        \"\"\"获取文件夹树状结构\"\"\"\n        user = request.user\n        try:",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherQuestionCategoryDetailView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherQuestionCategoryDetailView(APIView):\n    \"\"\"\n    GET    /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 获取文件夹详情\n    PUT    /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 更新文件夹\n    DELETE /api/teacher/courses/{course_id}/question-categories/{category_id}/ - 删除文件夹（软删除）\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, category_id):\n        \"\"\"获取文件夹详情\"\"\"\n        user = request.user",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherQuestionBankManageView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherQuestionBankManageView(APIView):\n    \"\"\"\n    GET  /api/teacher/courses/{course_id}/questions/ - 获取题库列表\n    POST /api/teacher/courses/{course_id}/questions/ - 创建题目\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        \"\"\"获取题库列表（支持分页、筛选）\"\"\"\n        user = request.user\n        # 验证课程权限",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherQuestionBankDetailView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherQuestionBankDetailView(APIView):\n    \"\"\"\n    GET    /api/teacher/courses/{course_id}/questions/{question_id}/ - 获取题目详情\n    PUT    /api/teacher/courses/{course_id}/questions/{question_id}/ - 更新题目\n    DELETE /api/teacher/courses/{course_id}/questions/{question_id}/ - 删除题目\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, question_id):\n        \"\"\"获取题目详情\"\"\"\n        user = request.user",
+        "detail": "apps.exams.views",
         "documentation": {}
     },
     {
@@ -2496,6 +2871,33 @@
         "importPath": "apps.exams.views",
         "description": "apps.exams.views",
         "peekOfCode": "class StudentExamResultView(APIView):\n    \"\"\"GET /api/student/courses/{courseId}/exams/{examId}/result/ - 获取考试成绩\"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, exam_id):\n        # TODO: 实现考试成绩查询\n        return Response({\n            'code': 200,\n            'message': '获取成功',\n            'data': {}\n        })",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamManageView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamManageView(APIView):\n    \"\"\"\n    GET  /api/teacher/courses/{course_id}/exams/ - 获取试卷列表\n    POST /api/teacher/courses/{course_id}/exams/ - 创建试卷\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id):\n        \"\"\"获取试卷列表\"\"\"\n        user = request.user\n        try:",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamPaperDetailView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamPaperDetailView(APIView):\n    \"\"\"\n    GET    /api/teacher/courses/{course_id}/exams/{exam_id}/ - 获取试卷详情\n    PUT    /api/teacher/courses/{course_id}/exams/{exam_id}/ - 更新试卷\n    DELETE /api/teacher/courses/{course_id}/exams/{exam_id}/ - 删除试卷\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, course_id, exam_id):\n        \"\"\"获取试卷详情\"\"\"\n        user = request.user",
+        "detail": "apps.exams.views",
+        "documentation": {}
+    },
+    {
+        "label": "TeacherExamPublishView",
+        "kind": 6,
+        "importPath": "apps.exams.views",
+        "description": "apps.exams.views",
+        "peekOfCode": "class TeacherExamPublishView(APIView):\n    \"\"\"POST /api/teacher/courses/{course_id}/exams/{exam_id}/publish/ - 发布试卷\"\"\"\n    permission_classes = [IsAuthenticated]\n    def post(self, request, course_id, exam_id):\n        \"\"\"发布试卷\"\"\"\n        user = request.user\n        try:\n            course = Course.objects.get(id=course_id, teacher=user)\n            paper = ExamPaper.objects.get(id=exam_id, course=course)\n        except (Course.DoesNotExist, ExamPaper.DoesNotExist):",
         "detail": "apps.exams.views",
         "documentation": {}
     },
@@ -2644,6 +3046,24 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.homework.migrations.0003_alter_homeworkassignment_template",
+        "description": "apps.homework.migrations.0003_alter_homeworkassignment_template",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('homework', '0002_initial'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='homeworkassignment',\n            name='template',\n            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='assignments', to='homework.homeworktemplate', verbose_name='关联作业模板'),\n        ),",
+        "detail": "apps.homework.migrations.0003_alter_homeworkassignment_template",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.homework.migrations.0004_alter_homeworkassignment_class_group_and_more",
+        "description": "apps.homework.migrations.0004_alter_homeworkassignment_class_group_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('homework', '0003_alter_homeworkassignment_template'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='homeworkassignment',\n            name='class_group',\n            field=models.ForeignKey(default=4, on_delete=django.db.models.deletion.CASCADE, related_name='homework_assignments', to='courses.classgroup', verbose_name='指定班级'),",
+        "detail": "apps.homework.migrations.0004_alter_homeworkassignment_class_group_and_more",
+        "documentation": {}
+    },
+    {
         "label": "HomeworkConfig",
         "kind": 6,
         "importPath": "apps.homework.apps",
@@ -2657,7 +3077,7 @@
         "kind": 6,
         "importPath": "apps.homework.models",
         "description": "apps.homework.models",
-        "peekOfCode": "class HomeworkTemplate(models.Model):\n    \"\"\"作业模板/题库\"\"\"\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='homework_templates',\n        verbose_name='所属课程'\n    )\n    title = models.CharField(max_length=200, verbose_name='作业标题')\n    content = models.TextField(null=True, blank=True, verbose_name='作业内容/要求')",
+        "peekOfCode": "class HomeworkTemplate(models.Model):\n    \"\"\"作业模板/题库\"\"\"\n    course = models.ForeignKey(\n        Course,\n        on_delete=models.CASCADE,\n        related_name='homework_templates',\n        verbose_name='所属课程'\n    )\n    title = models.CharField(max_length=200, verbose_name='作业标题')\n    content = models.TextField(blank=True, verbose_name='作业内容/要求')",
         "detail": "apps.homework.models",
         "documentation": {}
     },
@@ -2666,7 +3086,7 @@
         "kind": 6,
         "importPath": "apps.homework.models",
         "description": "apps.homework.models",
-        "peekOfCode": "class HomeworkAssignment(models.Model):\n    \"\"\"作业发布/任务\"\"\"\n    template = models.ForeignKey(\n        HomeworkTemplate,\n        on_delete=models.CASCADE,\n        related_name='assignments',\n        verbose_name='关联作业模板'\n    )\n    title = models.CharField(max_length=200, verbose_name='作业标题', help_text='发布时固化模板标题')\n    term = models.ForeignKey(",
+        "peekOfCode": "class HomeworkAssignment(models.Model):\n    \"\"\"作业发布/任务\"\"\"\n    template = models.ForeignKey(\n        HomeworkTemplate,\n        on_delete=models.SET_NULL,  # 模板删除时，此字段设为 NULL，不会删除作业实例\n        null=True,                  # 数据库层面允许为空\n        blank=True,                 # 表单验证层面允许为空\n        related_name='assignments',\n        verbose_name='关联作业模板'\n    )",
         "detail": "apps.homework.models",
         "documentation": {}
     },
@@ -2675,7 +3095,7 @@
         "kind": 6,
         "importPath": "apps.homework.models",
         "description": "apps.homework.models",
-        "peekOfCode": "class HomeworkSubmission(models.Model):\n    \"\"\"学生作业提交\"\"\"\n    STATUS_CHOICES = [\n        ('draft', '草稿'),\n        ('submitted', '已提交'),\n        ('graded', '已批改'),\n    ]\n    assignment = models.ForeignKey(\n        HomeworkAssignment,\n        on_delete=models.CASCADE,",
+        "peekOfCode": "class HomeworkSubmission(models.Model):\n    \"\"\"学生作业提交\"\"\"\n    STATUS_CHOICES = [\n        ('pending', '未提交'),\n        ('submitted', '已提交'),\n        ('graded', '已批改'),\n    ]\n    assignment = models.ForeignKey(\n        HomeworkAssignment,\n        on_delete=models.CASCADE,",
         "detail": "apps.homework.models",
         "documentation": {}
     },
@@ -2806,6 +3226,33 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.knowledge.migrations.0002_knowledgepointrelation_tagrelation_and_more",
+        "description": "apps.knowledge.migrations.0002_knowledgepointrelation_tagrelation_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('contenttypes', '0002_remove_content_type_name'),\n        ('knowledge', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='KnowledgePointRelation',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.knowledge.migrations.0002_knowledgepointrelation_tagrelation_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.knowledge.migrations.0003_knowledgepoint_course_tag_course",
+        "description": "apps.knowledge.migrations.0003_knowledgepoint_course_tag_course",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('knowledge', '0002_knowledgepointrelation_tagrelation_and_more'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='knowledgepoint',\n            name='course',\n            field=models.ForeignKey(default=3, on_delete=django.db.models.deletion.CASCADE, related_name='knowledge_points', to='courses.course', verbose_name='所属课程'),",
+        "detail": "apps.knowledge.migrations.0003_knowledgepoint_course_tag_course",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "apps.knowledge.migrations.0004_questioncategory",
+        "description": "apps.knowledge.migrations.0004_questioncategory",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('courses', '0004_alter_courseterm_status'),\n        ('knowledge', '0003_knowledgepoint_course_tag_course'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='QuestionCategory',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "apps.knowledge.migrations.0004_questioncategory",
+        "documentation": {}
+    },
+    {
         "label": "KnowledgeConfig",
         "kind": 6,
         "importPath": "apps.knowledge.apps",
@@ -2819,7 +3266,16 @@
         "kind": 6,
         "importPath": "apps.knowledge.models",
         "description": "apps.knowledge.models",
-        "peekOfCode": "class Tag(models.Model):\n    \"\"\"标签 - 通用多态关联，可关联课程、课时、题目等\"\"\"\n    name = models.CharField(max_length=50, unique=True, verbose_name='标签名称', help_text='如 Python, 难度:高')\n    # 多态关联字段\n    content_type = models.ForeignKey(\n        ContentType, \n        on_delete=models.CASCADE,\n        verbose_name='内容类型'\n    )\n    object_id = models.PositiveIntegerField(verbose_name='对象ID')",
+        "peekOfCode": "class Tag(models.Model):     \n    \"\"\"标签库 \"\"\"\n    name = models.CharField(max_length=50, unique=True, verbose_name='标签名称')\n    course = models.ForeignKey(\n        Course, \n        on_delete=models.CASCADE, \n        related_name='tags',\n        verbose_name='所属课程',\n    )\n    class Meta:",
+        "detail": "apps.knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "TagRelation",
+        "kind": 6,
+        "importPath": "apps.knowledge.models",
+        "description": "apps.knowledge.models",
+        "peekOfCode": "class TagRelation(models.Model):\n    \"\"\"标签关联表 - 将标签贴到各种对象上\"\"\"\n    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='tag_rels')\n    # 多态关联\n    content_type = models.ForeignKey(\n        ContentType, \n        on_delete=models.CASCADE,\n    )\n    object_id = models.PositiveIntegerField(verbose_name='标签关联对象ID')\n    content_object = GenericForeignKey('content_type', 'object_id')",
         "detail": "apps.knowledge.models",
         "documentation": {}
     },
@@ -2828,7 +3284,25 @@
         "kind": 6,
         "importPath": "apps.knowledge.models",
         "description": "apps.knowledge.models",
-        "peekOfCode": "class KnowledgePoint(models.Model):\n    \"\"\"知识点 - 支持树状结构，为推荐算法和学情分析提供基础\"\"\"\n    parent = models.ForeignKey(\n        'self', \n        null=True, \n        blank=True, \n        on_delete=models.CASCADE,\n        related_name='children',\n        verbose_name='父知识点',\n        help_text='支持树状结构'",
+        "peekOfCode": "class KnowledgePoint(models.Model):\n    \"\"\"知识点 - 核心资产库，不直接绑定业务对象\"\"\"\n    name = models.CharField(max_length=100, verbose_name='知识点名称', help_text='如: 循环结构')\n    course = models.ForeignKey(\n        Course, \n        on_delete=models.CASCADE, \n        related_name='knowledge_points',\n        verbose_name='所属课程',\n    )\n    parent = models.ForeignKey(",
+        "detail": "apps.knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePointRelation",
+        "kind": 6,
+        "importPath": "apps.knowledge.models",
+        "description": "apps.knowledge.models",
+        "peekOfCode": "class KnowledgePointRelation(models.Model):\n    \"\"\"\n    知识点关联表 - 实现“一个知识点挂在多个地方”的核心\n    \"\"\"\n    knowledge_point = models.ForeignKey(\n        KnowledgePoint, \n        on_delete=models.CASCADE, # 如果知识点本体删了，这个关联才消失\n        related_name='rel_objects',\n        verbose_name='知识点'\n    )",
+        "detail": "apps.knowledge.models",
+        "documentation": {}
+    },
+    {
+        "label": "QuestionCategory",
+        "kind": 6,
+        "importPath": "apps.knowledge.models",
+        "description": "apps.knowledge.models",
+        "peekOfCode": "class QuestionCategory(models.Model):\n    \"\"\"题目分类/文件夹 - 用于后台管理的目录树\"\"\"\n    name = models.CharField(max_length=100, verbose_name='文件夹名称')\n    # 无限层级：实现文件夹套文件夹\n    parent = models.ForeignKey(\n        'self',\n        null=True,\n        blank=True,\n        on_delete=models.CASCADE, # 如果父文件夹删了，子文件夹也没了\n        related_name='children',",
         "detail": "apps.knowledge.models",
         "documentation": {}
     },
@@ -2837,8 +3311,62 @@
         "kind": 5,
         "importPath": "apps.knowledge.urls",
         "description": "apps.knowledge.urls",
-        "peekOfCode": "urlpatterns = [\n    # ===== 知识图谱模块 (Knowledge) - 暂未在前端文档中体现，可扩展 =====\n    # TODO: 根据实际需求添加知识图谱相关接口\n    # 如：知识点查询、知识图谱可视化等\n]",
+        "peekOfCode": "urlpatterns = [\n    # ===== 标签管理 =====\n    # GET  /api/knowledge/tags/ - 获取标签列表\n    # POST /api/knowledge/tags/ - 创建标签\n    path('tags/', views.TagManageView.as_view(), name='tags'),\n    # GET    /api/knowledge/tags/{id}/ - 获取标签详情\n    # PUT    /api/knowledge/tags/{id}/ - 更新标签\n    # DELETE /api/knowledge/tags/{id}/ - 删除标签\n    path('tags/<int:tag_id>/', views.TagDetailView.as_view(), name='tag-detail'),\n    # POST   /api/knowledge/tags/attach/ - 给对象添加标签",
         "detail": "apps.knowledge.urls",
+        "documentation": {}
+    },
+    {
+        "label": "TagManageView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class TagManageView(APIView):\n    \"\"\"\n    GET  /api/knowledge/tags/ - 获取标签列表\n    POST /api/knowledge/tags/ - 创建标签\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"获取标签列表（支持搜索和分页）\"\"\"\n        course_id = request.query_params.get('course_id')\n        keyword = request.query_params.get('keyword', '')",
+        "detail": "apps.knowledge.views",
+        "documentation": {}
+    },
+    {
+        "label": "TagDetailView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class TagDetailView(APIView):\n    \"\"\"\n    GET    /api/knowledge/tags/{id}/ - 获取标签详情\n    PUT    /api/knowledge/tags/{id}/ - 更新标签\n    DELETE /api/knowledge/tags/{id}/ - 删除标签\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, tag_id):\n        \"\"\"获取标签详情（包括关联对象列表）\"\"\"\n        try:",
+        "detail": "apps.knowledge.views",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectTagManageView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class ObjectTagManageView(APIView):\n    \"\"\"\n    POST   /api/knowledge/tags/attach/ - 给对象添加标签\n    DELETE /api/knowledge/tags/detach/ - 移除对象的标签\n    GET    /api/knowledge/tags/object/ - 获取对象的所有标签\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"获取某个对象的所有标签\"\"\"\n        content_type_name = request.query_params.get('content_type')  # 如 'course', 'lesson'",
+        "detail": "apps.knowledge.views",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePointManageView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class KnowledgePointManageView(APIView):\n    \"\"\"\n    GET  /api/knowledge/points/ - 获取知识点列表（树状结构）\n    POST /api/knowledge/points/ - 创建知识点\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"获取知识点树状结构\"\"\"\n        course_id = request.query_params.get('course_id')\n        # 获取所有根节点（没有父节点的知识点）",
+        "detail": "apps.knowledge.views",
+        "documentation": {}
+    },
+    {
+        "label": "KnowledgePointDetailView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class KnowledgePointDetailView(APIView):\n    \"\"\"\n    GET    /api/knowledge/points/{id}/ - 获取知识点详情\n    PUT    /api/knowledge/points/{id}/ - 更新知识点\n    DELETE /api/knowledge/points/{id}/ - 删除知识点\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request, point_id):\n        \"\"\"获取知识点详情\"\"\"\n        try:",
+        "detail": "apps.knowledge.views",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectKnowledgePointManageView",
+        "kind": 6,
+        "importPath": "apps.knowledge.views",
+        "description": "apps.knowledge.views",
+        "peekOfCode": "class ObjectKnowledgePointManageView(APIView):\n    \"\"\"\n    POST   /api/knowledge/points/attach/ - 给对象关联知识点\n    DELETE /api/knowledge/points/detach/ - 移除对象的知识点关联\n    GET    /api/knowledge/points/object/ - 获取对象关联的所有知识点\n    \"\"\"\n    permission_classes = [IsAuthenticated]\n    def get(self, request):\n        \"\"\"获取某个对象关联的所有知识点\"\"\"\n        content_type_name = request.query_params.get('content_type')  # 如 'course', 'lesson'",
+        "detail": "apps.knowledge.views",
         "documentation": {}
     },
     {
@@ -3566,7 +4094,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "LANGUAGE_CODE = 'zh-hans'\nTIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'",
+        "peekOfCode": "LANGUAGE_CODE = 'zh-hans'\nTIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3575,7 +4103,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "TIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'",
+        "peekOfCode": "TIME_ZONE = 'Asia/Shanghai'\nUSE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3584,7 +4112,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3593,7 +4121,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "USE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
+        "peekOfCode": "USE_TZ = False\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3602,7 +4130,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'",
+        "peekOfCode": "STATIC_URL = 'static/'\nSTATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3611,7 +4139,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / 'static'\n# Media files\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3620,7 +4148,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "MEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True",
+        "peekOfCode": "MEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# 自定义用户模型\nAUTH_USER_MODEL = 'users.User'\n# CORS配置\nCORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以设置为True，生产环境需要指定具体域名\nCORS_ALLOW_CREDENTIALS = True",
         "detail": "config.settings",
         "documentation": {}
     },
@@ -3683,7 +4211,7 @@
         "kind": 5,
         "importPath": "config.settings",
         "description": "config.settings",
-        "peekOfCode": "SIMPLE_JWT = {\n    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),\n    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),\n    'ROTATE_REFRESH_TOKENS': True,\n    'BLACKLIST_AFTER_ROTATION': True,\n    'ALGORITHM': 'HS256',\n    'SIGNING_KEY': SECRET_KEY,\n    'AUTH_HEADER_TYPES': ('Bearer',),\n}\n# Redis配置",
+        "peekOfCode": "SIMPLE_JWT = {\n    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),\n    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),\n    'ROTATE_REFRESH_TOKENS': True,\n    'BLACKLIST_AFTER_ROTATION': True,\n    'ALGORITHM': 'HS256',\n    'SIGNING_KEY': SECRET_KEY,\n    'AUTH_HEADER_TYPES': ('Bearer',),\n}\n# Redis配置",
         "detail": "config.settings",
         "documentation": {}
     },

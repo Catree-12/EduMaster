@@ -53,6 +53,12 @@ import * as teacherAPIs from './teacher'
 export const teacherAPI = teacherAPIs
 export * from './teacher'
 
+// ==================== 知识点和标签模块 ====================
+
+import * as knowledgeAPIs from './knowledge'
+export const knowledgeAPI = knowledgeAPIs
+export * from './knowledge'
+
 // ==================== 默认导出 ====================
 // 方便使用 api.xxx.method() 的方式调用
 import { authAPI } from './auth'
@@ -73,6 +79,9 @@ export default {
   exam: examAPI,
   assignment: assignmentAPI,
   homework: assignmentAPI, // 别名
+  
+  // 知识点和标签模块
+  knowledge: knowledgeAPI,
   
   // 角色模块
   student: studentAPIs,

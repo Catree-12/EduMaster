@@ -9,7 +9,7 @@ from datetime import timedelta
 
 from .models import (
     Course, CourseCategory, Chapter, Lesson, 
-    CourseTerm, ClassGroup
+    CourseTerm, ClassGroup, LessonContentBlock
 )
 from learning.models import Enrollment
 
@@ -85,8 +85,63 @@ class PublicCourseDetailView(APIView):
     permission_classes = [AllowAny]
     
     def get(self, request, pk):
-        # TODO: 实现课程详情查询
-        return Response({'code': 200, 'message': '获取成功', 'data': {}})
+        """获取课程详情，包含章节目录结构"""
+        try:
+            course = Course.objects.select_related(
+                'category', 'teacher'
+            ).annotate(
+                enrollment_total=Count('terms__enrollments', distinct=True)
+            ).get(id=pk)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 获取章节目录（只返回一级章节，不含课时详情）
+        chapters = Chapter.objects.filter(
+            course=course,
+            parent__isnull=True
+        ).order_by('order', 'id')
+        
+        chapter_list = []
+        for chapter in chapters:
+            # 获取该章节下的课时数量
+            lesson_count = Lesson.objects.filter(chapter=chapter).count()
+            chapter_list.append({
+                'id': chapter.id,
+                'title': chapter.title,
+                'order': chapter.order,
+                'lesson_count': lesson_count,
+            })
+        
+        teacher_name = course.teacher.real_name or course.teacher.nickname or course.teacher.email
+        
+        return Response({
+            'code': 200,
+            'message': '获取成功',
+            'data': {
+                'id': course.id,
+                'title': course.title,
+                'description': course.description,
+                'cover': course.cover.url if course.cover else None,
+                'price': float(course.price),
+                'difficulty': course.difficulty,
+                'difficulty_display': course.get_difficulty_display(),
+                'status': course.status,
+                'teacher': {
+                    'id': course.teacher.id,
+                    'name': teacher_name,
+                },
+                'category': course.category.name if course.category else None,
+                'enrollment_count': course.enrollment_total,
+                'view_count': course.view_count,
+                'chapters': chapter_list,
+                'created_at': course.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'published_at': course.published_at.strftime('%Y-%m-%d %H:%M:%S') if course.published_at else None,
+            }
+        })
 
 
 # class CourseResourcesView(APIView):
@@ -479,13 +534,171 @@ class StudentLessonCompleteView(APIView):
 #         })
 
 
-class TeacherCourseDetailView(APIView):
-    """GET /api/teacher/courses/{id}/ - 获取课程管理详情"""
+class TeacherCourseManageView(APIView):
+    """
+    GET    /api/teacher/courses/{id}/ - 获取课程管理详情
+    PUT    /api/teacher/courses/{id}/ - 更新课程
+    DELETE /api/teacher/courses/{id}/ - 删除课程
+    """
     permission_classes = [IsAuthenticated]
     
     def get(self, request, pk):
-        # TODO: 实现课程管理详情查询
-        return Response({'code': 200, 'message': '获取成功', 'data': {}})
+        """获取课程管理详情"""
+        user = request.user
+        
+        try:
+            course = Course.objects.select_related('category').get(
+                id=pk,
+                teacher=user
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 统计章节和课时数量
+        chapter_count = Chapter.objects.filter(course=course).count()
+        lesson_count = Lesson.objects.filter(chapter__course=course).count()
+        
+        # 统计学生数量
+        student_count = Enrollment.objects.filter(
+            class_group__term__course=course
+        ).count()
+        
+        return Response({
+            'code': 200,
+            'message': '获取成功',
+            'data': {
+                'id': course.id,
+                'title': course.title,
+                'description': course.description,
+                'cover': course.cover.url if course.cover else None,
+                'price': float(course.price),
+                'difficulty': course.difficulty,
+                'difficulty_display': course.get_difficulty_display(),
+                'status': course.status,
+                'status_display': course.get_status_display(),
+                'category': course.category.name if course.category else None,
+                'category_id': course.category.id if course.category else None,
+                'audit_remark': course.audit_remark,
+                'chapter_count': chapter_count,
+                'lesson_count': lesson_count,
+                'student_count': student_count,
+                'view_count': course.view_count,
+                'enrollment_count': course.enrollment_count,
+                'created_at': course.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'published_at': course.published_at.strftime('%Y-%m-%d %H:%M:%S') if course.published_at else None,
+            }
+        })
+    
+    def put(self, request, pk):
+        """更新课程信息"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=pk, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权修改',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        
+        # 更新基本信息
+        if 'title' in data:
+            course.title = data['title'].strip()
+        
+        if 'description' in data:
+            course.description = data['description']
+        
+        if 'price' in data:
+            try:
+                course.price = float(data['price'])
+            except ValueError:
+                return Response({
+                    'code': 400,
+                    'message': '价格格式不正确',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'difficulty' in data:
+            if data['difficulty'] in ['beginner', 'intermediate', 'advanced']:
+                course.difficulty = data['difficulty']
+        
+        # 更新分类
+        if 'category_name' in data:
+            category_name = data['category_name']
+            if category_name:
+                try:
+                    category = CourseCategory.objects.get(name=category_name)
+                    course.category = category
+                except CourseCategory.DoesNotExist:
+                    return Response({
+                        'code': 400,
+                        'message': f'分类"{category_name}"不存在',
+                        'data': None
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                course.category = None
+        
+        course.save()
+        
+        return Response({
+            'code': 200,
+            'message': '更新成功',
+            'data': {
+                'id': course.id,
+                'title': course.title,
+                'description': course.description,
+                'price': float(course.price),
+                'difficulty': course.difficulty,
+                'category': course.category.name if course.category else None,
+            }
+        })
+    
+    def delete(self, request, pk):
+        """删除课程（仅草稿状态可删除）"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=pk, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权删除',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 只有草稿状态的课程才能删除
+        if course.status != 'draft':
+            return Response({
+                'code': 400,
+                'message': f'只有草稿状态的课程可以删除，当前状态：{course.get_status_display()}',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 检查是否有学生选课
+        enrollment_count = Enrollment.objects.filter(
+            class_group__term__course=course
+        ).count()
+        
+        if enrollment_count > 0:
+            return Response({
+                'code': 400,
+                'message': f'该课程已有{enrollment_count}名学生选课，无法删除',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        course.delete()
+        
+        return Response({
+            'code': 200,
+            'message': '删除成功'
+        })
 
 
 class TeacherCourseCreateView(APIView):
@@ -585,41 +798,74 @@ class TeacherCourseCreateView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class TeacherCourseUpdateView(APIView):
-    """PUT /api/teacher/courses/{id}/ - 更新课程"""
-    permission_classes = [IsAuthenticated]
-    
-    def put(self, request, pk):
-        # TODO: 实现课程更新
-        return Response({
-            'code': 200,
-            'message': '更新成功',
-            'data': {}
-        })
-
-
-class TeacherCourseDeleteView(APIView):
-    """DELETE /api/teacher/courses/{id}/ - 删除课程"""
-    permission_classes = [IsAuthenticated]
-    
-    def delete(self, request, pk):
-        # TODO: 实现课程删除
-        return Response({
-            'code': 200,
-            'message': '删除成功'
-        })
-
-
 class TeacherCoursePublishView(APIView):
     """POST /api/teacher/courses/{id}/publish/ - 发布课程"""
     permission_classes = [IsAuthenticated]
     
     def post(self, request, pk):
-        # TODO: 实现课程发布
+        """发布课程（需检查课程完整性）"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=pk, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权发布',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查课程状态（只有草稿或被拒绝的课程可以发布）
+        if course.status not in ['draft', 'rejected']:
+            return Response({
+                'code': 400,
+                'message': f'当前状态（{course.get_status_display()}）无法发布',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 检查课程完整性
+        errors = []
+        
+        if not course.title or not course.title.strip():
+            errors.append('课程标题不能为空')
+        
+        if not course.description or not course.description.strip():
+            errors.append('课程描述不能为空')
+        
+        if not course.cover:
+            errors.append('请上传课程封面')
+        
+        # 检查是否有章节
+        chapter_count = Chapter.objects.filter(course=course).count()
+        if chapter_count == 0:
+            errors.append('请至少创建一个章节')
+        
+        # 检查是否有课时
+        lesson_count = Lesson.objects.filter(chapter__course=course).count()
+        if lesson_count == 0:
+            errors.append('请至少创建一个课时')
+        
+        if errors:
+            return Response({
+                'code': 400,
+                'message': '课程信息不完整',
+                'data': {'errors': errors}
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 更新状态为已发布
+        course.status = 'published'
+        course.published_at = timezone.now()
+        course.save()
+        
         return Response({
             'code': 200,
             'message': '发布成功',
-            'data': {}
+            'data': {
+                'id': course.id,
+                'title': course.title,
+                'status': course.status,
+                'published_at': course.published_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
         })
 
 
@@ -686,67 +932,787 @@ class TeacherCourseCoverUploadView(APIView):
 
 
 # ==================== 教师章节管理 ====================
-class TeacherChapterListView(APIView):
-    """GET /api/teacher/courses/{courseId}/chapters/ - 获取章节列表"""
+class TeacherChapterManageView(APIView):
+    """
+    RESTful 章节管理接口：
+    GET    /api/teacher/courses/{course_id}/chapters/ - 获取章节目录结构（懒加载，不含课时内容）
+    POST   /api/teacher/courses/{course_id}/chapters/ - 创建章节
+    """
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
-        # TODO: 实现章节列表查询
+        """
+        获取课程章节目录结构（懒加载）
+        只返回章节和课时的基本信息，不包含课时的具体内容块
+        """
+        user = request.user
+        
+        try:
+            # 验证课程存在且属于当前用户
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 获取所有顶级章节（parent=None）
+        chapters = Chapter.objects.filter(
+            course=course,
+            parent=None
+        ).prefetch_related('lessons').order_by('order', 'id')
+        
+        chapters_data = []
+        for chapter in chapters:
+            # 获取该章节下的所有课时（只返回基本信息）
+            lessons = chapter.lessons.all().order_by('order', 'id')
+            lessons_data = []
+            
+            for lesson in lessons:
+                lessons_data.append({
+                    'id': lesson.id,
+                    'title': lesson.title,
+                    'order': lesson.order,
+                    # 懒加载：不返回 content_blocks
+                })
+            
+            chapters_data.append({
+                'id': chapter.id,
+                'title': chapter.title,
+                'order': chapter.order,
+                'lessons': lessons_data,  # 章节下的课时列表（只含基本信息）
+            })
+        
         return Response({
             'code': 200,
             'message': '获取成功',
-            'data': {'chapters': []}
+            'data': {
+                'course_id': course.id,
+                'course_title': course.title,
+                'teacher_name': course.teacher.real_name,
+                'chapters': chapters_data,
+            }
         })
-
-
-class TeacherChapterCreateView(APIView):
-    """POST /api/teacher/courses/{courseId}/chapters/ - 创建章节"""
-    permission_classes = [IsAuthenticated]
     
     def post(self, request, course_id):
-        # TODO: 实现章节创建
+        """创建章节"""
+        user = request.user
+        data = request.data
+        
+        try:
+            # 验证课程存在且属于当前用户
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        title = data.get('title')
+        order = data.get('order', 0)
+        parent_id = data.get('parent_id')  # 可选，支持子章节
+        
+        if not title:
+            return Response({
+                'code': 400,
+                'message': '章节标题不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 验证父章节（如果有）
+        parent = None
+        if parent_id:
+            try:
+                parent = Chapter.objects.get(id=parent_id, course=course)
+            except Chapter.DoesNotExist:
+                return Response({
+                    'code': 400,
+                    'message': '父章节不存在',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建章节
+        chapter = Chapter.objects.create(
+            course=course,
+            parent=parent,
+            title=title,
+            order=order
+        )
+        
         return Response({
             'code': 200,
             'message': '创建成功',
-            'data': {'chapter_id': None}
+            'data': {
+                'chapter_id': chapter.id,
+                'title': chapter.title,
+                'order': chapter.order,
+            }
         }, status=status.HTTP_201_CREATED)
 
 
-class TeacherChapterUpdateView(APIView):
-    """PUT /api/teacher/courses/{courseId}/chapters/{id}/ - 更新章节"""
+class TeacherChapterDetailView(APIView):
+    """
+    RESTful 章节详情接口：
+    GET    /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 获取章节详情
+    PUT    /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 更新章节
+    DELETE /api/teacher/courses/{course_id}/chapters/{chapter_id}/ - 删除章节
+    """
     permission_classes = [IsAuthenticated]
     
+    def get(self, request, course_id, chapter_id):
+        """获取单个章节详情"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response({
+            'code': 200,
+            'message': '获取成功',
+            'data': {
+                'id': chapter.id,
+                'title': chapter.title,
+                'order': chapter.order,
+                'parent_id': chapter.parent_id,
+            }
+        })
+    
     def put(self, request, course_id, chapter_id):
-        # TODO: 实现章节更新
+        """更新章节信息"""
+        user = request.user
+        data = request.data
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 更新章节字段
+        if 'title' in data:
+            chapter.title = data['title']
+        if 'order' in data:
+            chapter.order = data['order']
+        
+        chapter.save()
+        
         return Response({
             'code': 200,
             'message': '更新成功',
-            'data': {}
+            'data': {
+                'id': chapter.id,
+                'title': chapter.title,
+                'order': chapter.order,
+            }
         })
-
-
-class TeacherChapterDeleteView(APIView):
-    """DELETE /api/teacher/courses/{courseId}/chapters/{id}/ - 删除章节"""
-    permission_classes = [IsAuthenticated]
     
     def delete(self, request, course_id, chapter_id):
-        # TODO: 实现章节删除
+        """删除章节（级联删除课时和内容块）"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        chapter.delete()  # 级联删除关联的课时和内容块
+        
         return Response({
             'code': 200,
-            'message': '删除成功'
+            'message': '删除成功',
+            'data': None
         })
 
 
 class TeacherChapterSortView(APIView):
-    """POST /api/teacher/courses/{courseId}/chapters/sort/ - 排序章节"""
+    """POST /api/teacher/courses/{course_id}/chapters/sort/ - 批量排序章节"""
     permission_classes = [IsAuthenticated]
     
     def post(self, request, course_id):
-        # TODO: 实现章节排序
+        """
+        批量更新章节排序
+        参数: chapters: [{ id: 1, order: 0 }, { id: 2, order: 1 }]
+        """
+        user = request.user
+        data = request.data
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        chapters_data = data.get('chapters', [])
+        if not chapters_data:
+            return Response({
+                'code': 400,
+                'message': '请提供章节排序数据',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 批量更新排序
+        for item in chapters_data:
+            chapter_id = item.get('id')
+            order = item.get('order')
+            
+            if chapter_id is not None and order is not None:
+                Chapter.objects.filter(
+                    id=chapter_id,
+                    course=course
+                ).update(order=order)
+        
         return Response({
             'code': 200,
             'message': '排序成功',
-            'data': {}
+            'data': None
+        })
+
+
+# ==================== 教师课时管理 ====================
+class TeacherChapterLessonManageView(APIView):
+    """
+    章节下的课时管理：
+    GET    /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/ - 获取章节下的课时列表
+    POST   /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/ - 创建课时
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, course_id, chapter_id):
+        """获取指定章节下的课时列表"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        lessons = Lesson.objects.filter(chapter=chapter).order_by('order', 'id')
+        lessons_data = []
+        
+        for lesson in lessons:
+            lessons_data.append({
+                'id': lesson.id,
+                'title': lesson.title,
+                'order': lesson.order,
+                'created_at': lesson.created_at,
+            })
+        
+        return Response({
+            'code': 200,
+            'message': '获取成功',
+            'data': {
+                'chapter_id': chapter.id,
+                'chapter_title': chapter.title,
+                'lessons': lessons_data,
+            }
+        })
+    
+    def post(self, request, course_id, chapter_id):
+        """在指定章节下创建课时"""
+        user = request.user
+        data = request.data
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        title = data.get('title')
+        order = data.get('order', 0)
+        
+        if not title:
+            return Response({
+                'code': 400,
+                'message': '课时标题不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建课时
+        lesson = Lesson.objects.create(
+            chapter=chapter,
+            title=title,
+            order=order
+        )
+        
+        return Response({
+            'code': 200,
+            'message': '创建成功',
+            'data': {
+                'lesson_id': lesson.id,
+                'title': lesson.title,
+                'order': lesson.order,
+                'chapter_id': chapter.id,
+            }
+        }, status=status.HTTP_201_CREATED)
+
+
+class TeacherLessonDetailView(APIView):
+    """
+    课时详情管理：
+    GET    /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 获取课时详情（含内容块）
+    PUT    /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 更新课时信息
+    DELETE /api/teacher/courses/{course_id}/lessons/{lesson_id}/ - 删除课时
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, course_id, lesson_id):
+        """
+        获取课时的完整内容（懒加载第二步）
+        返回该课时的所有内容块信息
+        """
+        user = request.user
+        
+        try:
+            # 验证课程存在且属于当前用户
+            course = Course.objects.get(id=course_id, teacher=user)
+            # 验证课时属于该课程
+            lesson = Lesson.objects.select_related('chapter').get(
+                id=lesson_id,
+                chapter__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Lesson.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课时不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 获取课时的所有内容块
+        content_blocks = lesson.content_blocks.all().order_by('order', 'id')
+        blocks_data = []
+        
+        for block in content_blocks:
+            blocks_data.append({
+                'id': block.id,
+                'type': block.type,
+                'type_display': block.get_type_display(),
+                'title': block.title,
+                'content': block.content,  # JSON 数据
+                'file_url': block.file.url if block.file else None,
+                'order': block.order,
+                'created_at': block.created_at,
+            })
+        
+        return Response({
+            'code': 200,
+            'message': '获取成功',
+            'data': {
+                'lesson_id': lesson.id,
+                'title': lesson.title,
+                'order': lesson.order,
+                'chapter_id': lesson.chapter_id,
+                'chapter_title': lesson.chapter.title,
+                'content_blocks': blocks_data,  # 课时内容块列表
+                'created_at': lesson.created_at,
+                'updated_at': lesson.updated_at,
+            }
+        })
+    
+    def put(self, request, course_id, lesson_id):
+        """更新课时信息"""
+        user = request.user
+        data = request.data
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            lesson = Lesson.objects.select_related('chapter').get(
+                id=lesson_id,
+                chapter__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Lesson.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课时不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 更新课时字段
+        if 'title' in data:
+            lesson.title = data['title']
+        if 'order' in data:
+            lesson.order = data['order']
+        
+        lesson.save()
+        
+        return Response({
+            'code': 200,
+            'message': '更新成功',
+            'data': {
+                'lesson_id': lesson.id,
+                'title': lesson.title,
+                'order': lesson.order,
+            }
+        })
+    
+    def delete(self, request, course_id, lesson_id):
+        """删除课时（级联删除内容块）"""
+        user = request.user
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            lesson = Lesson.objects.select_related('chapter').get(
+                id=lesson_id,
+                chapter__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Lesson.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课时不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        lesson.delete()  # 级联删除关联的内容块
+        
+        return Response({
+            'code': 200,
+            'message': '删除成功',
+            'data': None
+        })
+
+
+class TeacherLessonSortView(APIView):
+    """POST /api/teacher/courses/{course_id}/chapters/{chapter_id}/lessons/sort/ - 批量排序课时"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, course_id, chapter_id):
+        """
+        批量更新课时排序
+        参数: lessons: [{ id: 1, order: 0 }, { id: 2, order: 1 }]
+        """
+        user = request.user
+        data = request.data
+        
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            chapter = Chapter.objects.get(id=chapter_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Chapter.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '章节不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        lessons_data = data.get('lessons', [])
+        if not lessons_data:
+            return Response({
+                'code': 400,
+                'message': '请提供课时排序数据',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 批量更新排序
+        for item in lessons_data:
+            lesson_id = item.get('id')
+            order = item.get('order')
+            
+            if lesson_id is not None and order is not None:
+                Lesson.objects.filter(
+                    id=lesson_id,
+                    chapter=chapter
+                ).update(order=order)
+        
+        return Response({
+            'code': 200,
+            'message': '排序成功',
+            'data': None
+        })
+
+
+# ==================== 教师内容块管理 ====================
+class TeacherContentBlockManageView(APIView):
+    """
+    POST /api/teacher/courses/{course_id}/lessons/{lesson_id}/content-blocks/ - 批量保存内容块
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, course_id, lesson_id):
+        """
+        批量保存课时的内容块（全量保存）
+        前端点击"全量保存"按钮时调用
+        采用覆盖式保存：删除旧的内容块，创建新的内容块
+        """
+        user = request.user
+        data = request.data
+        
+        try:
+            # 验证课程和课时
+            course = Course.objects.get(id=course_id, teacher=user)
+            lesson = Lesson.objects.select_related('chapter').get(
+                id=lesson_id,
+                chapter__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Lesson.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课时不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        content_blocks_data = data.get('content_blocks', [])
+        
+        # 删除该课时的所有旧内容块（覆盖式保存）
+        LessonContentBlock.objects.filter(lesson=lesson).delete()
+        
+        # 批量创建新的内容块
+        created_blocks = []
+        for block_data in content_blocks_data:
+            block_type = block_data.get('type')
+            title = block_data.get('title', '')
+            content = block_data.get('content')
+            file_path = block_data.get('file')  # 文件URL路径
+            order = block_data.get('order', 0)
+            
+            if not block_type:
+                continue
+            
+            # 前端类型映射到后端类型
+            # document -> file
+            # text -> rich_text
+            type_mapping = {
+                'document': 'file',
+                'text': 'rich_text',
+                'video': 'video',
+                'image': 'image',
+                'code': 'code',
+            }
+            
+            backend_type = type_mapping.get(block_type, block_type)
+            
+            # 创建内容块
+            block = LessonContentBlock.objects.create(
+                lesson=lesson,
+                type=backend_type,
+                title=title,
+                content=content,
+                order=order
+            )
+            
+            # 如果有文件路径，保存文件字段
+            if file_path:
+                block.file = str(file_path).replace('/media/', '', 1)
+                block.save()
+            
+            created_blocks.append({
+                'id': block.id,
+                'type': block.type,
+                'title': block.title,
+                'order': block.order,
+            })
+        
+        return Response({
+            'code': 200,
+            'message': '保存成功',
+            'data': {
+                'lesson_id': lesson.id,
+                'content_blocks': created_blocks,
+            }
+        })
+
+
+class TeacherContentBlockFileUploadView(APIView):
+    """
+    POST /api/teacher/courses/{course_id}/lessons/{lesson_id}/content-blocks/upload/ - 上传内容块文件
+    支持上传视频、图片、附件等文件资源
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, course_id, lesson_id):
+        """
+        上传内容块文件（视频、图片、文档等）
+        返回文件URL供前端使用
+        """
+        user = request.user
+        
+        try:
+            # 验证课程和课时
+            course = Course.objects.get(id=course_id, teacher=user)
+            lesson = Lesson.objects.select_related('chapter').get(
+                id=lesson_id,
+                chapter__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Lesson.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课时不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查是否上传了文件
+        if 'file' not in request.FILES:
+            return Response({
+                'code': 400,
+                'message': '请上传文件',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        uploaded_file = request.FILES['file']
+        file_type = request.data.get('type', 'file')  # video, image, file
+        
+        # 根据类型验证文件
+        if file_type == 'video':
+            allowed_types = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime']
+            max_size = 500 * 1024 * 1024  # 500MB
+            if uploaded_file.content_type not in allowed_types:
+                return Response({
+                    'code': 400,
+                    'message': '只支持 MP4、WebM、OGG、MOV 格式的视频',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        elif file_type == 'image':
+            allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+            max_size = 10 * 1024 * 1024  # 10MB
+            if uploaded_file.content_type not in allowed_types:
+                return Response({
+                    'code': 400,
+                    'message': '只支持 JPG、PNG、WebP、GIF 格式的图片',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        else:  # file (文档、附件等)
+            allowed_types = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'application/zip',
+                'application/x-rar-compressed',
+                'text/plain',
+            ]
+            max_size = 50 * 1024 * 1024  # 50MB
+            # 文件类型比较宽松，只检查大小
+        
+        # 验证文件大小
+        if uploaded_file.size > max_size:
+            return Response({
+                'code': 400,
+                'message': f'文件大小不能超过 {max_size // (1024 * 1024)}MB',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建临时内容块或直接返回文件URL
+        # 方案1：直接保存文件并返回URL（推荐，前端后续批量保存时使用）
+        from django.core.files.storage import default_storage
+        from django.utils import timezone
+        import os
+        
+        # 生成文件路径
+        now = timezone.now()
+        file_extension = os.path.splitext(uploaded_file.name)[1]
+        file_path = f'lessons/files/{now.year}/{now.month:02d}/{lesson.id}_{now.timestamp()}{file_extension}'
+        
+        # 保存文件
+        saved_path = default_storage.save(file_path, uploaded_file)
+        
+        print(f"文件已保存: {saved_path}")
+        
+        return Response({
+            'code': 200,
+            'message': '上传成功',
+            'data': {
+                'file_path': saved_path, # 给后端保存内容块用
+                'file_name': uploaded_file.name,
+                'file_size': uploaded_file.size,
+                'file_type': file_type,
+            }
         })
 
 
@@ -778,8 +1744,11 @@ class TeacherStudentProgressView(APIView):
 
 
 # ==================== 班级与学期管理 ====================
-class TeacherTermListView(APIView):
-    """GET /api/teacher/courses/{courseId}/terms/ - 获取学期列表"""
+class TeacherTermManageView(APIView):
+    """
+    GET  /api/teacher/courses/{courseId}/terms/ - 获取学期列表
+    POST /api/teacher/courses/{courseId}/terms/ - 创建学期
+    """
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
@@ -789,11 +1758,6 @@ class TeacherTermListView(APIView):
             'message': '获取成功',
             'data': {'terms': []}
         })
-
-
-class TeacherTermCreateView(APIView):
-    """POST /api/teacher/courses/{courseId}/terms/ - 创建学期"""
-    permission_classes = [IsAuthenticated]
     
     def post(self, request, course_id):
         # TODO: 实现学期创建
@@ -804,8 +1768,11 @@ class TeacherTermCreateView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
-class TeacherTermUpdateView(APIView):
-    """PUT /api/teacher/courses/{courseId}/terms/{id}/ - 更新学期"""
+class TeacherTermDetailView(APIView):
+    """
+    PUT    /api/teacher/courses/{courseId}/terms/{id}/ - 更新学期
+    DELETE /api/teacher/courses/{courseId}/terms/{id}/ - 删除学期
+    """
     permission_classes = [IsAuthenticated]
     
     def put(self, request, course_id, term_id):
@@ -815,11 +1782,6 @@ class TeacherTermUpdateView(APIView):
             'message': '更新成功',
             'data': {}
         })
-
-
-class TeacherTermDeleteView(APIView):
-    """DELETE /api/teacher/courses/{courseId}/terms/{id}/ - 删除学期"""
-    permission_classes = [IsAuthenticated]
     
     def delete(self, request, course_id, term_id):
         # TODO: 实现学期删除
@@ -829,8 +1791,11 @@ class TeacherTermDeleteView(APIView):
         })
 
 
-class TeacherClassListView(APIView):
-    """GET /api/teacher/courses/{courseId}/classes/ - 获取班级列表"""
+class TeacherClassManageView(APIView):
+    """
+    GET  /api/teacher/courses/{courseId}/classes/ - 获取班级列表
+    POST /api/teacher/courses/{courseId}/classes/ - 创建班级
+    """
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
@@ -840,11 +1805,6 @@ class TeacherClassListView(APIView):
             'message': '获取成功',
             'data': {'classes': []}
         })
-
-
-class TeacherClassCreateView(APIView):
-    """POST /api/teacher/courses/{courseId}/classes/ - 创建班级"""
-    permission_classes = [IsAuthenticated]
     
     def post(self, request, course_id):
         # TODO: 实现班级创建
@@ -855,8 +1815,11 @@ class TeacherClassCreateView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
-class TeacherClassUpdateView(APIView):
-    """PUT /api/teacher/courses/{courseId}/classes/{id}/ - 更新班级"""
+class TeacherClassDetailView(APIView):
+    """
+    PUT    /api/teacher/courses/{courseId}/classes/{id}/ - 更新班级
+    DELETE /api/teacher/courses/{courseId}/classes/{id}/ - 删除班级
+    """
     permission_classes = [IsAuthenticated]
     
     def put(self, request, course_id, class_id):
@@ -866,11 +1829,6 @@ class TeacherClassUpdateView(APIView):
             'message': '更新成功',
             'data': {}
         })
-
-
-class TeacherClassDeleteView(APIView):
-    """DELETE /api/teacher/courses/{courseId}/classes/{id}/ - 删除班级"""
-    permission_classes = [IsAuthenticated]
     
     def delete(self, request, course_id, class_id):
         # TODO: 实现班级删除

@@ -5,60 +5,112 @@
       <div class="header-left">
         <el-button icon="el-icon-arrow-left" @click="goBack">返回课程</el-button>
         <div class="course-title">
-          <h1>{{ courseInfo.title }}</h1>
+          <h1>{{ courseInfo.title || '加载中...' }}</h1>
         </div>
+      </div>
+      <div class="header-right">
+        <el-button icon="el-icon-edit" @click="goToChapterEditor">编辑章节</el-button>
       </div>
     </div>
 
     <!-- 主体内容 -->
     <div class="player-container">
-      <!-- 左侧:内容播放区 -->
+      <!-- 左侧：内容展示区 -->
       <div class="content-player">
-        <!-- 视频/文档播放器 -->
-        <div v-if="currentLesson" class="player-wrapper">
-          <div v-if="currentLesson.type === 'video'" class="video-player">
-            <div class="video-placeholder">
-              <div class="play-icon">▶</div>
-              <p class="video-tip">视频播放器占位区</p>
-              <p class="video-info">{{ currentLesson.name }}</p>
-            </div>
-          </div>
-          <div v-else class="document-viewer">
-            <div class="doc-placeholder">
-              <i class="el-icon-document" style="font-size: 64px; color: #909399;"></i>
-              <p>文档查看器占位区</p>
-              <p class="doc-name">{{ currentLesson.name }}</p>
-            </div>
+        <div v-if="currentLesson" class="lesson-content">
+          <div class="lesson-header">
+            <h2>{{ currentLesson.title }}</h2>
+            <!-- <p class="lesson-meta">所属章节: {{ currentChapterTitle }}</p> -->
           </div>
 
-          <!-- 课程信息 -->
-          <div class="lesson-info">
-            <div class="lesson-header">
-              <div class="lesson-actions">
-                <el-button 
-                  :disabled="!previousLesson" 
-                  @click="goToLesson(previousLesson)"
-                  size="small"
-                >
-                  <i class="el-icon-arrow-left"></i> 上一课
-                </el-button>
-                <el-button 
-                  :disabled="!nextLesson" 
-                  @click="goToLesson(nextLesson)"
-                  size="small"
-                  type="primary"
-                >
-                  下一课 <i class="el-icon-arrow-right"></i>
-                </el-button>
+          <div class="content-blocks-display">
+            <div
+              v-for="(block) in contentBlocks"
+              :key="block.id"
+              class="content-block-item"
+            >
+              <!-- 视频块 -->
+              <div v-if="block.type === 'video'" class="block-video">
+                <video
+                  v-if="block.file"
+                  :src="getMediaUrl(block.file)"
+                  controls
+                  style="width: 100%; max-height: 500px; border-radius: 8px;"
+                ></video>
+                <div v-else class="video-placeholder">
+                  <i class="el-icon-video-camera" style="font-size: 64px;"></i>
+                  <p>暂无视频</p>
+                </div>
               </div>
+
+              <!-- 富文本块 -->
+              <div v-else-if="block.type === 'rich_text'" class="block-text">
+                <div v-html="block.content?.html || block.content || ''"></div>
+              </div>
+
+              <!-- 文件块 -->
+              <div v-else-if="block.type === 'file'" class="block-file">
+                <div class="file-info">
+                  <i class="el-icon-document" style="font-size: 48px; color: #409eff;"></i>
+                  <p>{{ block.title }}</p>
+                  <div class="file-actions">
+                    <el-button
+                      v-if="block.file"
+                      type="primary"
+                      size="small"
+                      icon="el-icon-download"
+                      @click="downloadFile(block.file, block.title)"
+                    >
+                      下载文件
+                    </el-button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 图片块 -->
+<!-- 图片块 -->
+<div v-else-if="block.type === 'image'" class="block-image">
+  <el-image
+    v-if="block.file"
+    :src="getMediaUrl(block.file)"
+    :preview-src-list="[getMediaUrl(block.file)]"
+    style="width: 100%; height: 360px; border-radius: 8px;"
+    fit="cover"
+  >
+    <!-- 加载失败时的占位 -->
+    <div slot="error" class="image-slot" style="display: flex; justify-content: center; align-items: center; height: 100%; background: #f5f7fa;">
+      <i class="el-icon-picture-outline" style="font-size: 30px; color: #909399;"></i>
+    </div>
+  </el-image>
+  <!-- 可选：添加提示文字 -->
+  <p style="text-align: center; color: #909399; font-size: 12px; margin-top: 5px;">
+    (点击图片可查看完整大图)
+  </p>
+</div>
+
+              <!-- 代码块 -->
+              <div v-else-if="block.type === 'code'" class="block-code">
+                <pre><code>{{ block.content?.code || block.content || '' }}</code></pre>
+              </div>
+            </div>
+
+            <div v-if="contentBlocks.length === 0" class="no-content">
+              <i class="el-icon-document" style="font-size: 64px; color: #dcdfe6;"></i>
+              <p>该课时暂无内容</p>
             </div>
           </div>
         </div>
 
         <!-- 加载状态 -->
-        <div v-else class="loading-state">
+        <div v-else-if="loading" class="loading-state">
           <i class="el-icon-loading" style="font-size: 48px; color: #409EFF;"></i>
           <p>加载中...</p>
+        </div>
+
+        <!-- 空状态 -->
+        <div v-else class="empty-state">
+          <i class="el-icon-document" style="font-size: 64px; color: #dcdfe6;"></i>
+          <p>请从右侧选择课时</p>
         </div>
       </div>
 
@@ -66,56 +118,49 @@
       <div class="chapter-catalog">
         <div class="catalog-header">
           <h3>课程目录</h3>
-          <el-input
+            <el-input
             v-model="chapterSearch"
             placeholder="搜索章节..."
             prefix-icon="el-icon-search"
             size="small"
             clearable
           />
+          <!-- <span class="chapter-count">{{ chapters.length }} 个章节</span> -->
         </div>
 
-        <div class="catalog-list" style="min-height: 1500px;">
+        <div class="catalog-list" v-loading="catalogLoading">
           <div
-            v-for="section in filteredSections"
-            :key="section.id"
-            class="section-item"
+            v-for="chapter in filteredChapters"
+            :key="chapter.id"
+            class="chapter-item"
           >
-            <div
-              class="section-header"
-              @click="toggleSection(section.id)"
-            >
-              <span :class="['expand-icon', { expanded: expandedSections.includes(section.id) }]">▶</span>
-              <span class="section-title">{{ section.title }}</span>
-              <span class="lesson-count">({{ section.lessons.length }})</span>
+            <div class="chapter-header" @click="toggleChapter(chapter.id)">
+              <!-- 增加 chapterSearch || ... -->
+              <span :class="['expand-icon', { expanded: chapterSearch || expandedChapters.includes(chapter.id) }]">▶</span>
+              <span class="chapter-title">{{ chapter.title }}</span>
+              <span class="lesson-count">{{ chapter.lessons.length }} 课时</span>
             </div>
 
-            <div
-              v-show="expandedSections.includes(section.id)"
-              class="lessons-list"
-            >
-              <div
-                v-for="(lesson, index) in section.lessons"
-                :key="lesson.id"
-                :class="['lesson-item', { active: currentLesson && currentLesson.id === lesson.id, completed: lesson.completed }]"
-                @click="selectLesson(lesson, section)"
-              >
-                <span class="lesson-number">{{ index + 1 }}</span>
-                <span class="lesson-type-icon">{{ lesson.type === 'video' ? '🎥' : '📄' }}</span>
-                <span class="lesson-name">{{ lesson.name }}</span>
-                <span v-if="lesson.completed" class="completed-icon">✓</span>
-                <span v-else class="lesson-duration">{{ lesson.duration }}</span>
-              </div>
-            </div>
-          </div>
-          <!-- 临时：测试滚动 -->
-          <div style="height: 1000px; padding: 20px; background: linear-gradient(to bottom, transparent, #f0f0f0);">
-            <p style="color: #999;">滚动测试区域...</p>
+            <!-- <div v-show="expandedChapters.includes(chapter.id)" class="lessons-list"> -->
+              
+            <div v-show="chapterSearch || expandedChapters.includes(chapter.id)" class="lessons-list">
+          <div
+            v-for="(lesson, index) in chapter.lessons"
+            :key="lesson.id"
+            :class="['lesson-item', { active: currentLesson && currentLesson.id === lesson.id }]"
+            @click="selectLesson(lesson, chapter)"
+          >
+            <div class="lesson-number">{{ index + 1 }}</div>
+            <i class="el-icon-video-camera lesson-type-icon"></i>
+            <div class="lesson-name">{{ lesson.title }}</div>
           </div>
         </div>
+      </div>
 
-        <div v-if="filteredSections.length === 0" class="no-data">
-          <p>未找到相关章节</p>
+          <div v-if="chapters.length === 0 && !catalogLoading" class="no-data">
+            <i class="el-icon-folder" style="font-size: 48px; color: #dcdfe6;"></i>
+            <p>暂无章节数据</p>
+          </div>
         </div>
       </div>
     </div>
@@ -123,234 +168,252 @@
 </template>
 
 <script>
+import { getCourseChapters, getLessonDetail } from '@/api/teacher'
+
 export default {
-  name: 'StudentLessonPlayer',
+  name: 'TeacherLessonPlayer',
   data() {
     return {
-      courseId: this.$route.params.id || this.$route.params.courseId || '1',
-      lessonId: this.$route.params.lessonId ? parseInt(this.$route.params.lessonId) : null,
-      sectionId: this.$route.query.sectionId ? parseInt(this.$route.query.sectionId) : null,
+      courseId: this.$route.params.courseId,
+      lessonId: this.$route.params.lessonId,
+      loading: false,
+      catalogLoading: false,
       courseInfo: {
-        title: '加载中...'
+        title: ''
       },
-      sections: [],
       currentLesson: null,
-      currentSection: null,
+      currentChapterTitle: '',
+      contentBlocks: [],
+      chapters: [],
+      expandedChapters: [],
       chapterSearch: '',
-      expandedSections: []
+      catalogLoaded: false // 标记章节数据是否已加载
     }
   },
   computed: {
-    // 过滤章节
-    filteredSections() {
-      if (!this.chapterSearch) {
-        return this.sections
+  filteredChapters() {
+    // 1. 如果没搜索，直接返回所有章节
+    if (!this.chapterSearch) {
+      return this.chapters;
+    }
+
+    const query = this.chapterSearch.toLowerCase();
+
+    // 2. 遍历章节进行过滤
+    return this.chapters.map(chapter => {
+      // 检查章节标题是否包含关键词
+      const isChapterMatch = chapter.title.toLowerCase().includes(query);
+      
+      // 检查该章节下的课时是否包含关键词
+      const matchingLessons = chapter.lessons.filter(lesson => 
+        lesson.title.toLowerCase().includes(query)
+      );
+
+      // 逻辑 A: 如果章节标题匹配，保留整个章节（包含所有课时）
+      if (isChapterMatch) {
+        return chapter;
       }
-      const keyword = this.chapterSearch.toLowerCase()
-      return this.sections.filter(section => {
-        const titleMatch = section.title.toLowerCase().includes(keyword)
-        const lessonMatch = section.lessons.some(lesson => 
-          lesson.name.toLowerCase().includes(keyword)
-        )
-        return titleMatch || lessonMatch
-      })
-    },
-    // 获取所有课程的扁平列表
-    allLessons() {
-      const lessons = []
-      this.sections.forEach(section => {
-        section.lessons.forEach(lesson => {
-          lessons.push({ lesson, section })
-        })
-      })
-      return lessons
-    },
-    // 当前课程在列表中的索引
-    currentLessonIndex() {
-      if (!this.currentLesson) return -1
-      return this.allLessons.findIndex(item => item.lesson.id === this.currentLesson.id)
-    },
-    // 上一课
-    previousLesson() {
-      if (this.currentLessonIndex > 0) {
-        return this.allLessons[this.currentLessonIndex - 1]
+
+      // 逻辑 B: 如果章节不匹配，但底下有课时匹配，保留该章节 + 匹配的课时
+      if (matchingLessons.length > 0) {
+        return {
+          ...chapter,
+          lessons: matchingLessons
+        };
       }
-      return null
-    },
-    // 下一课
-    nextLesson() {
-      if (this.currentLessonIndex < this.allLessons.length - 1) {
-        return this.allLessons[this.currentLessonIndex + 1]
+
+      // 都不匹配，返回 null
+      return null;
+    }).filter(item => item !== null); // 移除掉 null 的项
+  }
+},
+  created() {
+    // 恢复展开状态
+    this.restoreExpandedState()
+    // 只在首次加载或章节数据为空时请求
+    if (!this.catalogLoaded || this.chapters.length === 0) {
+      this.loadCourseData()
+    }
+    this.loadLessonData()
+  },
+  watch: {
+    // 监听路由参数变化，重新加载课时数据
+    '$route.params.lessonId'(newLessonId) {
+      if (newLessonId) {
+        this.lessonId = newLessonId
+        this.loadLessonData()
       }
-      return null
     }
   },
-  created() {
-    this.loadCourseData()
-  },
   mounted() {
-    // 进入页面时禁止body滚动
     document.body.style.overflow = 'hidden'
   },
   beforeDestroy() {
-    // 离开页面时恢复body滚动
+    // 保存展开状态
+    this.saveExpandedState()
     document.body.style.overflow = ''
-  },
-  watch: {
-    '$route.params.lessonId'(newId) {
-      if (newId) {
-        this.lessonId = parseInt(newId)
-        this.loadCurrentLesson()
-      }
-    }
   },
   methods: {
     goBack() {
-      // 返回到课程详情页
-      // 检查是教师还是学生路由
-      const currentPath = this.$route.path
-      if (currentPath.includes('/teacher/courses/')) {
-        this.$router.push(`/teacher/courses/${this.courseId}`)
-      } else if (currentPath.includes('/student/courses/')) {
-        this.$router.push(`/student/courses/${this.courseId}`)
-      } else {
-        // 备用逻辑
-        this.$router.push(`/student/courses/${this.courseId}`)
-      }
+      this.$router.push(`/teacher/courses/${this.courseId}`)
     },
 
-    loadCourseData() {
-      // TODO: 从API加载真实数据
-      // 模拟数据
-      this.courseInfo = {
-        title: 'React 现代实战指南'
-      }
-
-      this.sections = [
-        {
-          id: 1,
-          title: 'React 基础',
-          description: '学习 React 的核心概念',
-          lessons: [
-            { id: 1, name: 'React 简介', type: 'video', duration: '15:30', description: '了解React的基本概念和优势', completed: false },
-            { id: 2, name: '组件与 Props', type: 'video', duration: '20:45', description: '学习如何创建和使用React组件', completed: false },
-            { id: 3, name: 'State 与生命周期', type: 'video', duration: '25:10', description: '掌握组件状态管理和生命周期方法', completed: false }
-          ]
-        },
-        {
-          id: 2,
-          title: 'React Hooks',
-          description: 'Hooks 是 React 16.8 的新增特性',
-          lessons: [
-            { id: 4, name: 'useState 详解', type: 'video', duration: '18:20', description: 'useState Hook的使用方法', completed: false },
-            { id: 5, name: 'useEffect 使用', type: 'video', duration: '22:15', description: '处理副作用的Hook', completed: false },
-            { id: 6, name: '自定义 Hook', type: 'document', duration: '16:40', description: '创建可复用的自定义Hook', completed: false }
-          ]
-        },
-        {
-          id: 3,
-          title: '高级特性',
-          description: 'Context、Refs、性能优化等',
-          lessons: [
-            { id: 7, name: 'Context API', type: 'video', duration: '19:30', description: 'React的上下文API使用', completed: false },
-            { id: 8, name: 'useRef 与 forwardRef', type: 'document', duration: '14:50', description: 'Ref的高级用法', completed: false },
-            { id: 9, name: 'React.memo 性能优化', type: 'video', duration: '21:00', description: '组件性能优化技巧', completed: false }
-          ]
+    async loadCourseData() {
+    this.catalogLoading = true
+      try {
+        const response = await getCourseChapters(this.courseId)
+        
+        this.courseInfo = {
+          title: response.course_title || '课程名称'
         }
-      ]
+        
+        this.chapters = (response.chapters || []).map(chapter => ({
+          id: chapter.id,
+          title: chapter.title,
+          order: chapter.order,
+          lessons: (chapter.lessons || []).map(lesson => ({
+            id: lesson.id,
+            title: lesson.title,
+            order: lesson.order
+          }))
+        }))
 
-      this.loadCurrentLesson()
+        // 排序
+        this.chapters.sort((a, b) => a.order - b.order)
+        this.chapters.forEach(chapter => {
+          chapter.lessons.sort((a, b) => a.order - b.order)
+        })
+
+        // 标记已加载
+        this.catalogLoaded = true
+
+        // 如果没有恢复的展开状态，默认展开当前课时所在的章节
+        if (this.expandedChapters.length === 0 && this.$route.query.chapterId) {
+          const chapterId = parseInt(this.$route.query.chapterId)
+          this.expandedChapters.push(chapterId)
+        }
+      } catch (error) {
+        console.error('加载课程目录失败:', error)
+        this.$message.error('加载课程目录失败')
+      } finally {
+        this.catalogLoading = false
+      }
     },
 
-    loadCurrentLesson() {
-      // 如果有指定lessonId，加载指定课程
-      if (this.lessonId) {
-        for (const section of this.sections) {
-          const lesson = section.lessons.find(l => l.id === this.lessonId)
-          if (lesson) {
-            this.currentLesson = lesson
-            this.currentSection = section
-            // 自动展开当前章节
-            if (!this.expandedSections.includes(section.id)) {
-              this.expandedSections.push(section.id)
+    async loadLessonData() {
+      this.loading = true
+      try {
+        const response = await getLessonDetail(this.courseId, this.lessonId)
+        
+        this.currentLesson = {
+          id: response.lesson_id || this.lessonId,
+          title: response.title,
+          chapter_id: response.chapter_id
+        }
+        
+        this.currentChapterTitle = response.chapter_title || ''
+        
+        // 映射内容块
+        this.contentBlocks = (response.content_blocks || []).map(block => {
+          // 判断文件类型 - 如果是图片类型的文件,显示为图片
+          let blockType = block.type
+          if (block.type === 'file' && block.file_url) {
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp']
+            const fileExt = block.file_url.toLowerCase().match(/\.[^.]+$/)?.[0]
+            if (fileExt && imageExtensions.includes(fileExt)) {
+              blockType = 'image'
             }
-            return
           }
-        }
-      }
-      
-      // 如果没有指定或找不到，自动选择第一个课程
-      if (this.sections.length > 0 && this.sections[0].lessons.length > 0) {
-        const firstSection = this.sections[0]
-        const firstLesson = firstSection.lessons[0]
-        
-        this.currentLesson = firstLesson
-        this.currentSection = firstSection
-        this.expandedSections.push(firstSection.id)
-        
-        // 更新URL到第一个课程
-        const currentPath = this.$route.path
-        let basePath
-        if (currentPath.includes('/teacher/courses/')) {
-          basePath = `/teacher/courses/${this.courseId}/lessons`
-        } else {
-          basePath = `/student/courses/${this.courseId}/lessons`
-        }
-        
-        this.$router.replace({
-          path: `${basePath}/${firstLesson.id}`,
-          query: { sectionId: firstSection.id }
-        }).catch(err => {
-          if (err.name !== 'NavigationDuplicated') {
-            console.error(err)
+          
+          return {
+            id: block.id,
+            type: blockType,
+            title: block.title || '',
+            file: block.file_url || block.file,
+            content: block.content,
+            order: block.order
           }
         })
+
+        // 按order排序
+        this.contentBlocks.sort((a, b) => a.order - b.order)
+      } catch (error) {
+        console.error('加载课时数据失败:', error)
+        this.$message.error('加载课时数据失败')
+      } finally {
+        this.loading = false
       }
     },
-
-    toggleSection(sectionId) {
-      const index = this.expandedSections.indexOf(sectionId)
-      if (index > -1) {
-        this.expandedSections.splice(index, 1)
-      } else {
-        this.expandedSections.push(sectionId)
-      }
-    },
-
-    selectLesson(lesson, section) {
-      // 避免重复选择当前课程
-      if (this.currentLesson && this.currentLesson.id === lesson.id) {
+    toggleChapter(chapterId) {
+      // 如果正在搜索，不允许手动折叠
+      if (this.chapterSearch) {
         return
       }
       
-      this.currentLesson = lesson
-      this.currentSection = section
-      
-      // 更新路由
-      const currentPath = this.$route.path
-      let basePath
-      if (currentPath.includes('/teacher/courses/')) {
-        basePath = `/teacher/courses/${this.courseId}/lessons`
+      const index = this.expandedChapters.indexOf(chapterId)
+      if (index > -1) {
+        this.expandedChapters.splice(index, 1)
       } else {
-        basePath = `/student/courses/${this.courseId}/lessons`
+        this.expandedChapters.push(chapterId)
       }
       
-      this.$router.replace({
-        path: `${basePath}/${lesson.id}`,
+      // 立即保存状态
+      this.saveExpandedState()
+    },
+
+    selectLesson(lesson, chapter) {
+      // 只更新路由，数据加载由 watch 监听器处理
+      this.$router.push({
+        path: `/teacher/courses/${this.courseId}/lessons/${lesson.id}`,
         query: {
-          sectionId: section.id
-        }
-      }).catch(err => {
-        // 忽略重复导航错误
-        if (err.name !== 'NavigationDuplicated') {
-          console.error(err)
+          chapterId: chapter.id
         }
       })
     },
 
-    goToLesson(lessonData) {
-      if (lessonData) {
-        this.selectLesson(lessonData.lesson, lessonData.section)
+    getMediaUrl(url) {
+      if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+        return url
+      }
+      return `${process.env.VUE_APP_API_BASE_URL || 'http://localhost:8000'}${url}`
+    },
+
+    downloadFile(fileUrl, fileName) {
+      const url = this.getMediaUrl(fileUrl)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    },
+    goToChapterEditor() {
+      this.$router.push({
+        path: `/teacher/courses/${this.courseId}/chapters/edit`,
+        query: {
+          lessonId: this.lessonId,
+          chapterId: this.$route.query.chapterId
+        }
+      })
+    },
+
+    // 保存展开状态到 sessionStorage
+    saveExpandedState() {
+      const key = `expanded_chapters_${this.courseId}`
+      sessionStorage.setItem(key, JSON.stringify(this.expandedChapters))
+    },
+
+    // 恢复展开状态
+    restoreExpandedState() {
+      const key = `expanded_chapters_${this.courseId}`
+      const saved = sessionStorage.getItem(key)
+      if (saved) {
+        try {
+          this.expandedChapters = JSON.parse(saved)
+        } catch (error) {
+          console.error('恢复展开状态失败:', error)
+          this.expandedChapters = []
+        }
       }
     }
   }
@@ -368,7 +431,7 @@ export default {
   background: #f9fafb;
 }
 
-/* 页面头部：固定高度，不参与滚动 */
+/* 页面头部 */
 .page-header {
   flex-shrink: 0 !important;
   background: white;
@@ -399,7 +462,7 @@ export default {
   -webkit-text-fill-color: transparent;
 }
 
-/* ==================== 2. 主体区域强制高度 ==================== */
+/* ==================== 2. 主体区域 ==================== */
 .player-container {
   flex: 1 !important;
   min-height: 0 !important;
@@ -409,8 +472,7 @@ export default {
   overflow: hidden !important;
 }
 
-/* ==================== 3. 内层彻底独立 ==================== */
-/* 左侧内容区：独立滚动 */
+/* 左侧内容区 */
 .content-player {
   flex: 2 !important;
   height: 100% !important;
@@ -420,7 +482,151 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* 右侧章节目录：独立滚动 */
+.lesson-content {
+  padding: 2rem;
+}
+
+.lesson-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.lesson-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  color: #1f2937;
+}
+
+.lesson-meta {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.content-blocks-display {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.content-block-item {
+  width: 100%;
+}
+
+.block-video video {
+  width: 100%;
+  background: #000;
+}
+
+.video-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: #000;
+  color: white;
+  border-radius: 8px;
+}
+
+.video-placeholder p {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.block-text {
+  line-height: 1.8;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.block-text >>> p {
+  margin: 1em 0;
+}
+
+.block-text >>> h1,
+.block-text >>> h2,
+.block-text >>> h3 {
+  margin: 1.5em 0 0.5em 0;
+  color: #1f2937;
+}
+
+.block-file {
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-info p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+.block-image {
+  text-align: center;
+}
+
+.block-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.block-code pre {
+  background: #282c34;
+  color: #abb2bf;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.block-code code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.no-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #909399;
+}
+
+.no-content p {
+  margin-top: 1rem;
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #909399;
+  padding: 2rem;
+}
+
+.loading-state p,
+.empty-state p {
+  margin-top: 1rem;
+}
+
+/* 右侧章节目录 */
 .chapter-catalog {
   flex: 1 !important;
   height: 100% !important;
@@ -432,7 +638,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* 目录头部：固定不滚动 */
 .catalog-header {
   flex-shrink: 0 !important;
   padding: 1.5rem;
@@ -441,12 +646,16 @@ export default {
 }
 
 .catalog-header h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   color: #1f2937;
 }
 
-/* 目录列表：可滚动区域 */
+.chapter-count {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
 .catalog-list {
   flex: 1 !important;
   min-height: 0 !important;
@@ -454,99 +663,11 @@ export default {
   padding: 1rem;
 }
 
-/* ==================== 内容区样式 ==================== */
-.player-wrapper {
-  padding: 0;
-  min-height: 1200px; /* 临时：强制内容超出视口 */
-}
-
-.video-player,
-.document-viewer {
-  min-height: 600px; /* 增加高度 */
-}
-
-.video-placeholder,
-.doc-placeholder {
-  width: 100%;
-  height: 100%;
-  min-height: 600px; /* 增加高度 */
-  background: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.doc-placeholder {
-  background: #f5f7fa;
-  color: #606266;
-}
-
-.play-icon {
-  width: 80px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: #2c3e50;
-  cursor: pointer;
-  transition: all 0.3s;
-  margin-bottom: 1rem;
-}
-
-.play-icon:hover {
-  transform: scale(1.1);
-  background: white;
-}
-
-.video-tip,
-.video-info {
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0.5rem 0;
-}
-
-.doc-name {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-}
-
-.lesson-info {
-  padding: 1.5rem;
-  border-top: 1px solid #e5e7eb;
-  min-height: 400px; /* 增加信息区高度 */
-}
-
-.lesson-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.lesson-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #909399;
-  padding: 2rem;
-}
-
-/* ==================== 目录样式 ==================== */
-.section-item {
+.chapter-item {
   margin-bottom: 0.5rem;
 }
 
-.section-header {
+.chapter-header {
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
@@ -554,14 +675,14 @@ export default {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  gap: 0.5rem;
 }
 
-.section-header:hover {
+.chapter-header:hover {
   background: #e8eaed;
 }
 
 .expand-icon {
-  margin-right: 0.5rem;
   color: #6b7280;
   transition: transform 0.3s;
   font-size: 0.8rem;
@@ -571,7 +692,7 @@ export default {
   transform: rotate(90deg);
 }
 
-.section-title {
+.chapter-title {
   flex: 1;
   font-weight: 600;
   color: #1f2937;
@@ -595,6 +716,7 @@ export default {
   cursor: pointer;
   transition: all 0.2s;
   gap: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .lesson-item:hover {
@@ -604,10 +726,6 @@ export default {
 .lesson-item.active {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
   border-left: 3px solid #667eea;
-}
-
-.lesson-item.completed {
-  opacity: 0.7;
 }
 
 .lesson-number {
@@ -620,6 +738,7 @@ export default {
   justify-content: center;
   font-size: 0.85rem;
   color: #6b7280;
+  flex-shrink: 0;
 }
 
 .lesson-item.active .lesson-number {
@@ -627,35 +746,23 @@ export default {
   color: white;
 }
 
-.lesson-item.completed .lesson-number {
-  background: #10b981;
-  color: white;
-}
-
 .lesson-type-icon {
   font-size: 1.1rem;
+  flex-shrink: 0;
 }
 
 .lesson-name {
   flex: 1;
   color: #374151;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lesson-item.active .lesson-name {
   color: #667eea;
   font-weight: 600;
-}
-
-.completed-icon {
-  color: #10b981;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.lesson-duration {
-  color: #6b7280;
-  font-size: 0.85rem;
 }
 
 .no-data {
@@ -685,3 +792,5 @@ export default {
   background: #9ca3af;
 }
 </style>
+
+

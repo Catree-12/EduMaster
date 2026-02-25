@@ -5,12 +5,12 @@ import http from './http'
  */
 
 // ==================== 课程管理 ====================
-export const getTeacherCourses = (params) => {
-  return http.get('/teacher/courses', { params })
-}
+// export const getTeacherCourses = (params) => {
+//   return http.get('/teacher/courses/', { params })
+// }
 
 export const getTeacherCourse = (courseId) => {
-  return http.get(`/teacher/courses/${courseId}`)
+  return http.get(`/teacher/courses/${courseId}/`)
 }
 
 export const createCourse = (data) => {
@@ -22,41 +22,83 @@ export const updateCourse = (courseId, data) => {
 }
 
 export const deleteCourse = (courseId) => {
-  return http.delete(`/teacher/courses/${courseId}`)
+  return http.delete(`/teacher/courses/${courseId}/`)
 }
 
 export const publishCourse = (courseId) => {
-  return http.post(`/teacher/courses/${courseId}/publish`)
+  return http.post(`/teacher/courses/${courseId}/publish/`)
 }
 
 // ==================== 章节管理 ====================
+
 export const getCourseChapters = (courseId) => {
-  return http.get(`/teacher/courses/${courseId}/chapters`)
+  return http.get(`/teacher/courses/${courseId}/chapters/`)
 }
 
 export const createChapter = (courseId, data) => {
-  return http.post(`/teacher/courses/${courseId}/chapters`, data)
+  return http.post(`/teacher/courses/${courseId}/chapters/`, data)
 }
 
 export const updateChapter = (courseId, chapterId, data) => {
-  return http.put(`/teacher/courses/${courseId}/chapters/${chapterId}`, data)
+  return http.put(`/teacher/courses/${courseId}/chapters/${chapterId}/`, data)
 }
 
 export const deleteChapter = (courseId, chapterId) => {
-  return http.delete(`/teacher/courses/${courseId}/chapters/${chapterId}`)
+  return http.delete(`/teacher/courses/${courseId}/chapters/${chapterId}/`)
 }
 
+
+
 export const sortChapters = (courseId, data) => {
-  return http.post(`/teacher/courses/${courseId}/chapters/sort`, data)
+  return http.post(`/teacher/courses/${courseId}/chapters/sort/`, data)
+}
+
+export const getLessonDetail = (courseId, lessonId) => {
+  return http.get(`/teacher/courses/${courseId}/lessons/${lessonId}/`)
+}
+
+export const saveAllChapters = (courseId, data) => {
+  return http.post(`/teacher/courses/${courseId}/chapters/batch/`, data)
+}
+
+// 小节管理
+export const createLesson = (courseId, chapterId, data) => {
+  return http.post(`/teacher/courses/${courseId}/chapters/${chapterId}/lessons/`, data)
+}
+
+export const updateLesson = (courseId, lessonId, data) => {
+  return http.put(`/teacher/courses/${courseId}/lessons/${lessonId}/`, data)
+}
+
+export const deleteLesson = (courseId, lessonId) => {
+  return http.delete(`/teacher/courses/${courseId}/lessons/${lessonId}/`)
+}
+
+// 课时内容块管理
+export const saveContentBlocks = (courseId, lessonId, data) => {
+  return http.post(`/teacher/courses/${courseId}/lessons/${lessonId}/content-blocks/`, data)
+}
+
+// 上传内容块文件（视频、文档等）
+export const uploadContentBlockFile = (courseId, lessonId, fileData) => {
+  const formData = new FormData()
+  formData.append('file', fileData.file)
+  formData.append('type', fileData.type) // 'video', 'image', 'file'
+  
+  return http.post(`/teacher/courses/${courseId}/lessons/${lessonId}/content-blocks/upload/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }
 
 // ==================== 学生管理 ====================
 export const getCourseStudents = (courseId, params) => {
-  return http.get(`/teacher/courses/${courseId}/students`, { params })
+  return http.get(`/teacher/courses/${courseId}/students/`, { params })
 }
 
 export const getStudentProgress = (courseId, studentId) => {
-  return http.get(`/teacher/courses/${courseId}/students/${studentId}/progress`)
+  return http.get(`/teacher/courses/${courseId}/students/${studentId}/progress/`)
 }
 
 // ==================== 学期与班级 ====================
@@ -185,6 +227,123 @@ export const pinThread = (courseId, threadId) => {
 
 export const unpinThread = (courseId, threadId) => {
   return http.post(`/teacher/courses/${courseId}/threads/${threadId}/unpin`)
+}
+
+
+// ==================== 题库管理 ====================
+
+// ========== 题目文件夹管理 ==========
+
+/**
+ * 获取题目文件夹树状结构
+ * @param {number} courseId - 课程ID
+ * @returns {Promise} 返回文件夹树状数据
+ */
+export const getQuestionCategories = (courseId) => {
+  return http.get(`/teacher/courses/${courseId}/question-categories/`)
+}
+
+/**
+ * 创建题目文件夹
+ * @param {number} courseId - 课程ID
+ * @param {object} data - 文件夹数据
+ * @param {string} data.name - 文件夹名称
+ * @param {number} data.parent_id - 父文件夹ID（可选）
+ * @param {number} data.order - 排序（可选）
+ */
+export const createQuestionCategory = (courseId, data) => {
+  return http.post(`/teacher/courses/${courseId}/question-categories/`, data)
+}
+
+/**
+ * 获取题目文件夹详情
+ * @param {number} courseId - 课程ID
+ * @param {number} categoryId - 文件夹ID
+ */
+export const getQuestionCategoryDetail = (courseId, categoryId) => {
+  return http.get(`/teacher/courses/${courseId}/question-categories/${categoryId}/`)
+}
+
+/**
+ * 更新题目文件夹
+ * @param {number} courseId - 课程ID
+ * @param {number} categoryId - 文件夹ID
+ * @param {object} data - 更新的数据
+ * @param {string} data.name - 文件夹名称
+ * @param {number} data.order - 排序
+ */
+export const updateQuestionCategory = (courseId, categoryId, data) => {
+  return http.put(`/teacher/courses/${courseId}/question-categories/${categoryId}/`, data)
+}
+
+/**
+ * 删除题目文件夹（软删除）
+ * @param {number} courseId - 课程ID
+ * @param {number} categoryId - 文件夹ID
+ */
+export const deleteQuestionCategory = (courseId, categoryId) => {
+  return http.delete(`/teacher/courses/${courseId}/question-categories/${categoryId}/`)
+}
+
+// ========== 题目管理 ==========
+
+/**
+ * 获取题库列表
+ * @param {number} courseId - 课程ID
+ * @param {object} params - 查询参数
+ * @param {number} params.page - 页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {number} params.category_id - 文件夹ID（筛选指定文件夹下的题目）
+ * @param {string} params.type - 题目类型 (single_choice, multiple_choice, true_false, fill_blank, short_answer)
+ * @param {string} params.keyword - 搜索关键词
+ * @param {number} params.tag_id - 标签ID
+ * @param {number} params.point_id - 知识点ID
+ */
+export const getQuestionBank = (courseId, params) => {
+  return http.get(`/teacher/courses/${courseId}/questions/`, { params })
+}
+
+/**
+ * 创建题目
+ * @param {number} courseId - 课程ID
+ * @param {object} data - 题目数据
+ * @param {string} data.title - 题目标题
+ * @param {string} data.type - 题目类型
+ * @param {string} data.content - 题目内容
+ * @param {string} data.difficulty - 难度 (easy, medium, hard)
+ * @param {array} data.tags - 标签ID数组
+ * @param {array} data.knowledge_points - 知识点ID数组
+ */
+export const createQuestion = (courseId, data) => {
+  return http.post(`/teacher/courses/${courseId}/questions/`, data)
+}
+
+/**
+ * 获取题目详情
+ * @param {number} courseId - 课程ID
+ * @param {number} questionId - 题目ID
+ */
+export const getQuestionDetail = (courseId, questionId) => {
+  return http.get(`/teacher/courses/${courseId}/questions/${questionId}/`)
+}
+
+/**
+ * 更新题目
+ * @param {number} courseId - 课程ID
+ * @param {number} questionId - 题目ID
+ * @param {object} data - 更新的题目数据
+ */
+export const updateQuestion = (courseId, questionId, data) => {
+  return http.put(`/teacher/courses/${courseId}/questions/${questionId}/`, data)
+}
+
+/**
+ * 删除题目
+ * @param {number} courseId - 课程ID
+ * @param {number} questionId - 题目ID
+ */
+export const deleteQuestion = (courseId, questionId) => {
+  return http.delete(`/teacher/courses/${courseId}/questions/${questionId}/`)
 }
 
 // ==================== 数据统计 ====================

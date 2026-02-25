@@ -94,7 +94,8 @@ export default {
 .main-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .navbar {
@@ -267,5 +268,7 @@ export default {
 .main-container {
   flex: 1;
   width: 100%;
+  overflow: auto;
+  position: relative;
 }
 </style>
