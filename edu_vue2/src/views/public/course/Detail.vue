@@ -18,6 +18,11 @@
 
     <section class="course-intro">
       <div class="intro-content">
+        <!-- 课程封面 -->
+        <div v-if="course.cover" class="course-cover-section">
+          <img :src="course.cover" :alt="course.name" class="course-cover-image">
+        </div>
+        
         <div class="intro-section">
           <h2>课程简介</h2>
           <p>{{ course.description }}</p>
@@ -71,6 +76,8 @@
 </template>
 
 <script>
+import { courseAPI } from '@/api'
+
 export default {
   name: 'CourseDetail',
   data() {
@@ -78,7 +85,8 @@ export default {
       courseId: this.$route.params.id,
       isEnrolled: false,
       enrollLoading: false,
-      course: {}
+      course: {},
+      loading: false
     }
   },
   created() {
@@ -90,43 +98,63 @@ export default {
     }
   },
   methods: {
-    // 修改点 2：添加 goBack 方法
+    // 辅助方法：将相对路径转换为完整的后端URL
+    getFullMediaUrl(relativeUrl) {
+      if (!relativeUrl) return ''
+      if (relativeUrl.startsWith('http')) return relativeUrl
+      
+      const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+      return `${backendUrl}${relativeUrl}`
+    },
+    // 返回按钮
     goBack() {
       this.$router.push('/courses')
     },
-    loadCourseDetail() {
-      const coursesData = {
-        1: {
-          id: 1,
-          name: 'Vue.js 从入门到精通',
-          instructor: '张三',
-          description: '这是一个完整的Vue.js课程，从基础到高级应用',
-          rating: 4.8,
-          studentCount: 1250,
-          lessonCount: 48,
-          sections: [
-            {
-              title: '第一章：Vue基础',
-              lessons: [
-                { id: 1, name: '认识Vue.js', type: 'video' },
-                { id: 2, name: '环境搭建', type: 'video' }
-              ]
-            }
-          ]
+    // 加载课程详情
+    async loadCourseDetail() {
+      this.loading = true
+      try {
+        // 调用后端API获取课程详情
+        const response = await courseAPI.getCourseDetail(this.courseId)
+        const courseData = response.data || response
+        
+        // 映射课程数据
+        this.course = {
+          id: courseData.id,
+          name: courseData.title,
+          instructor: courseData.teacher?.name || '未知讲师',
+          description: courseData.description || '暂无课程简介',
+          cover: this.getFullMediaUrl(courseData.cover),
+          rating: 4.8, // 后端暂时没有评分字段
+          studentCount: courseData.enrollment_count || 0,
+          lessonCount: courseData.lesson_count || 0,
+          sections: courseData.chapters || []
         }
-      }
-      
-      this.course = coursesData[this.courseId] || {
-        id: this.courseId,
-        name: '课程 ' + this.courseId,
-        instructor: '讲师',
-        description: '课程描述',
-        rating: 0,
-        studentCount: 0,
-        lessonCount: 0,
-        sections: []
+        
+        // 检查是否已加入课程
+        // TODO: 调用API检查当前用户是否已选修该课程
+        this.isEnrolled = false
+        
+      } catch (error) {
+        console.error('加载课程详情失败:', error)
+        this.$message.error('加载课程详情失败')
+        // 使用默认数据
+        this.course = {
+          id: this.courseId,
+          name: '课程 ' + this.courseId,
+          instructor: '讲师',
+          description: '课程描述',
+          cover: '',
+          rating: 0,
+          studentCount: 0,
+          lessonCount: 0,
+          sections: []
+        }
+      } finally {
+        this.loading = false
       }
     },
+    // 加入课程
     async joinCourse() {
       this.$router.push({
         path: '/courses/enrollment',
@@ -222,6 +250,19 @@ export default {
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 课程封面样式 */
+.course-cover-section {
+  margin-bottom: 2rem;
+}
+
+.course-cover-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .intro-section h2 {

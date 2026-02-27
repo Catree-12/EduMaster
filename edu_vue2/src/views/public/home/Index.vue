@@ -182,6 +182,14 @@ export default {
     this.loadPopularCourses()
   },
   methods: {
+    // 辅助方法：将相对路径转换为完整的后端URL
+    getFullMediaUrl(relativeUrl) {
+      if (!relativeUrl) return 'https://via.placeholder.com/300x200/667eea/ffffff?text=Course'
+      if (relativeUrl.startsWith('http')) return relativeUrl
+      
+      const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+      return `${backendUrl}${relativeUrl}`
+    },
     // 加载热门课程
     async loadPopularCourses() {
       this.loading = true
@@ -199,7 +207,7 @@ export default {
           rating: 4.8, // 后端暂时没有评分字段,默认值
           price: course.price,
           enrollments: course.enrollment_count || 0,
-          cover: course.cover || 'https://via.placeholder.com/300x200/667eea/ffffff?text=Course'
+          cover: this.getFullMediaUrl(course.cover)
         }))
       } catch (error) {
         console.error('加载热门课程失败:', error)

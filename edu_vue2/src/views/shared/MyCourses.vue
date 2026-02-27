@@ -186,6 +186,14 @@ export default {
     this.loadCourses()
   },
   methods: {
+    // 辅助方法：将相对路径转换为完整的后端URL
+    getFullMediaUrl(relativeUrl) {
+      if (!relativeUrl) return 'https://via.placeholder.com/300x180/667eea/ffffff?text=Course'
+      if (relativeUrl.startsWith('http')) return relativeUrl
+      
+      const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+      return `${backendUrl}${relativeUrl}`
+    },
     // 加载课程
     async loadCourses() {
       this.loading = true
@@ -204,7 +212,7 @@ export default {
           id: course.id,
           title: course.title,
           description: course.description || '',
-          coverImage: course.cover || 'https://via.placeholder.com/300x180/2980b9/ffffff?text=Course',
+          coverImage: this.getFullMediaUrl(course.cover),
           category: course.category,
           instructorName: course.teacher?.name || '未知教师',
           progress: course.progress || 0,
@@ -217,7 +225,7 @@ export default {
           id: course.id,
           title: course.title,
           description: course.description || '',
-          coverImage: course.cover || 'https://via.placeholder.com/300x180/3498db/ffffff?text=Course',
+          coverImage: this.getFullMediaUrl(course.cover),
           category: course.category || '未分类',
           price: course.price || 0,
           status: course.status || 'draft',

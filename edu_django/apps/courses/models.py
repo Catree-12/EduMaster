@@ -198,6 +198,7 @@ class LessonContentBlock(models.Model):
 class CourseTerm(models.Model):
     """课程班期"""
     STATUS_CHOICES = [
+        ('not_started', '未开始'),
         ('in_progress', '进行中'),
         ('finished', '已结课'),
     ]
@@ -211,9 +212,8 @@ class CourseTerm(models.Model):
     name = models.CharField(max_length=100, verbose_name='班期名称', help_text='如 2023秋季一期')
     start_date = models.DateField(verbose_name='开课日期')
     end_date = models.DateField(verbose_name='结课日期')
-    description = models.TextField(null=True, blank=True, verbose_name='班期简介')
-    enrollment_limit = models.IntegerField(default=0, verbose_name='招生人数限制', help_text='0表示不限制')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='recruiting', verbose_name='状态')
+    description = models.TextField(blank=True, verbose_name='班期简介')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_started', verbose_name='状态')
     
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')
@@ -240,6 +240,7 @@ class ClassGroup(models.Model):
         verbose_name='关联班期'
     )
     name = models.CharField(max_length=100, verbose_name='班级名称', help_text='如 计算机1班')
+    class_limit = models.IntegerField(default=0, verbose_name='班级人数限制', help_text='0表示不限制')
     head_teacher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

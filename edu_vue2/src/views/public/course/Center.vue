@@ -206,6 +206,14 @@ export default {
   },
   created() { this.loadCourses(); },
   methods: {
+    // 辅助方法：将相对路径转换为完整的后端URL
+    getFullMediaUrl(relativeUrl) {
+      if (!relativeUrl) return 'https://via.placeholder.com/300x200/667eea/ffffff?text=Course'
+      if (relativeUrl.startsWith('http')) return relativeUrl
+      
+      const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+      return `${backendUrl}${relativeUrl}`
+    },
     async loadCourses() {
       this.loading = true;
       try {
@@ -217,7 +225,7 @@ export default {
           level: '初级', rating: 4.8, price: c.price, enrollments: c.enrollment_count || 0,
           isHot: c.enrollment_count > 1000,
           isNew: new Date(c.created_at) > new Date(Date.now() - 7 * 86400000),
-          cover: c.cover || 'https://via.placeholder.com/300x200/667eea/ffffff?text=Course'
+          cover: this.getFullMediaUrl(c.cover)
         }));
         this.totalCourses = res.count;
         this.totalPages = res.totalPages;

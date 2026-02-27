@@ -18,7 +18,7 @@ export const createCourse = (data) => {
 }
 
 export const updateCourse = (courseId, data) => {
-  return http.put(`/teacher/courses/${courseId}`, data)
+  return http.put(`/teacher/courses/${courseId}/`, data)
 }
 
 export const deleteCourse = (courseId) => {
@@ -97,41 +97,49 @@ export const getCourseStudents = (courseId, params) => {
   return http.get(`/teacher/courses/${courseId}/students/`, { params })
 }
 
+export const addStudentToClass = (courseId, data) => {
+  return http.post(`/teacher/courses/${courseId}/students/`, data)
+}
+
+export const removeStudent = (courseId, studentId) => {
+  return http.delete(`/teacher/courses/${courseId}/students/${studentId}/`)
+}
+
 export const getStudentProgress = (courseId, studentId) => {
   return http.get(`/teacher/courses/${courseId}/students/${studentId}/progress/`)
 }
 
 // ==================== 学期与班级 ====================
 export const getCourseTerms = (courseId) => {
-  return http.get(`/teacher/courses/${courseId}/terms`)
+  return http.get(`/teacher/courses/${courseId}/terms/`)
 }
 
 export const createTerm = (courseId, data) => {
-  return http.post(`/teacher/courses/${courseId}/terms`, data)
+  return http.post(`/teacher/courses/${courseId}/terms/`, data)
 }
 
 export const updateTerm = (courseId, termId, data) => {
-  return http.put(`/teacher/courses/${courseId}/terms/${termId}`, data)
+  return http.put(`/teacher/courses/${courseId}/terms/${termId}/`, data)
 }
 
 export const deleteTerm = (courseId, termId) => {
-  return http.delete(`/teacher/courses/${courseId}/terms/${termId}`)
+  return http.delete(`/teacher/courses/${courseId}/terms/${termId}/`)
 }
 
 export const getCourseClasses = (courseId, params) => {
-  return http.get(`/teacher/courses/${courseId}/classes`, { params })
+  return http.get(`/teacher/courses/${courseId}/classes/`, { params })
 }
 
 export const createClass = (courseId, data) => {
-  return http.post(`/teacher/courses/${courseId}/classes`, data)
+  return http.post(`/teacher/courses/${courseId}/classes/`, data)
 }
 
 export const updateClass = (courseId, classId, data) => {
-  return http.put(`/teacher/courses/${courseId}/classes/${classId}`, data)
+  return http.put(`/teacher/courses/${courseId}/classes/${classId}/`, data)
 }
 
 export const deleteClass = (courseId, classId) => {
-  return http.delete(`/teacher/courses/${courseId}/classes/${classId}`)
+  return http.delete(`/teacher/courses/${courseId}/classes/${classId}/`)
 }
 
 // ==================== 作业管理 ====================

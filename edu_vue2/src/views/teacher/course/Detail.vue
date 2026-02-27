@@ -739,21 +739,6 @@
                 <option value="1.0">最难 (1.0)</option>
               </select>
 
-              <!-- <el-select 
-                v-model="questionFilter.knowledgePoints" 
-                multiple 
-                collapse-tags
-                placeholder="全部知识点" 
-                class="compact-select-multi"
-                style="width: 180px;"
-              >
-                <el-option 
-                  v-for="kp in allKnowledgePointOptions" 
-                  :key="kp" 
-                  :label="kp" 
-                  :value="kp"
-                ></el-option>
-              </el-select> -->
               <el-cascader
   v-model="questionFilter.knowledgePoints"
   :options="normalizedKnowledgeTree"
@@ -931,8 +916,6 @@
                       <div class="card-stats">
                         <span class="stat-item">创建人: {{ question.creator || '未知' }}</span>
                         <span class="stat-separator">·</span>
-                        <!-- <span class="stat-item">使用: {{ question.usageCount }}次</span> -->
-                        <span class="stat-separator">·</span>
                         <span class="stat-item">{{ question.createTime }}</span>
                       </div>
                       <div class="card-actions">
@@ -998,17 +981,20 @@
                           </div>
                           <div class="card-center">
                             <div class="stat-item">
-                              <span class="stat-value">{{ getTermClasses(term.id).length }}</span>
+                              <span class="stat-value">{{ term.classCount }}</span>
                               <span class="stat-label">个班级</span>
                             </div>
                             <div class="stat-item">
-                              <span class="stat-value">{{ getTermStudentCount(term.id) }}</span>
+                              <span class="stat-value">{{ term.studentCount }}</span>
                               <span class="stat-label">名学生</span>
                             </div>
                           </div>
                           <div class="card-right">
                             <button @click.stop="editTerm(term)" class="action-btn edit-btn">
                               <i class="el-icon-edit"></i> 编辑班期
+                            </button>
+                            <button @click.stop="deleteTerm(term.id)" class="action-btn delete-btn">
+                              <i class="el-icon-delete"></i> 删除
                             </button>
                             <button @click.stop="enterTermManagement(term)" class="enter-btn">
                               进入管理 <i class="el-icon-arrow-right"></i>
@@ -1043,7 +1029,7 @@
                       <div class="class-sidebar">
                         <div class="sidebar-header">
                           <h4>班级列表</h4>
-                          <button @click="showAddClassDialog(currentViewingTerm)" class="add-class-btn" title="新建班级">
+                          <button @click.stop="showAddClassDialog(currentViewingTerm)" class="add-class-btn" title="新建班级">
                             <i class="el-icon-plus"></i>
                           </button>
                         </div>
@@ -1051,7 +1037,6 @@
                           <draggable 
                             :value="getTermClasses(currentViewingTerm.id)"
                             @input="updateClassOrder($event, currentViewingTerm.id)"
-                            handle=".drag-handle"
                             animation="200"
                             class="class-draggable-area"
                           >
@@ -1062,27 +1047,21 @@
                               @click="openMemberDrawer(classItem)"
                             >
                               <div class="class-item-header">
-                                <span class="drag-handle" title="拖拽调整顺序">☰</span>
                                 <span class="class-item-name">{{ classItem.name }}</span>
-                              <el-dropdown trigger="click" @command="handleClassCommand($event, classItem)" @click.native.stop>
-                                <span class="class-item-more">
-                                  <i class="el-icon-more"></i>
-                                </span>
-                                <el-dropdown-menu slot="dropdown">
-                                  <el-dropdown-item command="edit">编辑班级</el-dropdown-item>
-                                  <el-dropdown-item command="delete" style="color: #F56C6C;">删除班级</el-dropdown-item>
-                                </el-dropdown-menu>
-                              </el-dropdown>
-                            </div>
+                                <el-dropdown trigger="click" @command="handleClassCommand($event, classItem)" @click.native.stop>
+                                  <span class="class-item-more">
+                                    <i class="el-icon-more"></i>
+                                  </span>
+                                  <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item command="edit">编辑班级</el-dropdown-item>
+                                    <el-dropdown-item command="delete" style="color: #F56C6C;">删除班级</el-dropdown-item>
+                                  </el-dropdown-menu>
+                                </el-dropdown>
+                              </div>
                             <div class="class-item-info">
                               <span class="info-text">
                                 <i class="el-icon-user"></i> {{ getClassStudentCount(classItem.id) }} / {{ classItem.capacity }}
                               </span>
-                            </div>
-                            <div v-if="classItem.inviteCode" class="class-item-code">
-                              <span class="code-label">邀请码：</span>
-                              <span class="code-value" @click.stop="copyInviteCode(classItem.inviteCode)">{{ classItem.inviteCode.substring(0, 3) + '***' }}</span>
-                              <i class="el-icon-document-copy copy-icon" @click.stop="copyInviteCode(classItem.inviteCode)" title="点击复制完整邀请码"></i>
                             </div>
                           </div>
                           </draggable>
@@ -1104,6 +1083,8 @@
 
                         <!-- 已选择班级，显示学生信息 -->
                         <div v-else class="member-content">
+                          
+                          
                           <!-- 操作栏 -->
                           <div class="operation-bar">
                             <el-input
@@ -1204,29 +1185,6 @@
                       </div>
 
                       <div class="cm-form-item">
-                        <label class="cm-label">课程封面</label>
-                        <div class="cm-upload-area">
-                          <el-upload
-                            v-if="editingBasicInfo"
-                            class="cover-uploader"
-                            action="/api/upload/image"
-                            :show-file-list="false"
-                            :on-success="handleCoverSuccess"
-                            :before-upload="beforeCoverUpload"
-                          >
-                            <img v-if="courseManagementData.coverImage" :src="courseManagementData.coverImage" class="cover-preview">
-                            <div v-else class="cover-upload-placeholder">
-                              <i class="el-icon-plus"></i>
-                              <div class="upload-text">点击上传封面</div>
-                              <div class="upload-hint">建议尺寸：800x600px</div>
-                            </div>
-                          </el-upload>
-                          <img v-else-if="courseManagementData.coverImage" :src="courseManagementData.coverImage" class="cover-preview-readonly">
-                          <div v-else class="cover-placeholder-readonly">暂无封面</div>
-                        </div>
-                      </div>
-
-                      <div class="cm-form-item">
                         <label class="cm-label">课程描述</label>
                         <el-input
                           v-model="courseManagementData.description"
@@ -1246,108 +1204,108 @@
                     </div>
                   </div>
 
-                  <!-- 卡片二：效期与模式 -->
+                  <!-- 卡片二：课程封面 -->
                   <div class="cm-card">
                     <div class="cm-card-header">
-                      <h3 class="cm-card-title">效期与模式</h3>
+                      <h3 class="cm-card-title">课程封面</h3>
+                      <span class="cm-card-subtitle">点击图片修改封面，上传后自动保存</span>
+                    </div>
+                    <div class="cm-form">
+                      <div class="cm-form-item">
+                        <div class="cm-upload-area-center">
+                          <el-upload
+                            class="cover-uploader"
+                            :http-request="handleCoverUpload"
+                            :show-file-list="false"
+                            :before-upload="beforeCoverUpload"
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                          >
+                            <img v-if="courseManagementData.coverImage" :src="courseManagementData.coverImage" class="cover-preview-editable">
+                            <div v-else class="cover-upload-placeholder">
+                              <i class="el-icon-plus"></i>
+                              <div class="upload-text">点击上传封面</div>
+                              <div class="upload-hint">建议尺寸：800x600px，支持JPG/PNG/WEBP格式，大小不超过5MB</div>
+                            </div>
+                          </el-upload>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 卡片三：课程设置 -->
+                  <div class="cm-card">
+                    <div class="cm-card-header">
+                      <h3 class="cm-card-title">课程设置</h3>
                       <el-button 
-                        v-if="!editingValidityMode"
+                        v-if="!editingCourseSettings"
                         type="primary" 
                         size="small"
                         icon="el-icon-edit"
                         plain
-                        @click="editingValidityMode = true"
+                        @click="editingCourseSettings = true"
                       >
                         编辑
                       </el-button>
                     </div>
                     <div class="cm-form">
-                      <div class="cm-form-item">
-                        <label class="cm-label">收费模式</label>
-                        <el-radio-group 
-                          v-model="courseManagementData.isFree" 
-                          @change="onCourseTypeChange"
-                          :disabled="!editingValidityMode"
-                        >
-                          <el-radio :label="true">免费</el-radio>
-                          <el-radio :label="false">收费</el-radio>
-                        </el-radio-group>
-                      </div>
+                      <div class="cm-form-row">
+                        <div class="cm-form-item cm-form-item-third">
+                          <label class="cm-label">课程分类</label>
+                          <el-select
+                            v-model="courseManagementData.category"
+                            placeholder="请选择课程分类"
+                            :disabled="!editingCourseSettings"
+                            style="width: 100%;"
+                          >
+                            <el-option label="计算机" value="计算机"></el-option>
+                            <el-option label="经济学" value="经济学"></el-option>
+                            <el-option label="农林园艺" value="农林园艺"></el-option>
+                            <el-option label="医药卫生" value="医药卫生"></el-option>
+                            <el-option label="理学" value="理学"></el-option>
+                            <el-option label="历史" value="历史"></el-option>
+                            <el-option label="哲学" value="哲学"></el-option>
+                            <el-option label="法学" value="法学"></el-option>
+                            <el-option label="文学文化" value="文学文化"></el-option>
+                            <el-option label="艺术设计" value="艺术设计"></el-option>
+                            <el-option label="外语" value="外语"></el-option>
+                            <el-option label="教育教学" value="教育教学"></el-option>
+                            <el-option label="管理学" value="管理学"></el-option>
+                            <el-option label="工学" value="工学"></el-option>
+                          </el-select>
+                        </div>
 
-                      <div v-if="!courseManagementData.isFree" class="cm-form-item">
-                        <label class="cm-label">课程价格</label>
-                        <div class="cm-price-input">
+                        <div class="cm-form-item cm-form-item-third">
+                          <label class="cm-label">课程难度</label>
+                          <el-select
+                            v-model="courseManagementData.difficulty"
+                            placeholder="请选择课程难度"
+                            :disabled="!editingCourseSettings"
+                            style="width: 100%;"
+                          >
+                            <el-option label="初级" value="beginner"></el-option>
+                            <el-option label="中级" value="intermediate"></el-option>
+                            <el-option label="高级" value="advanced"></el-option>
+                          </el-select>
+                        </div> 
+
+                        <div class="cm-form-item cm-form-item-third">
+                          <label class="cm-label">课程价格</label>
                           <el-input-number
                             v-model="courseManagementData.price"
                             :min="0"
                             :max="99999"
                             :precision="2"
                             controls-position="right"
-                            style="width: 200px;"
-                            :disabled="!editingValidityMode"
+                            style="width: 100%;"
+                            :disabled="!editingCourseSettings"
                           />
-                          <span class="cm-unit">元</span>
+                          <div class="cm-hint">输入0表示免费课程</div>
                         </div>
                       </div>
 
-                      <div class="cm-divider"></div>
-
-                      <div class="cm-form-item">
-                        <label class="cm-label">有效期</label>
-                        <el-radio-group 
-                          v-model="courseManagementData.isPermanent" 
-                          style="margin-bottom: 10px;"
-                          :disabled="!editingValidityMode"
-                        >
-                          <el-radio :label="true">永久有效</el-radio>
-                          <el-radio :label="false">限时有效</el-radio>
-                        </el-radio-group>
-                        <div v-if="!courseManagementData.isPermanent" class="cm-date-range">
-                          <el-date-picker
-                            v-model="courseManagementData.validStartDate"
-                            type="date"
-                            placeholder="开始日期"
-                            value-format="yyyy-MM-dd"
-                            style="width: 180px;"
-                            :disabled="!editingValidityMode"
-                          />
-                          <span class="date-separator">至</span>
-                          <el-date-picker
-                            v-model="courseManagementData.validEndDate"
-                            type="date"
-                            placeholder="截至日期"
-                            value-format="yyyy-MM-dd"
-                            style="width: 180px;"
-                            :disabled="!editingValidityMode"
-                          />
-                        </div>
-                      </div>
-
-                      <div class="cm-form-item">
-                        <label class="cm-label">报名人数上限</label>
-                        <el-radio-group 
-                          v-model="courseManagementData.hasLimit" 
-                          style="margin-bottom: 10px;"
-                          :disabled="!editingValidityMode"
-                        >
-                          <el-radio :label="false">不限</el-radio>
-                          <el-radio :label="true">有限</el-radio>
-                        </el-radio-group>
-                        <div v-if="courseManagementData.hasLimit">
-                          <el-input-number
-                            v-model="courseManagementData.maxStudents"
-                            :min="1"
-                            controls-position="right"
-                            style="width: 200px;"
-                            :disabled="!editingValidityMode"
-                          />
-                          <span class="cm-unit">人</span>
-                        </div>
-                      </div>
-
-                      <div v-if="editingValidityMode" class="cm-form-actions">
-                        <el-button @click="cancelEditValidityMode">取消</el-button>
-                        <el-button type="primary" @click="saveValiditySettings">保存</el-button>
+                      <div v-if="editingCourseSettings" class="cm-form-actions">
+                        <el-button @click="cancelEditCourseSettings">取消</el-button>
+                        <el-button type="primary" @click="saveCourseSettings">保存</el-button>
                       </div>
                     </div>
                   </div>
@@ -2019,13 +1977,9 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>学生姓名 *</label>
-            <input v-model="newStudent.name" type="text" placeholder="请输入学生姓名" class="form-input">
-          </div>
-
-          <div class="form-group">
-            <label>联系电话 *</label>
-            <input v-model="newStudent.phone" type="tel" placeholder="请输入联系电话" class="form-input">
+            <label>学号 *</label>
+            <input v-model="newStudent.studentNo" type="text" placeholder="请输入学生学号" class="form-input">
+            <p class="form-hint">请输入学生的学号,系统将自动查找并添加该学生</p>
           </div>
 
           <div class="modal-actions">
@@ -2049,28 +2003,9 @@
             <input v-model="newClass.name" type="text" placeholder="例如：一班" class="form-input">
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>班级容量 *</label>
-              <input v-model.number="newClass.capacity" type="number" min="1" placeholder="50" class="form-input">
-            </div>
-            <div class="form-group">
-              <label>创建人</label>
-              <input v-model="newClass.teacher" type="text" placeholder="输入创建人姓名" class="form-input">
-            </div>
-          </div>
-
           <div class="form-group">
-            <label>班级邀请码</label>
-            <div class="input-with-button">
-              <input v-model="newClass.inviteCode" type="text" placeholder="自动生成或手动输入" class="form-input">
-              <button @click="generateInviteCode" class="btn-generate">生成</button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>班级描述</label>
-            <textarea v-model="newClass.description" placeholder="输入班级描述" rows="3" class="form-textarea"></textarea>
+            <label>班级容量 *</label>
+            <input v-model.number="newClass.capacity" type="number" min="0" placeholder="0（0代表无上限）" class="form-input">
           </div>
 
           <div class="modal-actions">
@@ -2143,6 +2078,8 @@ import draggable from 'vuedraggable'
 import {
   // 教师API
   getTeacherCourse,
+  updateCourse,
+  publishCourse,
   getCourseChapters,
   getQuestionCategories,
   createQuestionCategory,
@@ -2152,6 +2089,18 @@ import {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  // 教务组织API
+  getCourseTerms,
+  createTerm,
+  updateTerm,
+  deleteTerm,
+  getCourseClasses,
+  createClass,
+  updateClass,
+  deleteClass,
+  getCourseStudents,
+  addStudentToClass,
+  removeStudent,
   // 知识点API
   getKnowledgePoints,
   createKnowledgePoint,
@@ -2190,7 +2139,23 @@ export default {
         id: null,
         title: '',
         teacher_name: '',
-        description: ''
+        description: '',
+        cover: '',
+        price: 0,
+        difficulty: '',
+        difficulty_display: '',
+        status: '',
+        status_display: '',
+        category: '',
+        category_id: null,
+        audit_remark: '',
+        chapter_count: 0,
+        lesson_count: 0,
+        student_count: 0,
+        view_count: 0,
+        enrollment_count: 0,
+        created_at: '',
+        published_at: ''
       },
       navItems: [
         { id: 'sections', label: '章节', icon: '📑' },
@@ -2614,28 +2579,7 @@ export default {
       // 班期管理数据
       showTermModal: false,
       editingTerm: null,
-      terms: [
-        {
-          id: 1,
-          name: '2024春季班',
-          startDate: '2024-03-01',
-          endDate: '2024-06-30',
-          status: 'active',
-          classCount: 3,
-          studentCount: 150,
-          description: '2024年春季学期'
-        },
-        {
-          id: 2,
-          name: '2024秋季班',
-          startDate: '2024-09-01',
-          endDate: '2024-12-31',
-          status: 'upcoming',
-          classCount: 0,
-          studentCount: 0,
-          description: '2024年秋季学期'
-        }
-      ],
+      terms: [],
       newTerm: {
         name: '',
         startDate: '',
@@ -2647,47 +2591,10 @@ export default {
       showClassModal: false,
       editingClass: null,
       selectedTermForClass: '',
-      classes: [
-        {
-          id: 1,
-          termId: 1,
-          name: '高一（1）班',
-          inviteCode: 'ABC123',
-          capacity: 50,
-          studentCount: 48,
-          teacher: '张老师',
-          status: 'active',
-          description: '重点班'
-        },
-        {
-          id: 2,
-          termId: 1,
-          name: '高一（2）班',
-          inviteCode: 'XYZ789',
-          capacity: 50,
-          studentCount: 50,
-          teacher: '李老师',
-          status: 'active',
-          description: '普通班'
-        },
-        {
-          id: 3,
-          termId: 1,
-          name: '高一（3）班',
-          inviteCode: 'MNP567',
-          capacity: 50,
-          studentCount: 52,
-          teacher: '王老师',
-          status: 'active',
-          description: '实验班'
-        }
-      ],
+      classes: [],
       newClass: {
         name: '',
-        capacity: 50,
-        teacher: '',
-        description: '',
-        inviteCode: ''
+        capacity: 0
       },
       currentTermId: null,
 
@@ -2703,33 +2610,11 @@ export default {
       // 添加学生模态框
       showAddStudentModal: false,
       newStudent: {
-        name: '',
-        studentNo: '',
-        phone: '',
-        email: ''
+        studentNo: ''
       },
       
-      // 学生数据 (模拟数据)
-      students: [
-        // 班级1的学生
-        { id: 1, classId: 1, name: '张三', studentNo: '2024001', joinTime: '2024-03-05 10:30' },
-        { id: 2, classId: 1, name: '李四', studentNo: '2024002', joinTime: '2024-03-06 09:15' },
-        { id: 3, classId: 1, name: '王五', studentNo: '2024003', joinTime: '2024-03-07 14:20' },
-        { id: 4, classId: 1, name: '赵六', studentNo: '2024004', joinTime: '2024-03-08 11:45' },
-        { id: 5, classId: 1, name: '钱七', studentNo: '2024005', joinTime: '2024-03-09 08:50' },
-        // 班级2的学生
-        { id: 6, classId: 2, name: '孙八', studentNo: '2024006', joinTime: '2024-03-10 13:30' },
-        { id: 7, classId: 2, name: '周九', studentNo: '2024007', joinTime: '2024-03-11 10:15' },
-        { id: 8, classId: 2, name: '吴十', studentNo: '2024008', joinTime: '2024-03-12 15:40' },
-        { id: 9, classId: 2, name: '郑一', studentNo: '2024009', joinTime: '2024-03-13 09:20' },
-        // 班级3的学生
-        { id: 10, classId: 3, name: '冯二', studentNo: '2024010', joinTime: '2024-03-14 11:10' },
-        { id: 11, classId: 3, name: '陈三', studentNo: '2024011', joinTime: '2024-03-15 14:55' },
-        { id: 12, classId: 3, name: '褚四', studentNo: '2024012', joinTime: '2024-03-16 08:30' },
-        { id: 13, classId: 3, name: '卫五', studentNo: '2024013', joinTime: '2024-03-17 16:20' },
-        { id: 14, classId: 3, name: '蒋六', studentNo: '2024014', joinTime: '2024-03-18 10:45' },
-        { id: 15, classId: 3, name: '沈七', studentNo: '2024015', joinTime: '2024-03-19 13:30' }
-      ],
+      // 学生数据
+      students: [],
 
       // 拖拽相关状态
       draggedClass: null,
@@ -2798,21 +2683,22 @@ export default {
         courseName: '',
         coverImage: '',
         description: '',
-        isPublished: false,
-        isFree: true,
+        category: '',
+        categoryId: null,
+        difficulty: '',
         price: 0,
-        isPermanent: true,
-        validStartDate: '',
-        validEndDate: '',
-        hasLimit: false,
-        maxStudents: 0,
-        sectionCount: 0,
-        lessonCount: 0
+        status: 'draft',
+        statusDisplay: '草稿',
+        chapterCount: 0,
+        lessonCount: 0,
+        studentCount: 0,
+        viewCount: 0,
+        enrollmentCount: 0
       },
 
       // 编辑模式标志
       editingBasicInfo: false,
-      editingValidityMode: false
+      editingCourseSettings: false
     }
   },
   computed: {
@@ -2946,6 +2832,7 @@ export default {
     },
     filteredClasses() {
       if (!this.selectedTermForClass) return []
+      if (!Array.isArray(this.classes)) return []
       return this.classes.filter(cls => cls.termId === parseInt(this.selectedTermForClass))
     },
     // 今日收入
@@ -3125,15 +3012,6 @@ export default {
       return [...new Set(options)] // 去重
     },
     // 从题目数据中提取所有标签选项
-    // allTagOptions() {
-    //   const tags = new Set()
-    //   this.questions.forEach(q => {
-    //     if (q.tags && Array.isArray(q.tags)) {
-    //       q.tags.forEach(tag => tags.add(tag))
-    //     }
-    //   })
-    //   return Array.from(tags).sort()
-    // },
     allTagOptions() {
     const tags = new Set()
     
@@ -3172,11 +3050,15 @@ export default {
     },
     // 筛选后的学生列表 (用于成员管理抽屉)
     filteredStudents() {
-      if (!this.currentManagingClass) return []
+      if (!this.currentManagingClass) {
+        return []
+      }
       
       return this.students.filter(s => {
-        // 班级匹配
-        const matchClass = s.classId === this.currentManagingClass.id
+        // 班级匹配 - 确保数字比较
+        const studentClassId = parseInt(s.classId)
+        const currentClassId = parseInt(this.currentManagingClass.id)
+        const matchClass = studentClassId === currentClassId
         
         // 搜索匹配 (姓名或学号)
         const matchSearch = !this.studentSearch || 
@@ -3238,8 +3120,37 @@ export default {
       await this.loadQuestions()
       await this.loadKnowledgeTree()
     }
+
+    // 如果默认显示管理模块，加载管理数据
+    if (this.activeModule === 'management') {
+      if (this.managementTab === 'academic') {
+        await this.loadAcademicData()
+      } else if (this.managementTab === 'courseManagement') {
+        await this.loadCourseManagementData()
+      }
+    }
+  },
+  watch: {
+    // 监听managementTab切换，自动加载对应数据
+    async managementTab(newTab) {
+      if (this.activeModule !== 'management') return
+      
+      if (newTab === 'academic') {
+        await this.loadAcademicData()
+      } else if (newTab === 'courseManagement') {
+        await this.loadCourseManagementData()
+      }
+    }
   },
   methods: {
+    // 辅助方法：将相对路径转换为完整的后端URL
+    getFullMediaUrl(relativeUrl) {
+      if (!relativeUrl) return ''
+      if (relativeUrl.startsWith('http')) return relativeUrl
+      
+      const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+      return `${backendUrl}${relativeUrl}`
+    },
     // 加载课程基本信息
     async loadCourseInfo() {
       if (!this.courseInfo.id) return
@@ -3252,13 +3163,22 @@ export default {
         this.courseInfo.title = courseData.title || ''
         this.courseInfo.teacher_name = this.$store.state.user.userInfo?.username || '讲师'
         this.courseInfo.description = courseData.description || ''
-        this.courseInfo.cover = courseData.cover || ''
+        this.courseInfo.cover = this.getFullMediaUrl(courseData.cover)
         this.courseInfo.status = courseData.status || ''
+        this.courseInfo.status_display = courseData.status_display || ''
         this.courseInfo.difficulty = courseData.difficulty || ''
+        this.courseInfo.difficulty_display = courseData.difficulty_display || ''
         this.courseInfo.category = courseData.category || ''
+        this.courseInfo.category_id = courseData.category_id || null
+        this.courseInfo.price = courseData.price || 0
         this.courseInfo.chapter_count = courseData.chapter_count || 0
         this.courseInfo.lesson_count = courseData.lesson_count || 0
         this.courseInfo.student_count = courseData.student_count || 0
+        this.courseInfo.view_count = courseData.view_count || 0
+        this.courseInfo.enrollment_count = courseData.enrollment_count || 0
+        this.courseInfo.created_at = courseData.created_at || ''
+        this.courseInfo.published_at = courseData.published_at || ''
+        this.courseInfo.audit_remark = courseData.audit_remark || ''
         
         console.log('课程基本信息加载成功:', this.courseInfo)
       } catch (error) {
@@ -3314,6 +3234,15 @@ export default {
         await this.loadQuestions()
         this.loadKnowledgeTree()
       }
+
+      // 如果切换到管理模块，根据子标签加载相应数据
+      if (moduleId === 'management') {
+        if (this.managementTab === 'academic') {
+          await this.loadAcademicData()
+        } else if (this.managementTab === 'courseManagement') {
+          await this.loadCourseManagementData()
+        }
+      }
       
       // 更新URL参数
       this.$router.replace({
@@ -3326,6 +3255,156 @@ export default {
           console.error(err)
         }
       })
+    },
+
+    // 加载教务组织数据
+    async loadAcademicData() {
+      await this.loadTerms()
+      await this.loadClasses()
+    },
+
+    // 加载班期数据
+    async loadTerms() {
+      if (!this.courseInfo.id) return
+      
+      try {
+        const response = await getCourseTerms(this.courseInfo.id)
+        const data = response.data || response
+        
+        // 处理后端返回的数据结构
+        if (data.terms) {
+          // 映射后端字段到前端字段
+          this.terms = data.terms.map(term => ({
+            id: term.id,
+            name: term.name,
+            startDate: term.start_date,
+            endDate: term.end_date,
+            description: term.description || '',
+            status: term.status,
+            statusDisplay: term.status_display,
+            classCount: term.class_count || 0,
+            studentCount: term.student_count || 0,
+            createdAt: term.created_at
+          }))
+        } else {
+          this.terms = []
+        }
+        
+        console.log('班期数据加载成功:', this.terms)
+      } catch (error) {
+        console.error('加载班期失败:', error)
+        this.$message.error('加载班期失败')
+      }
+    },
+
+    // 加载班级数据
+    async loadClasses() {
+      if (!this.courseInfo.id) return
+      
+      try {
+        const response = await getCourseClasses(this.courseInfo.id)
+        const data = response.data || response
+        
+        // 处理后端返回的数据结构
+        if (data.classes && Array.isArray(data.classes)) {
+          // 映射后端字段到前端字段
+          this.classes = data.classes.map(cls => ({
+            id: cls.id,
+            name: cls.name,
+            termId: cls.term_id,
+            termName: cls.term_name,
+            capacity: cls.class_limit,
+            studentCount: cls.student_count || 0,
+            headTeacher: cls.head_teacher,
+            createdAt: cls.created_at,
+            status: 'active' // 默认状态
+          }))
+        } else if (Array.isArray(data)) {
+          this.classes = data
+        } else {
+          this.classes = []
+        }
+        
+        console.log('班级数据加载成功:', this.classes)
+      } catch (error) {
+        console.error('加载班级失败:', error)
+        this.$message.error('加载班级失败')
+        this.classes = [] // 确保出错后也是数组
+      }
+    },
+
+    // 加载学生数据
+    async loadStudents(classId) {
+      if (!this.courseInfo.id) return
+      
+      try {
+        const response = await getCourseStudents(this.courseInfo.id, { class_id: classId })
+        
+        // 处理后端返回的数据结构
+        let studentList = []
+        
+        // 情况1: response直接就是 {results: [...]}
+        if (response.results && Array.isArray(response.results)) {
+          studentList = response.results
+        }
+        // 情况2: response.data 是 {results: [...]}
+        else if (response.data && response.data.results && Array.isArray(response.data.results)) {
+          studentList = response.data.results
+        }
+        // 情况3: response.data 直接是数组
+        else if (response.data && Array.isArray(response.data)) {
+          studentList = response.data
+        }
+        // 情况4: response 直接是数组
+        else if (Array.isArray(response)) {
+          studentList = response
+        }
+        
+        // 映射后端字段到前端字段
+        this.students = studentList.map(student => ({
+          id: student.id,
+          classId: student.class_id,
+          name: student.real_name || student.nickname || student.name || '未知',
+          studentNo: student.student_id || student.student_no || '',
+          email: student.email || '',
+          joinTime: student.enrolled_at || student.join_time || student.created_at || ''
+        }))
+      } catch (error) {
+        console.error('加载学生失败:', error)
+        this.$message.error('加载学生失败')
+        this.students = []
+      }
+    },
+
+    // 加载课程管理数据
+    async loadCourseManagementData() {
+      if (!this.courseInfo.id) return
+      
+      try {
+        const response = await getTeacherCourse(this.courseInfo.id)
+        const courseData = response.data || response
+        
+        // 填充课程管理表单数据
+        this.courseManagementData.courseName = courseData.title || ''
+        this.courseManagementData.coverImage = this.getFullMediaUrl(courseData.cover)
+        this.courseManagementData.description = courseData.description || ''
+        this.courseManagementData.category = courseData.category || ''
+        this.courseManagementData.categoryId = courseData.category_id || null
+        this.courseManagementData.difficulty = courseData.difficulty || ''
+        this.courseManagementData.price = courseData.price || 0
+        this.courseManagementData.status = courseData.status || 'draft'
+        this.courseManagementData.statusDisplay = courseData.status_display || '草稿'
+        this.courseManagementData.chapterCount = courseData.chapter_count || 0
+        this.courseManagementData.lessonCount = courseData.lesson_count || 0
+        this.courseManagementData.studentCount = courseData.student_count || 0
+        this.courseManagementData.viewCount = courseData.view_count || 0
+        this.courseManagementData.enrollmentCount = courseData.enrollment_count || 0
+        
+        console.log('课程管理数据加载成功:', this.courseManagementData)
+      } catch (error) {
+        console.error('加载课程管理数据失败:', error)
+        this.$message.error('加载课程管理数据失败')
+      }
     },
     // 章节方法
     toggleSection(sectionId) {
@@ -3659,90 +3738,137 @@ export default {
     },
     
     // 课程管理方法
-    handleCoverSuccess(res) {
-      if (res.code === 0) {
-        this.courseManagementData.coverImage = res.data.url
-        this.$message.success('封面上传成功')
-      } else {
-        this.$message.error(res.message || '上传失败')
+    async handleCoverUpload(options) {
+      const { file } = options
+      const formData = new FormData()
+      formData.append('cover', file)
+      
+      try {
+        // axios响应拦截器会自动提取data，所以这里的response已经是后端返回的data字段
+        const data = await this.$http.post(
+          `/teacher/courses/${this.courseInfo.id}/cover/`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        
+        // data就是后端返回的data.cover_url
+        console.log('封面上传成功，返回数据:', data)
+        
+        if (data && data.cover_url) {
+          // 将相对路径转换为完整的后端URL
+          const backendUrl = process.env.VUE_APP_API_URL?.replace('/api', '') || 'http://localhost:8000'
+          const fullCoverUrl = data.cover_url.startsWith('http') 
+            ? data.cover_url 
+            : `${backendUrl}${data.cover_url}`
+          
+          this.courseManagementData.coverImage = fullCoverUrl
+          this.courseInfo.cover = fullCoverUrl
+          this.$message.success('封面上传成功')
+        } else {
+          console.error('上传成功但未获取到封面URL，返回数据:', data)
+          this.$message.error('上传成功但未获取到封面URL')
+        }
+      } catch (error) {
+        console.error('封面上传失败:', error)
+        console.error('错误详情:', error.response?.data)
+        this.$message.error(error.response?.data?.message || error.message || '封面上传失败')
       }
     },
     beforeCoverUpload(file) {
-      const isImage = file.type.startsWith('image/')
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+      const isValidType = allowedTypes.includes(file.type)
+      const isLt5M = file.size / 1024 / 1024 < 5
 
-      if (!isImage) {
-        this.$message.error('只能上传图片文件!')
+      if (!isValidType) {
+        this.$message.error('只支持 JPG、PNG、WEBP 格式的图片!')
       }
-      if (!isLt2M) {
-        this.$message.error('图片大小不能超过 2MB!')
+      if (!isLt5M) {
+        this.$message.error('封面文件不能超过 5MB!')
       }
-      return isImage && isLt2M
+      return isValidType && isLt5M
     },
-    saveBasicInfo() {
+    async saveBasicInfo() {
       if (!this.courseManagementData.courseName) {
         this.$message.warning('请输入课程名称')
         return
       }
+      
       this.$confirm('确认保存基本信息？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // TODO: 调用API保存
-        this.courseInfo.name = this.courseManagementData.courseName
-        this.courseInfo.description = this.courseManagementData.description
-        this.courseInfo.cover = this.courseManagementData.coverImage
-        this.editingBasicInfo = false
-        this.$message.success('基本信息保存成功')
+      }).then(async () => {
+        try {
+          const updateData = {
+            title: this.courseManagementData.courseName,
+            description: this.courseManagementData.description
+          }
+          
+          await updateCourse(this.courseInfo.id, updateData)
+          
+          // 更新本地数据
+          this.courseInfo.title = this.courseManagementData.courseName
+          this.courseInfo.description = this.courseManagementData.description
+          
+          this.editingBasicInfo = false
+          this.$message.success('基本信息保存成功')
+        } catch (error) {
+          console.error('保存基本信息失败:', error)
+          this.$message.error('保存失败')
+        }
       }).catch(() => {})
     },
     cancelEditBasicInfo() {
       // 恢复原始数据
-      this.courseManagementData.courseName = this.courseInfo.name
+      this.courseManagementData.courseName = this.courseInfo.title || ''
       this.courseManagementData.description = this.courseInfo.description || ''
-      this.courseManagementData.coverImage = this.courseInfo.cover || ''
       this.editingBasicInfo = false
     },
-    onCourseTypeChange(isFree) {
-      if (isFree) {
-        this.courseManagementData.price = 0
-      }
-    },
-    saveValiditySettings() {
-      if (!this.courseManagementData.isFree && this.courseManagementData.price <= 0) {
-        this.$message.warning('收费课程价格必须大于0')
-        return
-      }
-      // 限时有效时需要选择日期
-      if (!this.courseManagementData.isPermanent) {
-        if (!this.courseManagementData.validStartDate || !this.courseManagementData.validEndDate) {
-          this.$message.warning('请选择有效期开始和结束时间')
-          return
-        }
-      }
-      this.$confirm('确认保存效期与模式设置？', '提示', {
+    
+    async saveCourseSettings() {
+      this.$confirm('确认保存课程设置？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // TODO: 调用API保存
-        this.editingValidityMode = false
-        this.$message.success('效期与模式保存成功')
+      }).then(async () => {
+        try {
+          const updateData = {
+            category: this.courseManagementData.category,
+            difficulty: this.courseManagementData.difficulty,
+            price: this.courseManagementData.price
+          }
+          
+          await updateCourse(this.courseInfo.id, updateData)
+          
+          // 更新本地数据
+          this.courseInfo.category = this.courseManagementData.category
+          this.courseInfo.difficulty = this.courseManagementData.difficulty
+          this.courseInfo.price = this.courseManagementData.price
+          
+          this.editingCourseSettings = false
+          this.$message.success('课程设置保存成功')
+        } catch (error) {
+          console.error('保存课程设置失败:', error)
+          this.$message.error('保存失败')
+        }
       }).catch(() => {})
     },
-    cancelEditValidityMode() {
-      // TODO: 恢复原始数据
-      this.editingValidityMode = false
+    cancelEditCourseSettings() {
+      // 恢复原始数据
+      this.courseManagementData.category = this.courseInfo.category || ''
+      this.courseManagementData.difficulty = this.courseInfo.difficulty || ''
+      this.courseManagementData.price = this.courseInfo.price || 0
+      this.editingCourseSettings = false
     },
-    publishCourse() {
+    
+    async publishCourse() {
       // 检查必填信息
       if (!this.courseManagementData.courseName) {
         this.$message.warning('请先完善课程基本信息')
-        return
-      }
-      if (!this.courseManagementData.isFree && this.courseManagementData.price <= 0) {
-        this.$message.warning('收费课程必须设置价格')
         return
       }
       
@@ -3750,8 +3876,19 @@ export default {
         confirmButtonText: '确定发布',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // TODO: 调用API发布
+      }).then(async () => {
+        try {
+          await publishCourse(this.courseInfo.id)
+          
+          // 更新本地状态
+          this.courseManagementData.status = 'published'
+          this.courseInfo.status = 'published'
+          
+          this.$message.success('课程已发布')
+        } catch (error) {
+          console.error('发布课程失败:', error)
+          this.$message.error('发布失败')
+        }
       }).catch(() => {})
     },
     
@@ -5204,9 +5341,9 @@ async handleTagDelete(payload) {
     // 班期管理方法
     getTermStatusText(status) {
       const map = {
-        'active': '进行中',
-        'upcoming': '未开始',
-        'ended': '已结束'
+        'in_progress': '进行中',
+        'not_started': '未开始',
+        'finished': '已结束'
       }
       return map[status] || status
     },
@@ -5238,9 +5375,11 @@ async handleTagDelete(payload) {
       this.studentSearch = ''
     },
     // Level 2 → Level 3: 进入成员管理页面
-    openMemberDrawer(classItem) {
+    async openMemberDrawer(classItem) {
       this.currentManagingClass = classItem
       this.studentSearch = ''
+      await this.loadStudents(classItem.id)
+
     },
     // Level 3 → Level 2: 返回班级管理
     backToClassManagement() {
@@ -5322,26 +5461,30 @@ async handleTagDelete(payload) {
       return this.students.filter(s => s.classId === classId).length
     },
     // 移除学生
-    removeStudent(student) {
-      this.$confirm(`确定要将 ${student.name} 移出班级吗？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        const index = this.students.findIndex(s => s.id === student.id)
-        if (index > -1) {
-          this.students.splice(index, 1)
-          this.$message.success('学生已移除')
-          
-          // 更新班级的学生数量
-          if (this.currentManagingClass) {
-            const classItem = this.classes.find(c => c.id === this.currentManagingClass.id)
-            if (classItem && classItem.studentCount > 0) {
-              classItem.studentCount -= 1
-            }
-          }
+    async removeStudent(student) {
+      try {
+        await this.$confirm(`确定要将 ${student.name} 移出班级吗？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        
+        // 用户确认，执行删除
+        await removeStudent(this.courseInfo.id, student.id)
+        this.$message.success('移除成功')
+        
+        // 重新加载学生列表
+        if (this.currentManagingClass) {
+          await this.loadStudents(this.currentManagingClass.id)
         }
-      }).catch(() => {})
+      } catch (error) {
+        // 用户取消或删除失败
+        if (error !== 'cancel') {
+          console.error('移除学生失败:', error)
+          const errorMsg = error.response?.data?.message || '移除学生失败'
+          this.$message.error(errorMsg)
+        }
+      }
     },
     // 添加学生（未来功能）
     showAddStudentDialog() {
@@ -5351,106 +5494,110 @@ async handleTagDelete(payload) {
       }
       // 重置表单
       this.newStudent = {
-        name: '',
-        studentNo: '',
-        phone: '',
-        email: ''
+        studentNo: ''
       }
       this.showAddStudentModal = true
     },
-    submitAddStudent() {
-      // 验证必填项（只需要姓名和手机号）
-      if (!this.newStudent.name || !this.newStudent.phone) {
-        this.$message.error('请填写学生姓名和联系电话')
+    async submitAddStudent() {
+      // 验证学号
+      if (!this.newStudent.studentNo || !this.newStudent.studentNo.trim()) {
+        this.$message.error('请输入学生学号')
         return
       }
       
-      // 生成学号（使用时间戳+随机数）
-      const timestamp = Date.now().toString().slice(-6)
-      const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0')
-      const studentNo = timestamp + random
-      
-      // 添加学生
-      const newId = Math.max(...this.students.map(s => s.id), 0) + 1
-      const student = {
-        id: newId,
-        classId: this.currentManagingClass.id,
-        name: this.newStudent.name,
-        studentNo: studentNo,
-        phone: this.newStudent.phone,
-        joinTime: new Date().toISOString().slice(0, 16).replace('T', ' ')
+      if (!this.currentManagingClass || !this.currentManagingClass.id) {
+        this.$message.error('无效的班级信息')
+        return
       }
-      
-      this.students.push(student)
-      
-      // 更新班级学生数量
-      const classItem = this.classes.find(c => c.id === this.currentManagingClass.id)
-      if (classItem) {
-        classItem.studentCount += 1
+
+      try {
+        const data = {
+          student_id: this.newStudent.studentNo.trim(),
+          class_id: this.currentManagingClass.id
+        }
+
+        await addStudentToClass(this.courseInfo.id, data)
+        
+        // 添加成功（不管response结构如何，能执行到这里说明成功了）
+        this.$message.success('添加成功')
+        
+        // 关闭模态框
+        this.showAddStudentModal = false
+        this.newStudent = { studentNo: '' }
+        
+        // 重新加载学生列表
+        await this.loadStudents(this.currentManagingClass.id)
+      } catch (error) {
+        console.error('添加学生失败:', error)
+        const errorMsg = error.response?.data?.message || '添加学生失败'
+        this.$message.error(errorMsg)
       }
-      
-      this.$message.success('学生添加成功')
-      this.showAddStudentModal = false
     },
     // ========== 三级导航方法结束 ==========
 
-    deleteTerm(id) {
+    async deleteTerm(id) {
       this.$confirm('确定删除该班期吗？删除后班期内的班级也将被删除。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.terms = this.terms.filter(term => term.id !== id)
-        this.classes = this.classes.filter(cls => cls.termId !== id)
-        this.$message.success('班期已删除')
+      }).then(async () => {
+        try {
+          const response = await deleteTerm(this.courseInfo.id, id)
+          if (response.code === 200) {
+            this.$message.success('班期已删除')
+            // 重新加载数据
+            await this.loadTerms()
+            await this.loadClasses()
+          }
+        } catch (error) {
+          console.error('删除班期失败:', error)
+          // 显示后端返回的具体错误信息（如：该班期已有N名学生选课，无法删除）
+          const errorMsg = error.response?.data?.message || '删除班期失败'
+          this.$message.error(errorMsg)
+        }
       }).catch(() => {})
     },
-    submitTermForm() {
+    async submitTermForm() {
       if (!this.newTerm.name || !this.newTerm.startDate || !this.newTerm.endDate) {
         this.$message.error('请填写必填项')
         return
       }
 
-      if (this.editingTerm) {
-        const idx = this.terms.findIndex(t => t.id === this.editingTerm.id)
-        if (idx > -1) {
-          this.terms[idx] = {
-            ...this.terms[idx],
-            ...this.newTerm
-          }
-          this.$message.success('班期已更新')
+      try {
+        const termData = {
+          name: this.newTerm.name,
+          start_date: this.newTerm.startDate,
+          end_date: this.newTerm.endDate,
+          description: this.newTerm.description || '',
+          status: 'not_started' // 默认状态为未开始
         }
-      } else {
-        const newTermId = Math.max(...this.terms.map(t => t.id), 0) + 1
-        
-        // 创建班期
-        this.terms.push({
-          ...this.newTerm,
-          id: newTermId,
-          status: 'upcoming',
-          classCount: 1,
-          studentCount: 0
-        })
-        
-        // 自动创建默认班级
-        const newClassId = Math.max(...this.classes.map(c => c.id), 0) + 1
-        this.classes.push({
-          id: newClassId,
-          termId: newTermId,
-          name: '默认班级',
-          inviteCode: '',
-          capacity: 50,
-          studentCount: 0,
-          creator: '当前教师',
-          status: 'active'
-        })
-        
-        this.$message.success('班期已创建，并自动创建默认班级')
-      }
 
-      this.showTermModal = false
-      this.editingTerm = null
-      this.newTerm = { name: '', startDate: '', endDate: '', description: '' }
+        if (this.editingTerm) {
+          // 更新班期
+          const response = await updateTerm(this.courseInfo.id, this.editingTerm.id, termData)
+          if (response.code === 200) {
+            this.$message.success('班期已更新')
+          }
+        } else {
+          // 创建班期
+          const response = await createTerm(this.courseInfo.id, termData)
+          if (response.code === 200) {
+            this.$message.success('班期已创建')
+          }
+        }
+
+        // 重新加载数据
+        await this.loadTerms()
+        await this.loadClasses()
+
+        this.showTermModal = false
+        this.editingTerm = null
+        this.newTerm = { name: '', startDate: '', endDate: '', description: '' }
+      } catch (error) {
+        console.error('保存班期失败:', error)
+        const errorMsg = error.response?.data?.message || '保存班期失败'
+        this.$message.error(errorMsg)
+      }
     },
 
     // 班级管理方法
@@ -5473,9 +5620,7 @@ async handleTagDelete(payload) {
       }
       this.newClass = {
         name: classItem.name,
-        capacity: classItem.capacity,
-        teacher: classItem.teacher,
-        description: classItem.description
+        capacity: classItem.capacity
       }
       this.showClassModal = true
     },
@@ -5487,45 +5632,71 @@ async handleTagDelete(payload) {
       this.$message.info(`查看班级统计: ${classItem.name}`)
       // TODO: 显示班级统计信息
     },
-    deleteClass(id) {
+    async deleteClass(id) {
       this.$confirm('确定删除该班级吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.classes = this.classes.filter(cls => cls.id !== id)
-        this.$message.success('班级已删除')
+      }).then(async () => {
+        try {
+          await deleteClass(this.courseInfo.id, id)
+          this.$message.success('班级已删除')
+          // 重新加载数据
+          await this.loadClasses()
+        } catch (error) {
+          console.error('删除班级失败:', error)
+          this.$message.error('删除班级失败')
+        }
       }).catch(() => {})
     },
-    submitClassForm() {
-      if (!this.newClass.name || !this.newClass.capacity) {
-        this.$message.error('请填写必填项')
+    async submitClassForm() {
+      if (!this.newClass.name) {
+        this.$message.error('请填写班级名称')
         return
       }
 
-      if (this.editingClass) {
-        const idx = this.classes.findIndex(c => c.id === this.editingClass.id)
-        if (idx > -1) {
-          this.classes[idx] = {
-            ...this.classes[idx],
-            ...this.newClass
-          }
-          this.$message.success('班级已更新')
-        }
-      } else {
-        this.classes.push({
-          ...this.newClass,
-          id: Math.max(...this.classes.map(c => c.id), 0) + 1,
-          termId: parseInt(this.selectedTermForClass),
-          status: 'active',
-          studentCount: 0
-        })
-        this.$message.success('班级已创建')
+      if (this.newClass.capacity === null || this.newClass.capacity === undefined || this.newClass.capacity < 0) {
+        this.$message.error('班级容量不能为负数')
+        return
       }
 
-      this.showClassModal = false
-      this.editingClass = null
-      this.newClass = { name: '', capacity: 50, teacher: '', description: '', inviteCode: '' }
+      if (!this.selectedTermForClass) {
+        this.$message.error('请选择所属班期')
+        return
+      }
+
+      try {
+        const classData = {
+          term_id: parseInt(this.selectedTermForClass),
+          name: this.newClass.name,
+          class_limit: this.newClass.capacity
+        }
+
+        if (this.editingClass) {
+          // 更新班级
+          const response = await updateClass(this.courseInfo.id, this.editingClass.id, classData)
+          if (response.code === 200) {
+            this.$message.success('班级已更新')
+          }
+        } else {
+          // 创建班级
+          const response = await createClass(this.courseInfo.id, classData)
+          if (response.code === 200) {
+            this.$message.success('班级已创建')
+          }
+        }
+
+        // 重新加载数据
+        await this.loadClasses()
+
+        this.showClassModal = false
+        this.editingClass = null
+        this.newClass = { name: '', capacity: 0 }
+      } catch (error) {
+        console.error('保存班级失败:', error)
+        const errorMsg = error.response?.data?.message || '保存班级失败'
+        this.$message.error(errorMsg)
+      }
     },
 
     // 管理模块方法
@@ -5534,14 +5705,21 @@ async handleTagDelete(payload) {
       this.showTermDetailModal = true
     },
     getTermClasses(termId) {
+      if (!Array.isArray(this.classes)) {
+        console.warn('classes不是数组:', this.classes)
+        return []
+      }
       return this.classes
-        .filter(c => c.termId === termId)
+        .filter(c => c.termId === termId || c.term_id === termId)
         .sort((a, b) => (a.order || 0) - (b.order || 0))
     },
     getTermStudentCount(termId) {
+      if (!Array.isArray(this.classes)) {
+        return 0
+      }
       return this.classes
-        .filter(c => c.termId === termId)
-        .reduce((sum, c) => sum + c.studentCount, 0)
+        .filter(c => c.termId === termId || c.term_id === termId)
+        .reduce((sum, c) => sum + (c.studentCount || c.student_count || 0), 0)
     },
     getTermOrderCount(termId) {
       return this.orders.filter(order => order.termId === termId).length
@@ -5552,30 +5730,19 @@ async handleTagDelete(payload) {
         .reduce((sum, order) => sum + order.amount, 0)
     },
     showAddClassDialog(term) {
+      if (!term || !term.id) {
+        console.error('无效的班期数据:', term)
+        this.$message.error('无效的班期数据')
+        return
+      }
       this.currentTermId = term.id
       this.selectedTermForClass = term.id.toString()
       // 设置默认值
       this.newClass = {
         name: '新建班级',
-        capacity: 50,
-        teacher: '', // TODO: 从用户信息中获取真实姓名
-        description: '',
-        inviteCode: ''
+        capacity: 0
       }
       this.showClassModal = true
-    },
-    generateInviteCode() {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-      let code = ''
-      for (let i = 0; i < 6; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length))
-      }
-      this.$set(this.newClass, 'inviteCode', code)
-      this.$message.success('邀请码已生成：' + code)
-    },
-    saveCourseSettings() {
-      this.$message.success('课程设置已保存')
-      // TODO: 调用API保存设置
     },
     getOrderStatusText(status) {
       const map = {
@@ -7705,19 +7872,6 @@ async handleTagDelete(payload) {
   position: relative;
 }
 
-.drag-handle {
-  font-size: 1rem;
-  color: #9ca3af;
-  cursor: move;
-  padding: 0.25rem;
-  margin-right: 0.25rem;
-  transition: color 0.2s;
-}
-
-.drag-handle:hover {
-  color: #667eea;
-}
-
 .folder-draggable-area {
   min-height: 50px;
 }
@@ -9134,6 +9288,13 @@ async handleTagDelete(payload) {
   font-size: 14px;
 }
 
+.form-hint {
+  margin-top: 0.5rem;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
 .form-input {
   width: 100%;
   padding: 0.625rem 0.875rem;
@@ -9441,16 +9602,33 @@ async handleTagDelete(payload) {
   margin: 0;
 }
 
+.cm-card-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: normal;
+}
+
 .cm-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+.cm-form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
 .cm-form-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.cm-form-item-third {
+  flex: 1;
+  min-width: 200px;
 }
 
 .cm-label {
@@ -9516,6 +9694,12 @@ async handleTagDelete(payload) {
   width: fit-content;
 }
 
+.cm-upload-area-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .cover-uploader >>> .el-upload {
   border: 2px dashed #d1d5db;
   border-radius: 8px;
@@ -9527,6 +9711,20 @@ async handleTagDelete(payload) {
 
 .cover-uploader >>> .el-upload:hover {
   border-color: #667eea;
+  background-color: #f9fafb;
+}
+
+.cover-preview-editable {
+  width: 400px;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.cover-preview-editable:hover {
+  opacity: 0.8;
 }
 
 .cover-preview {
@@ -9537,13 +9735,18 @@ async handleTagDelete(payload) {
 }
 
 .cover-upload-placeholder {
-  width: 300px;
-  height: 200px;
+  width: 400px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #f9fafb;
+  transition: all 0.3s;
+}
+
+.cover-uploader >>> .el-upload:hover .cover-upload-placeholder {
+  background: #f3f4f6;
 }
 
 .cover-upload-placeholder i {
@@ -9556,11 +9759,14 @@ async handleTagDelete(payload) {
   font-size: 14px;
   color: #6b7280;
   margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .upload-hint {
   font-size: 12px;
   color: #9ca3af;
+  text-align: center;
+  padding: 0 20px;
 }
 
 /* 只读模式封面 */
@@ -9952,6 +10158,20 @@ async handleTagDelete(payload) {
   color: #764ba2;
 }
 
+.action-btn.delete-btn {
+  padding: 0.5rem 1rem;
+  background: white;
+  color: #f56c6c;
+  border: 1px solid #f56c6c;
+  white-space: nowrap;
+}
+
+.action-btn.delete-btn:hover {
+  background: #fef0f0;
+  border-color: #f56c6c;
+  color: #c03639;
+}
+
 /* Level 2: 班级管理 */
 .class-management {
   padding: 0;
@@ -10067,8 +10287,9 @@ async handleTagDelete(payload) {
 .class-item-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
-  gap: 0.5rem;
+  width: 100%;
 }
 
 .class-draggable-area {
@@ -10087,7 +10308,9 @@ async handleTagDelete(payload) {
   padding: 0.25rem;
   border-radius: 4px;
   transition: all 0.2s;
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .class-item-more:hover {
@@ -10109,15 +10332,6 @@ async handleTagDelete(payload) {
   gap: 0.25rem;
 }
 
-.class-item-code {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0;
-  margin-top: 0.5rem;
-  border-top: 1px solid #f3f4f6;
-  font-size: 0.8125rem;
-}
 
 .code-label {
   color: #9ca3af;

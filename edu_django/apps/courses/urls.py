@@ -3,7 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+
     # ===== 公共课程接口 =====
+
     # GET    /api/courses/ - 获取课程列表
     path('courses/', views.PublicCourseListView.as_view(), name='public-course-list'),
     
@@ -16,7 +18,9 @@ urlpatterns = [
     # GET    /api/courses/my-courses/ - 获取我的课程（已选/已教）
     path('courses/mycourses/', views.MyCoursesView.as_view(), name='my-courses'),
     
+
     # ===== 学生选课和学习 =====
+
     # GET    /api/courses/{course_id}/enrollment/ - 获取课程班期班级信息（供选课使用）
     # POST   /api/courses/{course_id}/enrollment/ - 选课（传入班期ID、班级ID）
     # DELETE /api/courses/{course_id}/enrollment/ - 退课
@@ -85,9 +89,15 @@ urlpatterns = [
     # POST   /api/teacher/courses/{course_id}/lessons/{lesson_id}/content-blocks/upload/ - 上传内容块文件
     path('teacher/courses/<int:course_id>/lessons/<int:lesson_id>/content-blocks/upload/', views.TeacherContentBlockFileUploadView.as_view(), name='teacher-content-block-upload'),
     
+
     # ===== 教师学生管理 =====
+    
     # GET    /api/teacher/courses/{courseId}/students/ - 获取课程学生列表
-    path('teacher/courses/<int:course_id>/students/', views.TeacherCourseStudentListView.as_view(), name='teacher-course-students'),
+    # POST   /api/teacher/courses/{courseId}/students/ - 手动添加学生
+    path('teacher/courses/<int:course_id>/students/', views.TeacherCourseStudentManageView.as_view(), name='teacher-course-students'),
+    
+    # DELETE /api/teacher/courses/{courseId}/students/{studentId}/ - 移除学生
+    path('teacher/courses/<int:course_id>/students/<int:student_id>/', views.TeacherStudentDetailView.as_view(), name='teacher-student-detail'),
     
     # GET    /api/teacher/courses/{courseId}/students/{studentId}/progress/ - 获取学生学习进度------(待定)
     path('teacher/courses/<int:course_id>/students/<int:student_id>/progress/', views.TeacherStudentProgressView.as_view(), name='teacher-student-progress'),

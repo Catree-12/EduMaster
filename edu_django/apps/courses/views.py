@@ -630,8 +630,8 @@ class TeacherCourseManageView(APIView):
                 course.difficulty = data['difficulty']
         
         # 更新分类
-        if 'category_name' in data:
-            category_name = data['category_name']
+        if 'category' in data:
+            category_name = data['category']
             if category_name:
                 try:
                     category = CourseCategory.objects.get(name=category_name)
@@ -1717,16 +1717,384 @@ class TeacherContentBlockFileUploadView(APIView):
 
 
 # ==================== 教师学生管理 ====================
-class TeacherCourseStudentListView(APIView):
-    """GET /api/teacher/courses/{courseId}/students/ - 获取课程学生列表"""
+class TeacherCourseStudentManageView(APIView):
+    """
+    GET  /api/teacher/courses/{courseId}/students/ - 获取课程学生列表
+    POST /api/teacher/courses/{courseId}/students/ - 手动添加学生到班级
+    """
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
-        # TODO: 实现学生列表查询
+        """获取课程的学生列表，支持分页和筛选"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 分页和筛选参数
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('pageSize', 20))
+        term_id = request.query_params.get('term_id')  # 按班期筛选
+        class_id = request.query_params.get('class_id')  # 按班级筛选
+        keyword = request.query_params.get('keyword', '')  # 搜索学生姓名/学号
+        status_filter = request.query_params.get('status')  # 按状态筛选
+        
+        # 构建查询
+        queryset = Enrollment.objects.filter(
+            term__course=course
+        ).select_related(
+            'student',
+            'student__student_profile',
+            'term',
+            'class_group'
+        )
+        
+        # 按班期筛选
+        if term_id:
+            queryset = queryset.filter(term_id=term_id)
+        
+        # 按班级筛选
+        if class_id:
+            queryset = queryset.filter(class_group_id=class_id)
+        
+        # 按状态筛选
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        # 搜索学生
+        if keyword:
+            from django.db.models import Q
+            queryset = queryset.filter(
+                Q(student__real_name__icontains=keyword) |
+                Q(student__nickname__icontains=keyword) |
+                Q(student__student_profile__student_id__icontains=keyword)
+            )
+        
+        # 统计和分页
+        total = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+        enrollments = queryset.order_by('-created_at')[start:end]
+        
+        # 构建返回数据
+        student_list = []
+        for enrollment in enrollments:
+            student = enrollment.student
+            student_profile = getattr(student, 'student_profile', None)
+            
+            student_list.append({
+                'id': student.id,
+                'real_name': student.real_name,
+                'nickname': student.nickname,
+                'email': student.email,
+                'avatar': student.avatar.url if student.avatar else None,
+                'student_id': student_profile.student_id if student_profile else None,
+                'term_id': enrollment.term.id,
+                'term_name': enrollment.term.name,
+                'class_id': enrollment.class_group.id if enrollment.class_group else None,
+                'class_name': enrollment.class_group.name if enrollment.class_group else '未分配',
+                'status': enrollment.status,
+                'status_display': enrollment.get_status_display(),
+                'progress': enrollment.progress,
+                'enrolled_at': enrollment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'completed_at': enrollment.completed_at.strftime('%Y-%m-%d %H:%M:%S') if enrollment.completed_at else None,
+            })
+        
         return Response({
             'code': 200,
             'message': '获取成功',
-            'data': {'results': []}
+            'data': {
+                'results': student_list,
+                'total': total,
+                'page': page,
+                'pageSize': page_size,
+            }
+        })
+    
+    def post(self, request, course_id):
+        """教师通过学号手动添加学生到指定班级"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        student_id = data.get('student_id', '').strip()  # 学号
+        class_id = data.get('class_id')  # 班级ID（必填）
+        
+        # 验证必填字段
+        if not student_id:
+            return Response({
+                'code': 400,
+                'message': '学号不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not class_id:
+            return Response({
+                'code': 400,
+                'message': '请选择班级',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 验证班级是否属于该课程
+        try:
+            class_group = ClassGroup.objects.select_related('term').get(
+                id=class_id,
+                term__course=course
+            )
+            term = class_group.term
+        except ClassGroup.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班级不存在或不属于该课程',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 通过学号查找学生
+        from users.models import User, StudentProfile
+        try:
+            student_profile = StudentProfile.objects.select_related('user').get(
+                student_id=student_id
+            )
+            student = student_profile.user
+        except StudentProfile.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': f'学号 {student_id} 不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查学生是否已在该班期选课
+        existing_enrollment = Enrollment.objects.filter(
+            student=student,
+            term=term
+        ).first()
+        
+        if existing_enrollment:
+            # 如果已选课但班级不同，提示用户
+            if existing_enrollment.class_group and existing_enrollment.class_group.id != class_id:
+                return Response({
+                    'code': 400,
+                    'message': f'该学生已在班级“{existing_enrollment.class_group.name}”中',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({
+                    'code': 400,
+                    'message': f'该学生已在{term.name}选课',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建选课记录
+        enrollment = Enrollment.objects.create(
+            student=student,
+            term=term,
+            class_group=class_group,
+            status='active'
+        )
+        
+        return Response({
+            'code': 200,
+            'message': '添加成功',
+            'data': {
+                'student_id': student.id,
+                'student_no': student_profile.student_id,
+                'student_name': student.real_name or student.nickname,
+                'student_email': student.email,
+                'term_id': term.id,
+                'term_name': term.name,
+                'class_id': class_group.id,
+                'class_name': class_group.name,
+                'enrolled_at': enrollment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+        }, status=status.HTTP_201_CREATED)
+
+
+class TeacherAddStudentView(APIView):
+    """POST /api/teacher/courses/{courseId}/students/add/ - 手动添加学生到班级"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, course_id):
+        """教师通过学号手动添加学生到指定班级"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        student_id = data.get('student_id', '').strip()  # 学号
+        class_id = data.get('class_id')  # 班级ID（必填）
+        
+        # 验证必填字段
+        if not student_id:
+            return Response({
+                'code': 400,
+                'message': '学号不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not class_id:
+            return Response({
+                'code': 400,
+                'message': '请选择班级',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 验证班级是否属于该课程
+        try:
+            class_group = ClassGroup.objects.select_related('term').get(
+                id=class_id,
+                term__course=course
+            )
+            term = class_group.term
+        except ClassGroup.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班级不存在或不属于该课程',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 通过学号查找学生
+        from users.models import User, StudentProfile
+        try:
+            student_profile = StudentProfile.objects.select_related('user').get(
+                student_id=student_id
+            )
+            student = student_profile.user
+        except StudentProfile.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': f'学号 {student_id} 不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查学生是否已在该班期选课
+        existing_enrollment = Enrollment.objects.filter(
+            student=student,
+            term=term
+        ).first()
+        
+        if existing_enrollment:
+            # 如果已选课但班级不同，提示用户
+            if existing_enrollment.class_group and existing_enrollment.class_group.id != class_id:
+                return Response({
+                    'code': 400,
+                    'message': f'该学生已在班级"{existing_enrollment.class_group.name}"中',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({
+                    'code': 400,
+                    'message': f'该学生已在{term.name}选课',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建选课记录
+        enrollment = Enrollment.objects.create(
+            student=student,
+            term=term,
+            class_group=class_group,
+            status='active'
+        )
+        
+        return Response({
+            'code': 200,
+            'message': '添加成功',
+            'data': {
+                'student_id': student.id,
+                'student_no': student_profile.student_id,
+                'student_name': student.real_name or student.nickname,
+                'student_email': student.email,
+                'term_id': term.id,
+                'term_name': term.name,
+                'class_id': class_group.id,
+                'class_name': class_group.name,
+                'enrolled_at': enrollment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+        }, status=status.HTTP_201_CREATED)
+
+
+class TeacherStudentDetailView(APIView):
+    """DELETE /api/teacher/courses/{courseId}/students/{studentId}/ - 移除学生"""
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, course_id, student_id):
+        """从课程班级中移除学生（删除选课记录）"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 查找学生
+        from users.models import User
+        try:
+            student = User.objects.get(id=student_id)
+        except User.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '学生不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 查找该学生在该课程下的选课记录
+        enrollment = Enrollment.objects.filter(
+            student=student,
+            term__course=course
+        ).first()
+        
+        if not enrollment:
+            return Response({
+                'code': 404,
+                'message': '该学生未在该课程中',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 保存信息用于返回
+        student_name = student.real_name or student.nickname
+        term_name = enrollment.term.name
+        class_name = enrollment.class_group.name if enrollment.class_group else '未分配'
+        
+        # 删除选课记录（真正从班级中移除）
+        enrollment.delete()
+        
+        return Response({
+            'code': 200,
+            'message': '移除成功',
+            'data': {
+                'student_id': student.id,
+                'student_name': student_name,
+                'term_name': term_name,
+                'class_name': class_name,
+            }
         })
 
 
@@ -1752,19 +2120,123 @@ class TeacherTermManageView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
-        # TODO: 实现学期列表查询
+        """获取课程的班期列表"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 获取所有班期
+        terms = CourseTerm.objects.filter(course=course).order_by('-start_date')
+        
+        term_list = []
+        for term in terms:
+            # 统计班级数和学生数
+            class_count = term.class_groups.count()
+            student_count = Enrollment.objects.filter(
+                class_group__term=term
+            ).count()
+            
+            term_list.append({
+                'id': term.id,
+                'name': term.name,
+                'start_date': term.start_date.strftime('%Y-%m-%d'),
+                'end_date': term.end_date.strftime('%Y-%m-%d'),
+                'description': term.description,
+                'status': term.status,
+                'status_display': term.get_status_display(),
+                'class_count': class_count,
+                'student_count': student_count,
+                'created_at': term.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            })
+        
         return Response({
             'code': 200,
             'message': '获取成功',
-            'data': {'terms': []}
+            'data': {'terms': term_list}
         })
     
     def post(self, request, course_id):
-        # TODO: 实现学期创建
+        """创建新班期"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        name = data.get('name', '').strip()
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        description = data.get('description', '')
+        status_value = data.get('status', 'not_started')
+        
+        # 验证必填字段
+        if not name:
+            return Response({
+                'code': 400,
+                'message': '班期名称不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not start_date or not end_date:
+            return Response({
+                'code': 400,
+                'message': '开课日期和结课日期不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 验证日期格式和逻辑
+        from datetime import datetime
+        try:
+            start = datetime.strptime(start_date, '%Y-%m-%d').date()
+            end = datetime.strptime(end_date, '%Y-%m-%d').date()
+            
+            if start >= end:
+                return Response({
+                    'code': 400,
+                    'message': '结课日期必须晚于开课日期',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({
+                'code': 400,
+                'message': '日期格式错误，应为YYYY-MM-DD',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建班期
+        term = CourseTerm.objects.create(
+            course=course,
+            name=name,
+            start_date=start,
+            end_date=end,
+            description=description,
+            status=status_value
+        )
+        
         return Response({
             'code': 200,
             'message': '创建成功',
-            'data': {'term_id': None}
+            'data': {
+                'term_id': term.id,
+                'name': term.name,
+                'start_date': term.start_date.strftime('%Y-%m-%d'),
+                'end_date': term.end_date.strftime('%Y-%m-%d'),
+            }
         }, status=status.HTTP_201_CREATED)
 
 
@@ -1776,15 +2248,111 @@ class TeacherTermDetailView(APIView):
     permission_classes = [IsAuthenticated]
     
     def put(self, request, course_id, term_id):
-        # TODO: 实现学期更新
+        """更新班期信息"""
+        user = request.user
+        
+        # 验证课程和班期权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            term = CourseTerm.objects.get(id=term_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except CourseTerm.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班期不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        
+        # 更新字段
+        if 'name' in data:
+            term.name = data['name'].strip()
+        
+        if 'description' in data:
+            term.description = data['description']
+        
+        if 'status' in data:
+            if data['status'] in ['not_started', 'in_progress', 'finished']:
+                term.status = data['status']
+        
+        # 更新日期
+        if 'start_date' in data or 'end_date' in data:
+            from datetime import datetime
+            try:
+                start = datetime.strptime(data.get('start_date', term.start_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+                end = datetime.strptime(data.get('end_date', term.end_date.strftime('%Y-%m-%d')), '%Y-%m-%d').date()
+                
+                if start >= end:
+                    return Response({
+                        'code': 400,
+                        'message': '结课日期必须晚于开课日期',
+                        'data': None
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                
+                term.start_date = start
+                term.end_date = end
+            except ValueError:
+                return Response({
+                    'code': 400,
+                    'message': '日期格式错误，应为YYYY-MM-DD',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        term.save()
+        
         return Response({
             'code': 200,
             'message': '更新成功',
-            'data': {}
+            'data': {
+                'id': term.id,
+                'name': term.name,
+                'start_date': term.start_date.strftime('%Y-%m-%d'),
+                'end_date': term.end_date.strftime('%Y-%m-%d'),
+                'status': term.status,
+            }
         })
     
     def delete(self, request, course_id, term_id):
-        # TODO: 实现学期删除
+        """删除班期"""
+        user = request.user
+        
+        # 验证课程和班期权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            term = CourseTerm.objects.get(id=term_id, course=course)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except CourseTerm.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班期不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查是否有学生选课
+        student_count = Enrollment.objects.filter(
+            class_group__term=term
+        ).count()
+        
+        if student_count > 0:
+            return Response({
+                'code': 400,
+                'message': f'该班期已有{student_count}名学生选课，无法删除',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        term.delete()
+        
         return Response({
             'code': 200,
             'message': '删除成功'
@@ -1799,19 +2367,127 @@ class TeacherClassManageView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, course_id):
-        # TODO: 实现班级列表查询
+        """获取课程的班级列表"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 可选的班期筛选参数
+        term_id = request.query_params.get('term_id')
+        
+        # 获取所有班级
+        if term_id:
+            classes = ClassGroup.objects.filter(
+                term__course=course,
+                term_id=term_id
+            ).select_related('term', 'head_teacher')
+        else:
+            classes = ClassGroup.objects.filter(
+                term__course=course
+            ).select_related('term', 'head_teacher')
+        
+        class_list = []
+        for cls in classes:
+            # 统计学生数
+            student_count = Enrollment.objects.filter(class_group=cls).count()
+            
+            class_list.append({
+                'id': cls.id,
+                'name': cls.name,
+                'term_id': cls.term.id,
+                'term_name': cls.term.name,
+                'class_limit': cls.class_limit,
+                'student_count': student_count,
+                'head_teacher': {
+                    'id': cls.head_teacher.id,
+                    'name': cls.head_teacher.real_name or cls.head_teacher.nickname
+                } if cls.head_teacher else None,
+                'created_at': cls.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            })
+        
         return Response({
             'code': 200,
             'message': '获取成功',
-            'data': {'classes': []}
+            'data': {'classes': class_list}
         })
     
     def post(self, request, course_id):
-        # TODO: 实现班级创建
+        """创建新班级"""
+        user = request.user
+        
+        # 验证课程权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        name = data.get('name', '').strip()
+        term_id = data.get('term_id')
+        class_limit = data.get('class_limit', 0)
+        
+        # 验证必填字段
+        if not name:
+            return Response({
+                'code': 400,
+                'message': '班级名称不能为空',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not term_id:
+            return Response({
+                'code': 400,
+                'message': '请选择班期',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 验证班期
+        try:
+            term = CourseTerm.objects.get(id=term_id, course=course)
+        except CourseTerm.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班期不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查班级名称是否重复
+        if ClassGroup.objects.filter(term=term, name=name).exists():
+            return Response({
+                'code': 400,
+                'message': '该班期下已存在同名班级',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 创建班级
+        class_group = ClassGroup.objects.create(
+            term=term,
+            name=name,
+            class_limit=class_limit,
+            head_teacher=user  # 默认班主任为当前用户
+        )
+        
         return Response({
             'code': 200,
             'message': '创建成功',
-            'data': {'class_id': None}
+            'data': {
+                'class_id': class_group.id,
+                'name': class_group.name,
+                'term_id': term.id,
+                'term_name': term.name,
+            }
         }, status=status.HTTP_201_CREATED)
 
 
@@ -1823,15 +2499,105 @@ class TeacherClassDetailView(APIView):
     permission_classes = [IsAuthenticated]
     
     def put(self, request, course_id, class_id):
-        # TODO: 实现班级更新
+        """更新班级信息"""
+        user = request.user
+        
+        # 验证课程和班级权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            class_group = ClassGroup.objects.get(
+                id=class_id,
+                term__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except ClassGroup.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班级不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        data = request.data
+        
+        # 更新班级名称
+        if 'name' in data:
+            new_name = data['name'].strip()
+            # 检查新名称是否与同班期其他班级重复
+            if ClassGroup.objects.filter(
+                term=class_group.term,
+                name=new_name
+            ).exclude(id=class_id).exists():
+                return Response({
+                    'code': 400,
+                    'message': '该班期下已存在同名班级',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+            class_group.name = new_name
+        
+        # 更新人数限制
+        if 'class_limit' in data:
+            try:
+                class_group.class_limit = int(data['class_limit'])
+            except ValueError:
+                return Response({
+                    'code': 400,
+                    'message': '人数限制必须为数字',
+                    'data': None
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        class_group.save()
+        
         return Response({
             'code': 200,
             'message': '更新成功',
-            'data': {}
+            'data': {
+                'id': class_group.id,
+                'name': class_group.name,
+                'class_limit': class_group.class_limit,
+            }
         })
     
     def delete(self, request, course_id, class_id):
-        # TODO: 实现班级删除
+        """删除班级"""
+        user = request.user
+        
+        # 验证课程和班级权限
+        try:
+            course = Course.objects.get(id=course_id, teacher=user)
+            class_group = ClassGroup.objects.get(
+                id=class_id,
+                term__course=course
+            )
+        except Course.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '课程不存在或您无权访问',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        except ClassGroup.DoesNotExist:
+            return Response({
+                'code': 404,
+                'message': '班级不存在',
+                'data': None
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 检查是否有学生选课
+        student_count = Enrollment.objects.filter(class_group=class_group).count()
+        
+        if student_count > 0:
+            return Response({
+                'code': 400,
+                'message': f'该班级已有{student_count}名学生，无法删除',
+                'data': None
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        class_group.delete()
+        
         return Response({
             'code': 200,
             'message': '删除成功'
